@@ -83,7 +83,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'My Site',
+        title: 'M0dZer0\'s Notes',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
