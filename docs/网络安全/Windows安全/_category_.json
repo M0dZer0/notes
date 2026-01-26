@@ -1,0 +1,8 @@
+{
+  "label": "Windows安全",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Windows系统安全相关组件、工具、敏感文件和攻击手段"
+  }
+}
