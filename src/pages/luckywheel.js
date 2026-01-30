@@ -40,12 +40,24 @@ export default function LuckyWheelPage() {
     return `${b}${relPath}`;
   };
 
-  useEffect(() => {
-    const today = new Date().toDateString(); 
-    const id = btoa([navigator.userAgent, screen.width, today].join('|')).substring(0, 16);
-    setFingerprint(id);
-    if (localStorage.getItem(`draw_daily_${id}`)) setHasParticipated(true);
-  }, []);
+useEffect(() => {
+  // 1. 生成纯设备指纹（去掉 today），保证这个用户在同一台电脑上的 ID 永远不变
+  const deviceId = btoa([navigator.userAgent, screen.width].join('|')).substring(0, 16);
+  setFingerprint(deviceId);
+
+  // 2. 获取今天的日期字符串
+  const todayStr = new Date().toDateString(); // 例如: "Fri Jan 31 2026"
+
+  // 3. 检查缓存
+  const lastDrawDate = localStorage.getItem(`last_draw_date_${deviceId}`);
+
+  // 4. 如果缓存的日期等于今天，说明今天已经抽过了
+  if (lastDrawDate === todayStr) {
+    setHasParticipated(true);
+  } else {
+    setHasParticipated(false);
+  }
+}, []);
 
   const handleVerify = () => {
     if (step === 'pass1') {
@@ -291,10 +303,20 @@ export default function LuckyWheelPage() {
                     top: '35%' 
                   }]
                 }))}
-                buttons={[{
-                  radius: '25%', background: '#FF6B6B', pointer: true,
-                  fonts: [{ text: 'GO', color: '#fff', top: '-6px', fontWeight: '900', fontSize: '12px' }]
-                }]}
+// 这里的配置对应 lucky-canvas 的 buttons 数组
+buttons={[
+  {
+    radius: '35%', // 按钮占据的半径范围
+    imgs: [
+      {
+        src: getFullImgPath('/gift/button.png'),
+        width: '100%',  // 图片宽度，相对于 radius
+        height: '100%', // 图片高度
+        top: '-110%'    // 重点：根据图片素材的中心点，微调垂直位置
+      }
+    ]
+  }
+]}
                 onStart={startSpin} 
                 onEnd={onEnd}
               />
