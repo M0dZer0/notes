@@ -15,9 +15,9 @@ const INITIAL_PRIZES = [
   { id: 3, name: '全套新年限定皮肤', color: '#FF92AE', img: '/gift/gift3.png' },
   { id: 4, name: '维秘睡衣', color: '#FFB3BA', img: '/gift/gift4.png' },
   { id: 5, name: '朵莉亚cos服', color: '#FF6B6B', img: '/gift/gift5.png' },
-  { id: 6, name: '奖品 6', color: '#FF8E99', img: '/gift/gift6.png' },
-  { id: 7, name: '奖品 7', color: '#FF92AE', img: '/gift/gift7.png' },
-  { id: 8, name: '奖品 8', color: '#FFB3BA', img: '/gift/gift8.png' },
+  { id: 6, name: '拍立得', color: '#FF8E99', img: '/gift/gift6.png' },
+  { id: 7, name: 'amiro化妆镜', color: '#FF92AE', img: '/gift/gift7.png' },
+  { id: 8, name: 'Chanel发香喷雾', color: '#FFB3BA', img: '/gift/gift8.png' },
 ];
 
 export default function LuckyWheelPage() {
@@ -292,7 +292,7 @@ useEffect(() => {
                 ref={myLucky} 
                 width="310px" 
                 height="310px"
-                blocks={[{ padding: '10px', background: '#F0F0F0', borderRadius: '50%' }]}
+                blocks={[{ padding: '10px', background: '#f0f0f0', borderRadius: '50%' }]}
                 prizes={finalPrizes.map(p => ({
                   background: p.color,
                   fonts: [{ text: p.name, top: '10%', color: '#fff', fontWeight: 'bold', fontSize: '12px' }],
@@ -306,13 +306,13 @@ useEffect(() => {
 // 这里的配置对应 lucky-canvas 的 buttons 数组
 buttons={[
   {
-    radius: '35%', // 按钮占据的半径范围
+    radius: '32%', // 按钮占据的半径范围
     imgs: [
       {
         src: getFullImgPath('/gift/button.png'),
         width: '100%',  // 图片宽度，相对于 radius
-        height: '100%', // 图片高度
-        top: '-110%'    // 重点：根据图片素材的中心点，微调垂直位置
+        height: '110%', // 图片高度
+        top: '-115%'    // 重点：根据图片素材的中心点，微调垂直位置
       }
     ]
   }
@@ -342,5 +342,5 @@ const styles = {
   prizeItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderRadius: '16px', border: '1px solid #f0f0f0', fontSize: '16px',transform: 'scale(1)', transition: 'all 0.3s ease' },
   checkbox: { width: '20px', height: '20px', borderRadius: '50%', border: '2px solid #ddd' },
   title: { fontSize: '32px', letterSpacing: '6px', background: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E99 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '40px', fontWeight: '900' },
-  wheelWrapper: { padding: '15px', background: '#fff', borderRadius: '50%', boxShadow: '0 20px 60px rgba(0,0,0,0.06)' }
+  wheelWrapper: { padding: '15px', background: '#fa658dd5', borderRadius: '50%', boxShadow: '0 20px 60px rgba(248, 66, 111, 0.67)' }
 };
