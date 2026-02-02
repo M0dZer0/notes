@@ -168,7 +168,7 @@ useEffect(() => {
   );
 
   return (
-    <Layout title="幸运抽奖" noFooter={true}>
+    <Layout title="💌情人节快乐" noFooter={true}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <style>{`
@@ -195,9 +195,9 @@ useEffect(() => {
           {(step === 'pass1' || step === 'pass2') && (
             <motion.div key={step} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.modalOverlay}>
               <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} style={styles.modalContent}>
-                <div style={{ fontSize: '44px' }}>{step === 'pass1' ? '🔐' : '🔑'}</div>
-                <h2 style={styles.modalTitle}>{step === 'pass1' ? '验证码 1' : '验证码 2'}</h2>
-                <input type="text" inputMode="numeric" value={inputPass} onChange={(e) => setInputPass(e.target.value)} style={styles.input} placeholder="请输入验证码" />
+                <div style={{ fontSize: '44px' }}>{step === 'pass1' ? '💗' : '💗'}</div>
+                <h2 style={styles.modalTitle}>{step === 'pass1' ? '咱们是哪天认识的呢（如20260214）' : '咱们是哪天在一起的呢'}</h2>
+                <input type="text" inputMode="numeric" value={inputPass} onChange={(e) => setInputPass(e.target.value)} style={styles.input} placeholder="请输入日期" />
                 <button onClick={handleVerify} style={styles.btnGradient}>确认进入</button>
               </motion.div>
             </motion.div>
@@ -206,7 +206,7 @@ useEffect(() => {
           {step === 'error' && (
             <CustomModal 
               key="error" title="验证失败" icon="😭"
-              content={<div style={styles.modalSubTitle}>{lastStep === 'pass1' ? '验证码 1 错误' : '验证码 2 错误'}</div>}
+              content={<div style={styles.modalSubTitle}>{lastStep === 'pass1' ? '呜呜呜宝宝你记错啦' : '呜呜呜宝宝你记错啦'}</div>}
               onConfirm={() => { setStep(lastStep); setInputPass(''); }}
               confirmText="重新输入"
             />
@@ -215,7 +215,7 @@ useEffect(() => {
           {(step === 'exclude' || step === 'focus') && (
             <motion.div key={step} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.modalOverlay}>
               <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} style={styles.modalContent}>
-                <h2 style={styles.modalTitle}>{step === 'exclude' ? '排除奖品' : '核心愿望'}</h2>
+                <h2 style={styles.modalTitle}>{step === 'exclude' ? '回答正确！宝宝你可以排除不想要的礼物' : '回答正确！宝宝你可以选择最想要的礼物'}</h2>
                 <p style={styles.modalSubTitle}>{step === 'exclude' ? '请勾选 2 个你【不想要】的' : '请勾选 2 个你【最想要】的'}</p>
                 <div style={styles.prizeGrid}>
                   {(step === 'exclude' ? INITIAL_PRIZES : INITIAL_PRIZES.filter(p => !excludedIds.includes(p.id))).map(p => {
@@ -258,26 +258,56 @@ useEffect(() => {
 
           {step === 'confirm_focus' && (
             <CustomModal 
-              key="cf" title="确定这就是愿望吗？" icon="✨"
+              key="cf" title="确定这就是最想要的吗？" icon="✨"
               content={<PrizeStaticList ids={focusedIds}/>}
               onConfirm={prepareWheelData}
               onCancel={() => setStep('focus')}
             />
           )}
 
-          {step === 'result' && (
-            <CustomModal 
-              key="res" title="🎉 恭喜中奖" icon="🌈"
-              content={<div style={{...styles.prizeItem, cursor: 'default', margin: '20px 0', border: 'none', background: '#F9FAFB', transform: 'none', justifyContent: 'center'}}><span>🎁 {wonPrize}</span></div>}
-              onConfirm={() => setStep('wheel')}
-              confirmText="好的"
+{step === 'result' && (
+  <CustomModal 
+    key="res" 
+    title="🎉 恭喜中奖" 
+    icon="🌈"
+    content={(
+      <div style={{
+        ...styles.prizeItem, 
+        cursor: 'default', 
+        margin: '20px 0', 
+        border: '2px solid #FF6B6B', // 给中奖目标加个粉色边框
+        background: '#FFF5F5', 
+        transform: 'none', 
+        justifyContent: 'center',
+        flexDirection: 'column', // 让图片和文字上下排列，更有仪式感
+        gap: '10px',
+        padding: '20px'
+      }}>
+        {/* 动态查找奖品图片 */}
+        {(() => {
+          const prizeObj = INITIAL_PRIZES.find(p => p.name === wonPrize);
+          return prizeObj ? (
+            <img 
+              src={getFullImgPath(prizeObj.img)} 
+              style={{ width: '80px', height: '80px', objectFit: 'contain' }} 
+              alt={wonPrize}
             />
-          )}
+          ) : null;
+        })()}
+        <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#FF6B6B' }}>
+          {wonPrize}
+        </span>
+      </div>
+    )}
+    onConfirm={() => setStep('wheel')}
+    confirmText="太棒啦"
+  />
+)}
 
           {step === 'warning' && (
             <CustomModal 
-              key="warn" title="今日已参与" icon="⚠️"
-              content={<div style={styles.modalSubTitle}>请明天再来领取好运吧！</div>}
+              key="warn" title="已经抽过啦！" icon="🎉"
+              content={<div style={styles.modalSubTitle}>宝宝你已经抽过了噢，快来找我领取吧！</div>}
               onConfirm={() => setStep('wheel')}
               confirmText="我知道了"
             />
@@ -286,7 +316,7 @@ useEffect(() => {
 
         {step === 'wheel' && finalPrizes.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', zIndex: 1 }}>
-            <h1 style={styles.title}>LUCKY WHEEL</h1>
+            <h1 style={styles.title}>Gina's Valentine</h1>
             <div style={styles.wheelWrapper}>
               <LuckyWheel 
                 ref={myLucky} 
@@ -333,7 +363,7 @@ const styles = {
   bgGlow: { position: 'absolute', width: '100%', height: '100%', background: 'radial-gradient(circle at 50% 10%, rgba(255,107,107,0.08) 0%, rgba(255,255,255,0) 60%)', zIndex: 0 },
   modalOverlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(255, 255, 255, 0.96)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(12px)' },
   modalContent: { background: '#ffffff', padding: '35px 25px', borderRadius: '32px', textAlign: 'center', width: '90%', maxWidth: '380px', boxShadow: '0 30px 60px rgba(0,0,0,0.12)', border: '1px solid rgba(0,0,0,0.05)' },
-  modalTitle: { color: '#333', marginBottom: '12px', fontWeight: '900', fontSize: '24px' },
+  modalTitle: { color: '#333', marginBottom: '12px', fontWeight: '750', fontSize: '16px' },
   modalSubTitle: { color: '#666', fontSize: '15px', lineHeight: '1.5' },
   input: { width: '100%', padding: '16px', borderRadius: '16px', border: '1px solid #F0F0F0', background: '#F8F9FA', marginBottom: '20px', textAlign: 'center', outline: 'none', fontSize: '16px', boxSizing: 'border-box' },
   btnGradient: { width: '100%', padding: '16px', borderRadius: '16px', border: 'none', background: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E99 100%)', color: '#fff', fontWeight: 'bold', fontSize: '16px', transition: 'all 0.3s ease', cursor: 'pointer' },
