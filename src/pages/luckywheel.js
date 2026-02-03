@@ -268,7 +268,7 @@ useEffect(() => {
 {step === 'result' && (
   <CustomModal 
     key="res" 
-    title="🎉 恭喜中奖" 
+    title="🎉 恭喜中奖，快截图找我领取吧" 
     icon="🌈"
     content={(
       <div style={{
@@ -307,7 +307,7 @@ useEffect(() => {
           {step === 'warning' && (
             <CustomModal 
               key="warn" title="已经抽过啦！" icon="🎉"
-              content={<div style={styles.modalSubTitle}>宝宝你已经抽过了噢，快来找我领取吧！</div>}
+              content={<div style={styles.modalSubTitle}>宝宝你已经抽过了噢，你的心愿我都知道啦！</div>}
               onConfirm={() => setStep('wheel')}
               confirmText="我知道了"
             />
@@ -372,5 +372,16 @@ const styles = {
   prizeItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderRadius: '16px', border: '1px solid #f0f0f0', fontSize: '16px',transform: 'scale(1)', transition: 'all 0.3s ease' },
   checkbox: { width: '20px', height: '20px', borderRadius: '50%', border: '2px solid #ddd' },
   title: { fontSize: '32px', letterSpacing: '6px', background: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E99 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '40px', fontWeight: '900' },
-  wheelWrapper: { padding: '15px', background: '#fa658dd5', borderRadius: '50%', boxShadow: '0 20px 60px rgba(248, 66, 111, 0.67)' }
+  wheelWrapper: { 
+  width: '340px',   // 310 (转盘) + 15*2 (左右内边距)
+  height: '340px',  // 保持宽高一致
+  padding: '15px', 
+  background: '#fa658dd5', 
+  borderRadius: '50%', 
+  boxShadow: '0 20px 60px rgba(248, 66, 111, 0.67)',
+  display: 'flex',     // 增加 flex 居中
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxSizing: 'border-box' // 确保 padding 不会额外增加宽度
+}
 };
