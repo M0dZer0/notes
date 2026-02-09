@@ -154,7 +154,7 @@ useEffect(() => {
     setWonPrize(prizeName);
     setIsSubmitting(true);
     await submitToFormspree({ type: "最终中奖", prize: prizeName });
-    localStorage.setItem(`draw_daily_${fingerprint}`, 'true');
+    localStorage.setItem(`last_draw_date_${fingerprint}`, new Date().toDateString());
     setHasParticipated(true);
     setStep('result');
     setIsSubmitting(false);
