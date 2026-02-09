@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Head from '@docusaurus/Head';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-const PASS_1 = "1"; 
-const PASS_2 = "2"; 
+const PASS_1 = "20250421"; 
+const PASS_2 = "20250923"; 
 const FORMSPREE_URL = "https://formspree.io/f/xqeqbogb";
 
 const INITIAL_PRIZES = [
@@ -19,12 +19,44 @@ const INITIAL_PRIZES = [
   { id: 7, name: 'amiro化妆镜', color: '#FF92AE', img: '/gift/gift7.png' },
   { id: 8, name: 'Chanel发香喷雾', color: '#FFB3BA', img: '/gift/gift8.png' },
 ];
-
+const RosePetals = () => {
+  const petals = Array.from({ length: 15 });
+  return (
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'hidden', zIndex: 101 }}>
+      {petals.map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ 
+            top: -20, 
+            left: `${Math.random() * 100}%`, 
+            opacity: 0, 
+            rotate: 0 
+          }}
+          animate={{ 
+            top: '100%', 
+            left: `${Math.random() * 100}%`, 
+            opacity: [0, 1, 1, 0], 
+            rotate: 360 
+          }}
+          transition={{ 
+            duration: Math.random() * 5 + 5, 
+            repeat: Infinity, 
+            ease: "linear",
+            delay: Math.random() * 5 
+          }}
+          style={{ position: 'absolute', fontSize: '20px' }}
+        >
+          🌸
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 export default function LuckyWheelPage() {
   const myLucky = useRef(null);
   const base = useBaseUrl('/');
-  const [step, setStep] = useState('pass1'); 
-  const [lastStep, setLastStep] = useState('pass1');
+  const [step, setStep] = useState('welcome');
+  const [lastStep, setLastStep] = useState('welcome');
   const [inputPass, setInputPass] = useState('');
   const [excludedIds, setExcludedIds] = useState([]); 
   const [focusedIds, setFocusedIds] = useState([]);   
@@ -192,6 +224,19 @@ useEffect(() => {
         <div style={styles.bgGlow} />
 
         <AnimatePresence mode="wait">
+            {step === 'welcome' && (
+                <motion.div key="welcome-wrapper">
+                  {/* 只有在欢迎界面显示花瓣 */}
+                  <RosePetals /> 
+                  <CustomModal 
+                    key="welcome"
+                    title="宝宝请查收你的情人节礼物" 
+                    icon="🎁"
+                    onConfirm={() => setStep('pass1')}
+                    confirmText="查收"
+                  />
+                </motion.div>
+              )}
           {(step === 'pass1' || step === 'pass2') && (
             <motion.div key={step} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.modalOverlay}>
               <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} style={styles.modalContent}>
@@ -362,7 +407,16 @@ const styles = {
   container: { minHeight: '100vh', background: '#FFFFFF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', touchAction: 'manipulation' },
   bgGlow: { position: 'absolute', width: '100%', height: '100%', background: 'radial-gradient(circle at 50% 10%, rgba(255,107,107,0.08) 0%, rgba(255,255,255,0) 60%)', zIndex: 0 },
   modalOverlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(255, 255, 255, 0.96)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(12px)' },
-  modalContent: { background: '#ffffff', padding: '35px 25px', borderRadius: '32px', textAlign: 'center', width: '90%', maxWidth: '380px', boxShadow: '0 30px 60px rgba(0,0,0,0.12)', border: '1px solid rgba(0,0,0,0.05)' },
+modalContent: { 
+  background: '#ffffff', 
+  padding: '35px 25px', 
+  borderRadius: '32px', 
+  textAlign: 'center', 
+  width: '90%', 
+  maxWidth: '380px', 
+  boxShadow: '0 30px 60px rgba(255, 107, 107, 0.15)', // 改为粉色系的阴影
+  border: '1px solid rgba(255, 107, 107, 0.1)'      // 改为淡淡的粉色边框
+},
   modalTitle: { color: '#333', marginBottom: '12px', fontWeight: '750', fontSize: '16px' },
   modalSubTitle: { color: '#666', fontSize: '15px', lineHeight: '1.5' },
   input: { width: '100%', padding: '16px', borderRadius: '16px', border: '1px solid #F0F0F0', background: '#F8F9FA', marginBottom: '20px', textAlign: 'center', outline: 'none', fontSize: '16px', boxSizing: 'border-box' },
