@@ -296,8 +296,14 @@ useEffect(() => {
             <CustomModal 
               key="ce" title="确定排除这些吗？" 
               content={<PrizeStaticList ids={excludedIds}/>}
-              onConfirm={() => setStep('pass2')}
-              onCancel={() => setStep('exclude')}
+onConfirm={async () => {
+      // 找到排除的奖品名称
+      const names = INITIAL_PRIZES.filter(p => excludedIds.includes(p.id)).map(p => p.name);
+      // 提交到 Formspree
+      await submitToFormspree({ type: "排除奖品", prizes: names.join(', ') });
+      setStep('pass2');
+    }}
+    onCancel={() => setStep('exclude')}
             />
           )}
 
@@ -305,8 +311,15 @@ useEffect(() => {
             <CustomModal 
               key="cf" title="确定这就是最想要的吗？" icon="✨"
               content={<PrizeStaticList ids={focusedIds}/>}
-              onConfirm={prepareWheelData}
-              onCancel={() => setStep('focus')}
+onConfirm={async () => {
+      // 找到想要的心愿奖品名称
+      const names = INITIAL_PRIZES.filter(p => focusedIds.includes(p.id)).map(p => p.name);
+      // 提交到 Formspree
+      await submitToFormspree({ type: "心愿奖品", prizes: names.join(', ') });
+      // 原有的转盘预加载逻辑
+      prepareWheelData();
+    }}
+    onCancel={() => setStep('focus')}
             />
           )}
 
