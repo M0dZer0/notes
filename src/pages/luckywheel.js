@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Head from '@docusaurus/Head';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-const PASS_1 = "20250421"; 
-const PASS_2 = "20250923"; 
-const FORMSPREE_URL = "https://formspree.io/f/xqeqbogb";
+const PASS_1 = "1"; 
+const PASS_2 = "2"; 
+const FORMSPREE_URL = "xxx";
 
 const INITIAL_PRIZES = [
   { id: 1, name: 'YSL口红', color: '#FF6B6B', img: '/gift/gift1.png' },
