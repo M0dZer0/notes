@@ -1,17 +1,15 @@
 ## 下载
 
-### 使用 `wget`
+### 使用 wget
 
 `wget` 的设计初衷就是为了下载，所以默认行为非常直接。
 
 - **基本下载：**
 
   ```bash
-wget https://example.com/file.zip
+  wget https://example.com/file.zip
   ```
   
-  *这会自动将文件保存为原名。*
-
 - **指定保存的文件名 (`-O`)：**
 
   ```bash
@@ -20,7 +18,7 @@ wget https://example.com/file.zip
 
 ------
 
-### 使用 `curl`
+### 使用 curl
 
 `curl` 是一个功能更强大的数据传输工具，但在下载文件时，默认会将内容**打印到终端**，所以你必须指定输出方式。
 
