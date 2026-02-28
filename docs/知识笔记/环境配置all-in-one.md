@@ -35,3 +35,32 @@ conda env remove -n myenv
 ```
 
 注意同时使用pip，pip3也加上了软链接。
+
+### 虚拟环境创建
+
+如果想创建一个简单的虚拟环境，只需要
+
+```shell
+# 创建环境
+python@版本号 -m venv 虚拟环境名称
+# 激活环境
+source 环境名称/bin/activate
+# 验证版本
+python --version
+# 退出环境
+deactivate
+```
+
+如果想创建对应python版本的环境，但是和本地解释器版本不一致，则可以使用uv
+
+```shell
+# Create and activate virtual environment through uv
+uv python install 3.12
+uv venv --python 3.12
+
+source .venv/bin/activate
+
+# Install dependencies
+uv sync --all-groups
+```
+
