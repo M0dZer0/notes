@@ -152,3 +152,103 @@ git push --force-with-lease origin your-branch-name
   - **新分支**：以当前代码为基础，创建一个全新的实验性分支。
 - **结果**：VS Code 左侧的文件列表会瞬间发生变化，显示该分支下的代码样子。
 
+### Cherry-Pick
+<details>
+<summary>什么是 Git Cherry-pick</summary>
+<div>
+<p><strong>Git Cherry-pick</strong> 是一个强大的版本控制命令，它允许开发人员从一个分支中挑选特定的提交（Commit），并将这些更改应用到当前所在的分支。与合并整个分支（Merge）不同，Cherry-pick 提供了一种更精确的代码搬运方式。</p>
+
+<h3>1. <strong>核心概念 (The Core Concept)</strong></h3>
+
+<p>Cherry-pick 的字面意思是“摘樱桃”。在 Git 中，这意味着你不是把整棵树（整个分支的历史）挪过来，而只是摘取其中一颗或几颗最好的“樱桃”（具体的代码提交）。</p>
+
+<p><strong>主要使用场景包括：</strong></p>
+<ul>
+<li><strong>修复 Bug 的同步：</strong> 在开发分支修复了一个紧急 Bug，需要立即将这个修复应用到生产分支，而不带走开发分支中尚未完成的其他功能。</li>
+<li><strong>功能迁移：</strong> 某个分支中的一小部分功能代码是另一个分支急需的。</li>
+<li><strong>撤销后的恢复：</strong> 如果之前的合并被意外回滚，可以用 cherry-pick 重新找回那些正确的提交。</li>
+</ul>
+
+<h3>2. <strong>工作流程 (How It Works)</strong></h3>
+
+<p>当你执行 cherry-pick 时，Git 会提取该提交引入的更改，并在当前分支上创建一个全新的提交。这个新提交的内容与原提交相同，但会拥有一个新的哈希值（Hash）。</p>
+
+<p><strong>基本操作步骤：</strong></p>
+<ul>
+<li><strong>获取 ID：</strong> 首先找到你想要复制的提交 ID（可以通过 <code>git log</code> 查看）。</li>
+<li><strong>切换分支：</strong> 切换到目标分支（例如 <code>production</code>）。</li>
+<li><strong>执行命令：</strong> 使用 <code>git cherry-pick &lt;commit-id&gt;</code> 将更改应用过来。</li>
+</ul>
+
+<h3>3. <strong>注意事项 (Precautions)</strong></h3>
+<p>虽然 Cherry-pick 非常灵活，但过度使用可能会导致一些维护上的挑战：</p>
+
+<ul>
+<li><strong>重复提交：</strong> 同样的逻辑会出现在两个分支的不同提交中，这可能在未来的合并（Merge）时引发冲突。</li>
+<li><strong>依赖关系：</strong> 如果你挑选的提交依赖于之前的其他提交（而你没有一起挑过来），可能会导致编译错误或运行时问题。</li>
+<li><strong>版本冲突：</strong> 如果目标分支的代码与该提交修改的代码行存在差异，仍需要手动解决冲突。</li>
+</ul>
+</div>
+</details>
+
+通过 `cherry-pick` 将实验环境（Experimental）的功能搬运到正式环境（Production/Main）是一个非常经典且稳健的操作。它的精髓在于**“精准打击”**——只带走你需要的代码，留下实验分支里的杂乱测试或未完成逻辑。
+
+以下是完整的操作指南：
+
+#### 第一步：定位“樱桃”（获取提交 ID）
+
+首先，你需要去实验分支找到那个实现了新功能的提交。
+
+1. 切换到实验分支：`git checkout experimental`
+2. 查看提交历史：`git log --oneline`
+3. **记录哈希值：** 找到对应的 Commit ID（例如 `a1b2c3d`）。
+
+> **提示：** 如果功能是由多个提交组成的，记录下这一串 ID 的起始和结束。
+
+#### 第二步：准备正式环境分支
+
+为了保证正式环境的安全，建议先创建一个临时分支进行“试运行”。
+
+1. 切换到正式环境：`git checkout main`（或者是你的 `production` 分支）。
+2. 拉取最新代码：`git pull origin main`。
+3. 创建并切换到搬运分支：`git checkout -b apply-new-feature`。
+
+#### 第三步：执行 Cherry-pick
+
+现在开始把代码“摘”过来。
+
+- **搬运单个提交：**
+
+  Bash
+
+  ```
+  git cherry-pick a1b2c3d
+  ```
+
+- **连续搬运多个提交（从 A 到 B）：**
+
+  Bash
+
+  ```
+  git cherry-pick A^..B 
+  ```
+
+  *(注意：`^` 表示包含 A 本身)*
+
+#### 第四步：处理可能出现的“坏果子”（冲突）
+
+如果正式环境和实验环境的代码在同一行有不同的修改，Git 会停下来要求你解决冲突。
+
+1. **查看冲突文件：** `git status`。
+2. **手动修改：** 打开冲突文件，选择保留正式环境逻辑、实验环境逻辑，还是两者合并。
+3. **标记解决：** `git add <文件名>`。
+4. **继续搬运：** `git cherry-pick --continue`。
+
+> **意外处理：** 如果冲突太复杂你想反悔了，可以使用 `git cherry-pick --abort` 回到最初状态。
+
+#### 第五步：验证与合并
+
+1. **本地测试：** 在 `apply-new-feature` 分支上运行测试脚本，确保新功能在正式环境下不崩坏。
+2. **推送到远程：** `git push origin apply-new-feature`。
+3. **发起 PR/MR：** 在 GitHub/GitLab 上发起合并请求，让同事 Code Review 后合入 `main` 分支。
+
