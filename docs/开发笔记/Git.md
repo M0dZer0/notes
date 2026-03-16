@@ -33,35 +33,29 @@ git push -u origin mybranch
 
    告诉 Git，你已经把这几个文件修好了。
 
-   Bash
-
-   ```
+   ```Bash
    git add ./src/***
    ```
-
+   
 2. **合入上一个提交（核心步骤）**：
 
    执行以下命令，它会把刚才 `add` 的内容合并到你最新的那个提交中，且**不改变提交信息**：
 
-   Bash
-
-   ```
+   ```Bash
    git commit --amend --no-edit
    ```
-
+   
    - `--amend`：表示修改上一次提交。
    - `--no-edit`：表示沿用之前的提交信息，不弹出编辑器。
-
+   
 3. **强制推送（如果是第一次推送失败后）**：
 
    如果你之前已经尝试 `push` 过（虽然报错了），或者你想覆盖远程那个“坏”的提交：
 
-   Bash
-
-   ```
+   ```Bash
    git push --force-with-lease
    ```
-
+   
    > **注意**：`--force-with-lease` 比普通的 `-f` 更安全，它会检查远程是否有别人提交的代码，防止不小心覆盖掉同事的工作。
 
 如果提交后感觉commit信息写的不好，这里分两种情况，取决于你要改的是哪一次提交：
@@ -72,19 +66,15 @@ git push -u origin mybranch
 
 1. **执行修改命令**：
 
-   Bash
-
+   ```Bash
+git commit --amend -m "这是你新的提交信息"
    ```
-   git commit --amend -m "这是你新的提交信息"
-   ```
-
+   
    *如果你不带 `-m` 参数，Git 会打开编辑器让你修改。*
 
 2. **强制推送到远程**（因为提交 ID 改变了）：
 
-   Bash
-
-   ```
+   ```bash
    git push --force-with-lease
    ```
 
@@ -94,24 +84,20 @@ git push -u origin mybranch
 
 1. **进入交互模式**（假设要修改最近 3 次内的某一个）：
 
-   Bash
-
-   ```
+   ```Bash
    git rebase -i HEAD~3
    ```
-
+   
 2. **在编辑器中操作**：
 
    - 你会看到类似这样的列表：
 
-     Plaintext
-
      ```
-     pick a1b2c3d 功能开发 1
+  pick a1b2c3d 功能开发 1
      pick e4f5g6h 功能开发 2
      pick i7j8k9l 功能开发 3
      ```
-
+     
    - 将你想修改的那一行前面的 `pick` 改为 `reword`（或者简写为 `r`）。
 
    - 保存并退出编辑器。
@@ -122,9 +108,7 @@ git push -u origin mybranch
 
 4. **强制推送**：
 
-   Bash
-
-   ```
+   ```bash
    git push --force-with-lease
    ```
 
