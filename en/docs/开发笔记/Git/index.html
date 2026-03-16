@@ -5,7 +5,7 @@
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">Git | M0dZer0&#x27;s Notes</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://m0dzer0.github.io/notes/en/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://m0dzer0.github.io/notes/en/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://m0dzer0.github.io/notes/en/docs/开发笔记/Git"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" property="og:locale:alternate" content="zh_Hans"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Git | M0dZer0&#x27;s Notes"><meta data-rh="true" name="description" content="Git操作"><meta data-rh="true" property="og:description" content="Git操作"><link data-rh="true" rel="icon" href="/notes/en/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://m0dzer0.github.io/notes/en/docs/开发笔记/Git"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/开发笔记/Git" hreflang="zh-Hans"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/en/docs/开发笔记/Git" hreflang="en"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/开发笔记/Git" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"开发笔记","item":"https://m0dzer0.github.io/notes/en/docs/category/开发笔记"},{"@type":"ListItem","position":2,"name":"Git","item":"https://m0dzer0.github.io/notes/en/docs/开发笔记/Git"}]}</script><link rel="alternate" type="application/rss+xml" href="/notes/en/blog/rss.xml" title="M0dZer0&#39;s Notes RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/notes/en/blog/atom.xml" title="M0dZer0&#39;s Notes Atom Feed"><link rel="stylesheet" href="/notes/en/assets/css/styles.9072f9ea.css">
-<script src="/notes/en/assets/js/runtime~main.4e5374a6.js" defer="defer"></script>
+<script src="/notes/en/assets/js/runtime~main.e7b07340.js" defer="defer"></script>
 <script src="/notes/en/assets/js/main.2e6d3bd9.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -31,14 +31,12 @@
 <li class="">
 <p><strong>重新暂存（Stage）这些文件</strong>：</p>
 <p>告诉 Git，你已经把这几个文件修好了。</p>
-<p>Bash</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git add ./src/***</span><br></span></code></pre></div></div>
+<div class="language-Bash language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git add ./src/***</span><br></span></code></pre></div></div>
 </li>
 <li class="">
 <p><strong>合入上一个提交（核心步骤）</strong>：</p>
 <p>执行以下命令，它会把刚才 <code>add</code> 的内容合并到你最新的那个提交中，且<strong>不改变提交信息</strong>：</p>
-<p>Bash</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git commit --amend --no-edit</span><br></span></code></pre></div></div>
+<div class="language-Bash language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git commit --amend --no-edit</span><br></span></code></pre></div></div>
 <ul>
 <li class=""><code>--amend</code>：表示修改上一次提交。</li>
 <li class=""><code>--no-edit</code>：表示沿用之前的提交信息，不弹出编辑器。</li>
@@ -47,8 +45,7 @@
 <li class="">
 <p><strong>强制推送（如果是第一次推送失败后）</strong>：</p>
 <p>如果你之前已经尝试 <code>push</code> 过（虽然报错了），或者你想覆盖远程那个“坏”的提交：</p>
-<p>Bash</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git push --force-with-lease</span><br></span></code></pre></div></div>
+<div class="language-Bash language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git push --force-with-lease</span><br></span></code></pre></div></div>
 <blockquote>
 <p><strong>注意</strong>：<code>--force-with-lease</code> 比普通的 <code>-f</code> 更安全，它会检查远程是否有别人提交的代码，防止不小心覆盖掉同事的工作。</p>
 </blockquote>
@@ -60,52 +57,32 @@
 <ol>
 <li class="">
 <p><strong>执行修改命令</strong>：</p>
-<p>Bash</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git commit --amend -m &quot;这是你新的提交信息&quot;</span><br></span></code></pre></div></div>
-<p><em>如果你不带 <code>-m</code> 参数，Git 会打开编辑器让你修改。</em></p>
-</li>
-<li class="">
-<p><strong>强制推送到远程</strong>（因为提交 ID 改变了）：</p>
-<p>Bash</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git push --force-with-lease</span><br></span></code></pre></div></div>
+<pre tabindex="0" class="codeBlockStandalone_MEMb thin-scrollbar language-Bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"></code></pre>
 </li>
 </ol>
+<p>git commit --amend -m &quot;这是你新的提交信息&quot;</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">*如果你不带 `-m` 参数，Git 会打开编辑器让你修改。*</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">2. **强制推送到远程**（因为提交 ID 改变了）：</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">```bash</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">git push --force-with-lease</span><br></span></code></pre></div></div>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="情况二想修改更早之前的提交信息">情况二：想修改“更早之前”的提交信息<a href="#情况二想修改更早之前的提交信息" class="hash-link" aria-label="Direct link to 情况二：想修改“更早之前”的提交信息" title="Direct link to 情况二：想修改“更早之前”的提交信息" translate="no">​</a></h4>
 <p>如果你想修改的不是最近的那次，而是往回数第 2 次或第 3 次，就需要用到 <strong>交互式变基 (Interactive Rebase)</strong>。</p>
 <ol>
 <li class="">
 <p><strong>进入交互模式</strong>（假设要修改最近 3 次内的某一个）：</p>
-<p>Bash</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git rebase -i HEAD~3</span><br></span></code></pre></div></div>
+<div class="language-Bash language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git rebase -i HEAD~3</span><br></span></code></pre></div></div>
 </li>
 <li class="">
 <p><strong>在编辑器中操作</strong>：</p>
 <ul>
 <li class="">
 <p>你会看到类似这样的列表：</p>
-<p>Plaintext</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">pick a1b2c3d 功能开发 1</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">pick e4f5g6h 功能开发 2</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">pick i7j8k9l 功能开发 3</span><br></span></code></pre></div></div>
-</li>
-<li class="">
-<p>将你想修改的那一行前面的 <code>pick</code> 改为 <code>reword</code>（或者简写为 <code>r</code>）。</p>
-</li>
-<li class="">
-<p>保存并退出编辑器。</p>
+<pre tabindex="0" class="codeBlockStandalone_MEMb thin-scrollbar codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"></code></pre>
 </li>
 </ul>
-</li>
-<li class="">
-<p><strong>修改内容</strong>：</p>
-<ul>
-<li class="">Git 会自动弹出新的编辑器，让你输入新的提交信息。改好后保存退出。</li>
-</ul>
-</li>
-<li class="">
-<p><strong>强制推送</strong>：</p>
-<p>Bash</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git push --force-with-lease</span><br></span></code></pre></div></div>
 </li>
 </ol>
+<p>pick a1b2c3d 功能开发 1
+pick e4f5g6h 功能开发 2
+pick i7j8k9l 功能开发 3</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- 将你想修改的那一行前面的 `pick` 改为 `reword`（或者简写为 `r`）。</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- 保存并退出编辑器。</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">3. **修改内容**：</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">- Git 会自动弹出新的编辑器，让你输入新的提交信息。改好后保存退出。</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">4. **强制推送**：</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">```bash</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">git push --force-with-lease</span><br></span></code></pre></div></div>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="️-核心注意事项">⚠️ 核心注意事项<a href="#️-核心注意事项" class="hash-link" aria-label="Direct link to ⚠️ 核心注意事项" title="Direct link to ⚠️ 核心注意事项" translate="no">​</a></h4>
 <ul>
 <li class=""><strong>不要修改已合并的代码</strong>：如果你的分支已经合并到了 <code>master</code> 或者有其他同事正在基于你的这个分支开发，<strong>千万不要</strong>修改已经 push 的 Commit 信息。这会破坏他们的提交历史。</li>
