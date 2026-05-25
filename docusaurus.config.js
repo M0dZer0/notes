@@ -149,8 +149,9 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} M0dZer0's Notes, Inc. Built with Docusaurus.`,
       },
       prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
+        additionalLanguages: ['bash', 'cpp', 'http'],
+        theme: prismThemes.nightOwlLight,
+        darkTheme: prismThemes.nightOwl,
       },
     }),
 };

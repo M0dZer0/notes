@@ -33,7 +33,7 @@ git push -u origin mybranch
 
    告诉 Git，你已经把这几个文件修好了。
 
-   ```Bash
+   ```bash
    git add ./src/***
    ```
    
@@ -41,7 +41,7 @@ git push -u origin mybranch
 
    执行以下命令，它会把刚才 `add` 的内容合并到你最新的那个提交中，且**不改变提交信息**：
 
-   ```Bash
+   ```bash
    git commit --amend --no-edit
    ```
    
@@ -52,7 +52,7 @@ git push -u origin mybranch
 
    如果你之前已经尝试 `push` 过（虽然报错了），或者你想覆盖远程那个“坏”的提交：
 
-   ```Bash
+   ```bash
    git push --force-with-lease
    ```
    
@@ -66,8 +66,8 @@ git push -u origin mybranch
 
 1. **执行修改命令**：
 
-   ```Bash
-git commit --amend -m "这是你新的提交信息"
+   ```bash
+   git commit --amend -m "这是你新的提交信息"
    ```
    
    *如果你不带 `-m` 参数，Git 会打开编辑器让你修改。*
@@ -84,7 +84,7 @@ git commit --amend -m "这是你新的提交信息"
 
 1. **进入交互模式**（假设要修改最近 3 次内的某一个）：
 
-   ```Bash
+   ```bash
    git rebase -i HEAD~3
    ```
    
@@ -93,7 +93,7 @@ git commit --amend -m "这是你新的提交信息"
    - 你会看到类似这样的列表：
 
      ```
-  pick a1b2c3d 功能开发 1
+     pick a1b2c3d 功能开发 1
      pick e4f5g6h 功能开发 2
      pick i7j8k9l 功能开发 3
      ```
@@ -158,38 +158,37 @@ git push --force-with-lease origin your-branch-name
 
 <details>
   <summary>什么是CI/CD</summary>
-  <div>
-<p><strong>CI/CD</strong> 是“持续集成”（Continuous Integration）和“持续交付/持续部署”（Continuous Delivery / Continuous Deployment）的缩写，是一种软件开发实践和方法，旨在提高开发效率、减少错误并加快软件交付的速度。</p>
 
-<h3>1. <strong>持续集成 (CI - Continuous Integration)</strong></h3>
+**CI/CD** 是“持续集成”（Continuous Integration）和“持续交付/持续部署”（Continuous Delivery / Continuous Deployment）的缩写，是一种软件开发实践和方法，旨在提高开发效率、减少错误并加快软件交付的速度。
 
-<p>持续集成的核心思想是：开发人员经常将代码集成到共享的代码库中，而不是长时间地保持分支独立。在每次提交代码时，自动化的构建和测试流程会被触发，从而确保代码在合并之前是有效的，避免了由于合并冲突或错误积累的问题。</p>
+#### 1. 持续集成 (CI - Continuous Integration)
 
-<p><strong>主要内容包括：</strong></p>
-<ul>
-  <li><strong>频繁提交：</strong> 开发人员每天多次将代码提交到共享代码库。</li>
-  <li><strong>自动化构建：</strong> 每次代码提交后，自动触发构建过程，确保代码可以顺利编译。</li>
-  <li><strong>自动化测试：</strong> 执行单元测试、集成测试等，以检查代码是否存在问题。</li>
-</ul>
+持续集成的核心思想是：开发人员经常将代码集成到共享的代码库中，而不是长时间地保持分支独立。在每次提交代码时，自动化的构建和测试流程会被触发，从而确保代码在合并之前是有效的，避免了由于合并冲突或错误积累的问题。
 
-<h3>2. <strong>持续交付 (CD - Continuous Delivery)</strong></h3>
+主要内容包括：
 
-<p>持续交付的目标是确保每次代码更改都能自动化地通过测试，并准备好可以部署到生产环境。持续交付确保软件在任何时候都处于可发布的状态，但并不直接将其部署到生产环境，而是确保可以随时部署。</p>
+- **频繁提交：** 开发人员每天多次将代码提交到共享代码库。
+- **自动化构建：** 每次代码提交后，自动触发构建过程，确保代码可以顺利编译。
+- **自动化测试：** 执行单元测试、集成测试等，以检查代码是否存在问题。
 
-<p><strong>主要内容包括：</strong></p>
-<ul>
-  <li><strong>自动化部署：</strong> 代码完成测试后，自动部署到一个预生产环境（如 staging 环境）进行进一步验证。</li>
-  <li><strong>版本管理：</strong> 始终有一个可以发布到生产的版本，确保代码可以随时投入使用。</li>
-</ul>
-<h3>3. <strong>持续部署 (Continuous Deployment)</strong></h3>
-<p>持续部署是持续交付的一个进一步发展，它意味着每次代码更改一旦通过测试，就会自动部署到生产环境，而无需人工干预。</p>
+#### 2. 持续交付 (CD - Continuous Delivery)
 
-<p><strong>主要内容包括：</strong></p>
-<ul>
-  <li><strong>自动化到生产：</strong> 每次通过自动化测试的代码更改会被立即推送到生产环境，不需要人工操作。</li>
-  <li><strong>快速发布：</strong> 用户可以快速地体验到最新的功能或修复。</li>
-</ul>
-  </div>
+持续交付的目标是确保每次代码更改都能自动化地通过测试，并准备好可以部署到生产环境。持续交付确保软件在任何时候都处于可发布的状态，但并不直接将其部署到生产环境，而是确保可以随时部署。
+
+主要内容包括：
+
+- **自动化部署：** 代码完成测试后，自动部署到一个预生产环境（如 staging 环境）进行进一步验证。
+- **版本管理：** 始终有一个可以发布到生产的版本，确保代码可以随时投入使用。
+
+#### 3. 持续部署 (Continuous Deployment)
+
+持续部署是持续交付的一个进一步发展，它意味着每次代码更改一旦通过测试，就会自动部署到生产环境，而无需人工干预。
+
+主要内容包括：
+
+- **自动化到生产：** 每次通过自动化测试的代码更改会被立即推送到生产环境，不需要人工操作。
+- **快速发布：** 用户可以快速地体验到最新的功能或修复。
+
 </details>
 
 ### VScode集成
@@ -251,40 +250,37 @@ git push --force-with-lease origin your-branch-name
 ### Cherry-Pick
 <details>
 <summary>什么是 Git Cherry-pick</summary>
-<div>
-<p><strong>Git Cherry-pick</strong> 是一个强大的版本控制命令，它允许开发人员从一个分支中挑选特定的提交（Commit），并将这些更改应用到当前所在的分支。与合并整个分支（Merge）不同，Cherry-pick 提供了一种更精确的代码搬运方式。</p>
 
-<h3>1. <strong>核心概念 (The Core Concept)</strong></h3>
+**Git Cherry-pick** 是一个强大的版本控制命令，它允许开发人员从一个分支中挑选特定的提交（Commit），并将这些更改应用到当前所在的分支。与合并整个分支（Merge）不同，Cherry-pick 提供了一种更精确的代码搬运方式。
 
-<p>Cherry-pick 的字面意思是“摘樱桃”。在 Git 中，这意味着你不是把整棵树（整个分支的历史）挪过来，而只是摘取其中一颗或几颗最好的“樱桃”（具体的代码提交）。</p>
+#### 1. 核心概念 (The Core Concept)
 
-<p><strong>主要使用场景包括：</strong></p>
-<ul>
-<li><strong>修复 Bug 的同步：</strong> 在开发分支修复了一个紧急 Bug，需要立即将这个修复应用到生产分支，而不带走开发分支中尚未完成的其他功能。</li>
-<li><strong>功能迁移：</strong> 某个分支中的一小部分功能代码是另一个分支急需的。</li>
-<li><strong>撤销后的恢复：</strong> 如果之前的合并被意外回滚，可以用 cherry-pick 重新找回那些正确的提交。</li>
-</ul>
+Cherry-pick 的字面意思是“摘樱桃”。在 Git 中，这意味着你不是把整棵树（整个分支的历史）挪过来，而只是摘取其中一颗或几颗最好的“樱桃”（具体的代码提交）。
 
-<h3>2. <strong>工作流程 (How It Works)</strong></h3>
+主要使用场景包括：
 
-<p>当你执行 cherry-pick 时，Git 会提取该提交引入的更改，并在当前分支上创建一个全新的提交。这个新提交的内容与原提交相同，但会拥有一个新的哈希值（Hash）。</p>
+- **修复 Bug 的同步：** 在开发分支修复了一个紧急 Bug，需要立即将这个修复应用到生产分支，而不带走开发分支中尚未完成的其他功能。
+- **功能迁移：** 某个分支中的一小部分功能代码是另一个分支急需的。
+- **撤销后的恢复：** 如果之前的合并被意外回滚，可以用 cherry-pick 重新找回那些正确的提交。
 
-<p><strong>基本操作步骤：</strong></p>
-<ul>
-<li><strong>获取 ID：</strong> 首先找到你想要复制的提交 ID（可以通过 <code>git log</code> 查看）。</li>
-<li><strong>切换分支：</strong> 切换到目标分支（例如 <code>production</code>）。</li>
-<li><strong>执行命令：</strong> 使用 <code>git cherry-pick &lt;commit-id&gt;</code> 将更改应用过来。</li>
-</ul>
+#### 2. 工作流程 (How It Works)
 
-<h3>3. <strong>注意事项 (Precautions)</strong></h3>
-<p>虽然 Cherry-pick 非常灵活，但过度使用可能会导致一些维护上的挑战：</p>
+当你执行 cherry-pick 时，Git 会提取该提交引入的更改，并在当前分支上创建一个全新的提交。这个新提交的内容与原提交相同，但会拥有一个新的哈希值（Hash）。
 
-<ul>
-<li><strong>重复提交：</strong> 同样的逻辑会出现在两个分支的不同提交中，这可能在未来的合并（Merge）时引发冲突。</li>
-<li><strong>依赖关系：</strong> 如果你挑选的提交依赖于之前的其他提交（而你没有一起挑过来），可能会导致编译错误或运行时问题。</li>
-<li><strong>版本冲突：</strong> 如果目标分支的代码与该提交修改的代码行存在差异，仍需要手动解决冲突。</li>
-</ul>
-</div>
+基本操作步骤：
+
+- **获取 ID：** 首先找到你想要复制的提交 ID（可以通过 `git log` 查看）。
+- **切换分支：** 切换到目标分支（例如 `production`）。
+- **执行命令：** 使用 `git cherry-pick <commit-id>` 将更改应用过来。
+
+#### 3. 注意事项 (Precautions)
+
+虽然 Cherry-pick 非常灵活，但过度使用可能会导致一些维护上的挑战：
+
+- **重复提交：** 同样的逻辑会出现在两个分支的不同提交中，这可能在未来的合并（Merge）时引发冲突。
+- **依赖关系：** 如果你挑选的提交依赖于之前的其他提交（而你没有一起挑过来），可能会导致编译错误或运行时问题。
+- **版本冲突：** 如果目标分支的代码与该提交修改的代码行存在差异，仍需要手动解决冲突。
+
 </details>
 
 通过 `cherry-pick` 将实验环境（Experimental）的功能搬运到正式环境（Production/Main）是一个非常经典且稳健的操作。它的精髓在于**“精准打击”**——只带走你需要的代码，留下实验分支里的杂乱测试或未完成逻辑。
@@ -315,17 +311,13 @@ git push --force-with-lease origin your-branch-name
 
 - **搬运单个提交：**
 
-  Bash
-
-  ```
+  ```bash
   git cherry-pick a1b2c3d
   ```
 
 - **连续搬运多个提交（从 A 到 B）：**
 
-  Bash
-
-  ```
+  ```bash
   git cherry-pick A^..B 
   ```
 
@@ -347,4 +339,3 @@ git push --force-with-lease origin your-branch-name
 1. **本地测试：** 在 `apply-new-feature` 分支上运行测试脚本，确保新功能在正式环境下不崩坏。
 2. **推送到远程：** `git push origin apply-new-feature`。
 3. **发起 PR/MR：** 在 GitHub/GitLab 上发起合并请求，让同事 Code Review 后合入 `main` 分支。
-

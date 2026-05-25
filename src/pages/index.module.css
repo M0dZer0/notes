@@ -1,23 +1,414 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
+.homepage {
   position: relative;
+  overflow: clip;
+  background:
+    radial-gradient(circle at top left, rgba(10, 132, 255, 0.16), transparent 28%),
+    radial-gradient(circle at 85% 18%, rgba(100, 210, 255, 0.12), transparent 24%),
+    var(--home-bg);
+  color: var(--home-text);
+}
+
+.heroSection {
+  position: relative;
+  padding: 5.5rem 0 3.5rem;
+}
+
+.heroBackdrop {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(127, 127, 127, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(127, 127, 127, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 90%);
+  pointer-events: none;
+}
+
+.heroGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.heroCopy {
+  max-width: 44rem;
+}
+
+.heroTitle,
+.sectionTitle,
+.highlightTitle,
+.timelineTitle {
+  font-family: 'Avenir Next Condensed', 'DIN Alternate', 'Arial Narrow', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: clamp(3.2rem, 6vw, 5.8rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.highlightSubtitle,
+.sectionSubtitle,
+.timelineSubtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--home-soft-text);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.9rem;
+}
+
+.primaryButton,
+.secondaryButton {
+  border-radius: 999px;
+  padding: 0.95rem 1.4rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.primaryButton {
+  color: var(--home-button-text) !important;
+  background: linear-gradient(135deg, var(--home-accent), var(--home-accent-strong));
+  box-shadow: 0 16px 40px rgba(10, 132, 255, 0.28);
+}
+
+.secondaryButton {
+  color: var(--home-text) !important;
+  background: var(--home-surface-strong);
+  border-color: var(--home-border);
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.heroPanel {
+  position: relative;
+  padding: 1.35rem;
+  border: 1px solid var(--home-border);
+  border-radius: 1.75rem;
+  background: var(--home-surface);
+  box-shadow: var(--home-shadow);
   overflow: hidden;
+  backdrop-filter: blur(16px);
+}
+
+.panelGlow {
+  position: absolute;
+  inset: auto -8% 70% 28%;
+  height: 11rem;
+  background: radial-gradient(circle, rgba(10, 132, 255, 0.3), transparent 72%);
+  pointer-events: none;
+}
+
+.panelHeader {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  color: var(--home-muted);
+}
+
+.panelHeader span:last-child {
+  text-transform: none;
+  letter-spacing: 0;
+  text-align: right;
+  max-width: 18rem;
+}
+
+.statGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.statCard {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  border-radius: 1.2rem;
+  background: var(--home-surface-soft);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.statValue {
+  font-family: 'Avenir Next Condensed', 'DIN Alternate', 'Arial Narrow', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.82rem;
+  color: var(--home-soft-text);
+}
+
+.statDetail {
+  font-size: 0.72rem;
+  color: var(--home-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.panelNote {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--home-border);
+  color: var(--home-soft-text);
+}
+
+.panelDot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--home-accent), var(--home-accent-strong));
+  box-shadow: 0 0 0 10px rgba(10, 132, 255, 0.12);
+  flex-shrink: 0;
+}
+
+.highlightsSection {
+  padding: 1rem 0 2.2rem;
+}
+
+.highlightsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.highlightCard {
+  padding: 1.35rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--home-border);
+  background: var(--home-surface-strong);
+  box-shadow: var(--home-shadow-soft);
+}
+
+.highlightIndex {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--home-muted);
+}
+
+.highlightTitle {
+  margin: 0 0 0.5rem;
+  font-size: 1.65rem;
+  line-height: 1.02;
+}
+
+.highlightSubtitle {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.timelineSection {
+  padding: 2rem 0 6rem;
+}
+
+.timelineWrap {
+  display: grid;
+  gap: 2rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.55rem;
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  line-height: 0.98;
+}
+
+.sectionSubtitle {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.timelineRail {
+  position: relative;
+  display: grid;
+  gap: 1.4rem;
+  padding-left: 2.25rem;
+}
+
+.timelineRail::before {
+  content: '';
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  left: 0.9rem;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--home-accent), var(--home-border));
+}
+
+.timelineItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.timelineMarker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-top: 1.25rem;
+  border-radius: 50%;
+  background: var(--home-bg);
+  border: 1px solid var(--home-border);
+}
+
+.markerCore {
+  width: 0.78rem;
+  height: 0.78rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--home-accent), var(--home-accent-strong));
+  box-shadow: 0 0 0 9px rgba(10, 132, 255, 0.12);
+}
+
+.timelineContent {
+  padding: 1.35rem 1.4rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--home-border);
+  background: var(--home-surface);
+  box-shadow: var(--home-shadow-soft);
+}
+
+.timelineTopline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.timelineYear {
+  font-family: 'Avenir Next Condensed', 'DIN Alternate', 'Arial Narrow', sans-serif;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+}
+
+.timelineAccent {
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: var(--home-chip-bg);
+  color: var(--home-chip-text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.timelineTitle {
+  margin: 0 0 0.45rem;
+  font-size: 1.6rem;
+  line-height: 1.02;
+}
+
+.timelineSubtitle {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 @media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
+  .heroSection {
+    padding-top: 4.5rem;
+  }
+
+  .heroGrid,
+  .highlightsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.7rem, 12vw, 4.2rem);
+  }
+
+  .statGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .panelHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .panelHeader span:last-child {
+    max-width: none;
+    text-align: left;
+  }
+
+  .timelineRail {
+    padding-left: 1.4rem;
+  }
+
+  .timelineRail::before {
+    left: 0.55rem;
+  }
+
+  .timelineItem {
+    gap: 0.75rem;
+  }
+
+  .timelineMarker {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 1.1rem;
+  }
+
+  .markerCore {
+    width: 0.56rem;
+    height: 0.56rem;
+  }
+
+  .timelineContent {
+    padding: 1.1rem;
+  }
+
+  .timelineTopline {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@media screen and (max-width: 640px) {
+  .heroActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .heroPanel,
+  .highlightCard,
+  .timelineContent {
+    border-radius: 1.2rem;
+  }
 }
