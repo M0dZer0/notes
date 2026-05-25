@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = process.cwd();
-const TARGET_DIRS = ['docs', 'blog'];
+const TARGET_DIRS = ['docs'];
 const OUTPUT_FILE = path.join(ROOT, 'src', 'data', 'home-stats.json');
 
 function walkMarkdownFiles(dir, files = []) {

@@ -31,8 +31,8 @@ const timeline = [
   },
   {
     year: '2025.09',
-    title: '上海交通大学 网络空间安全专业',
-    subtitle: 'Shanghai Jiao Tong University, Cyberspace Security',
+    title: '上海交通大学 计算机学院系统安全研究所',
+    subtitle: 'Shanghai Jiao Tong University, School of Computer Science, Institute of System Security',
     accent: 'Master',
   },
   {
