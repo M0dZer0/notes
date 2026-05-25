@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-05-25T06:53:01.947Z",
+  "generatedAt": "2026-05-25T07:41:55.992Z",
   "createdAt": "2026-01-22T13:27:21.251Z",
-  "summary": "28 markdown files, 1.6k lines, 42k characters.",
+  "summary": "19 markdown files, 1.1k lines, 30k characters.",
   "stats": [
     {
       "label": "Created",
@@ -12,17 +12,17 @@
     },
     {
       "label": "Markdown Files",
-      "value": "28",
-      "rawValue": 28,
+      "value": "19",
+      "rawValue": 19,
       "suffix": "",
-      "detail": "28 tracked notes"
+      "detail": "19 tracked notes"
     },
     {
       "label": "Lines Written",
-      "value": "1.6k",
-      "rawValue": 1593,
+      "value": "1.1k",
+      "rawValue": 1058,
       "suffix": "",
-      "detail": "42k chars total"
+      "detail": "30k chars total"
     }
   ]
 }

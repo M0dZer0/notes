@@ -9,6 +9,7 @@
     "build": "docusaurus build",
     "check:markdown": "node scripts/check-markdown.js",
     "prebuild": "node scripts/generate-home-stats.js",
+    "predeploy": "node scripts/generate-home-stats.js",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
