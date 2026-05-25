@@ -37,8 +37,8 @@ const timeline = [
   },
   {
     year: '2025.12',
-    title: '腾讯科恩实验室实习生',
-    subtitle: 'Tencent Keen Lab Intern',
+    title: '腾讯科恩安全实验室实习生',
+    subtitle: 'Tencent Keen Security Lab Intern',
     accent: 'Intern',
   },
   {
