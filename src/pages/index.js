@@ -188,9 +188,9 @@ function TimelineSection() {
           viewport={{once: true, amount: 0.5}}
           transition={{duration: 0.6, ease: 'easeOut'}}>
           <Heading as="h2" className={styles.sectionTitle}>
-            成长轨迹
+            大事记
           </Heading>
-          <p className={styles.sectionSubtitle}>A moving record of growth and direction.</p>
+          <p className={styles.sectionSubtitle}>A timeline of key milestones.</p>
         </motion.div>
 
         <div className={styles.timelineRail}>
