@@ -1,5 +1,19 @@
 ## Git操作
 
+### 如何添加SSH密钥
+
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+cat ~/.ssh/id_ed25519.pub
+```
+
+如果系统不支持 `ed25519`：
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+cat ~/.ssh/id_rsa.pub
+```
+
 ### 如何构建新分支
 
 首先克隆仓库，创建自己的分支，修改代码后提交，提交时设置上游分支，之后在该分支开发。
