@@ -91,4 +91,80 @@
 | **`3<&-`** | **关闭**     | 拆除管道，释放资源。                   |
 
 
+## 远程服务器传输文件
+
+### 1. `scp`（最常用，基于 SSH）
+
+`scp` 适合临时传文件，语法简单，默认走 SSH 端口 `22`。
+
+- **本地上传文件到远程：**
+
+  ```bash
+  scp ./local.txt user@192.168.1.10:/home/user/
+  ```
+
+- **远程下载文件到本地：**
+
+  ```bash
+  scp user@192.168.1.10:/home/user/remote.txt ./
+  ```
+
+- **上传整个目录（`-r`）：**
+
+  ```bash
+  scp -r ./mydir user@192.168.1.10:/home/user/
+  ```
+
+- **指定端口（`-P`）和私钥（`-i`）：**
+
+  ```bash
+  scp -P 2222 -i ~/.ssh/id_ed25519 ./app.tar.gz user@server:/data/
+  ```
+
+### 2. `ftp`（传统方式）
+
+`ftp` 可用但默认是明文传输，不建议在公网或敏感环境使用。
+
+- **连接服务器：**
+
+  ```bash
+  ftp 192.168.1.10
+  ```
+
+- **登录后常用命令：**
+
+  ```text
+  ls                 # 查看远程目录
+  lcd /path/local    # 切换本地目录
+  cd /path/remote    # 切换远程目录
+  put local.txt      # 上传单文件
+  get remote.txt     # 下载单文件
+  mput *.log         # 批量上传
+  mget *.txt         # 批量下载
+  binary             # 二进制模式（传压缩包/图片建议先执行）
+  bye                # 退出
+  ```
+
+### 3. 其他常见方法（推荐）
+
+- **`sftp`（比 ftp 安全，基于 SSH）：**
+
+  ```bash
+  sftp user@192.168.1.10
+  # 进入后可用 put/get/ls/cd/lcd 等命令
+  ```
+
+- **`rsync`（同步目录很高效，支持增量和断点续传）：**
+
+  ```bash
+  rsync -avzP ./mydir/ user@192.168.1.10:/home/user/mydir/
+  ```
+
+### 小结
+
+- 临时传文件：优先 `scp`。
+- 长期同步目录：优先 `rsync`。
+- 交互式文件管理：用 `sftp`。
+- `ftp` 只建议内网测试环境使用。
+
 
