@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-Hans" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-网络安全/Windows安全/远程注入" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">远程注入 | M0dZer0&#x27;s Notes</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://m0dzer0.github.io/notes/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://m0dzer0.github.io/notes/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/远程注入"><meta data-rh="true" property="og:locale" content="zh_Hans"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" name="docusaurus_locale" content="zh-Hans"><meta data-rh="true" name="docsearch:language" content="zh-Hans"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="远程注入 | M0dZer0&#x27;s Notes"><meta data-rh="true" name="description" content="远程注入"><meta data-rh="true" property="og:description" content="远程注入"><link data-rh="true" rel="icon" href="/notes/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/远程注入"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/远程注入" hreflang="zh-Hans"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/en/docs/网络安全/Windows安全/远程注入" hreflang="en"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/远程注入" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"网络安全","item":"https://m0dzer0.github.io/notes/docs/category/网络安全"},{"@type":"ListItem","position":2,"name":"Windows安全","item":"https://m0dzer0.github.io/notes/docs/category/windows安全"},{"@type":"ListItem","position":3,"name":"远程注入","item":"https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/远程注入"}]}</script><link rel="stylesheet" href="/notes/assets/css/styles.587d0ee5.css">
+<script src="/notes/assets/js/runtime~main.a2e87421.js" defer="defer"></script>
+<script src="/notes/assets/js/main.7439f66f.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/notes/img/favicon.ico"><div role="region" aria-label="跳到主要内容"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">跳到主要内容</a></div><nav aria-label="主导航" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="切换导航栏" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes/"><div class="navbar__logo"><img src="/notes/img/favicon.ico" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/notes/img/favicon.ico" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">M0dZer0&#x27;s Notes</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes/docs/intro">Notes</a><a href="https://m0dzer0.github.io" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Blog</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/m0dzer0" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="回到顶部" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="文档侧边栏" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/intro"><span title="介绍" class="linkLabel_WmDU">介绍</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/开发笔记"><span title="开发笔记" class="categoryLinkLabel_W154">开发笔记</span></a><button aria-label="展开侧边栏分类 &#x27;开发笔记&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/知识笔记"><span title="知识笔记" class="categoryLinkLabel_W154">知识笔记</span></a><button aria-label="展开侧边栏分类 &#x27;知识笔记&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/notes/docs/category/网络安全"><span title="网络安全" class="categoryLinkLabel_W154">网络安全</span></a><button aria-label="折叠侧边栏分类 &#x27;网络安全&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/云安全"><span title="云安全" class="categoryLinkLabel_W154">云安全</span></a><button aria-label="展开侧边栏分类 &#x27;云安全&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/ctf"><span title="CTF" class="categoryLinkLabel_W154">CTF</span></a><button aria-label="展开侧边栏分类 &#x27;CTF&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/安全产品"><span title="安全产品" class="categoryLinkLabel_W154">安全产品</span></a><button aria-label="展开侧边栏分类 &#x27;安全产品&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" tabindex="0" href="/notes/docs/category/windows安全"><span title="Windows安全" class="categoryLinkLabel_W154">Windows安全</span></a><button aria-label="折叠侧边栏分类 &#x27;Windows安全&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/Windows安全/Sysmon"><span title="Sysmon" class="linkLabel_WmDU">Sysmon</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/Windows安全/组件与工具"><span title="组件与工具" class="linkLabel_WmDU">组件与工具</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes/docs/网络安全/Windows安全/远程注入"><span title="远程注入" class="linkLabel_WmDU">远程注入</span></a></li></ul></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/leetcode"><span title="Leetcode" class="categoryLinkLabel_W154">Leetcode</span></a><button aria-label="展开侧边栏分类 &#x27;Leetcode&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/Dlink_DIR-882_POC"><span title="Root Remote Code Execution (RCE) in D-Link DIR-882" class="linkLabel_WmDU">Root Remote Code Execution (RCE) in D-Link DIR-882</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/写作指南"><span title="写作指南" class="linkLabel_WmDU">写作指南</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="页面路径"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="主页面" class="breadcrumbs__link" href="/notes/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes/docs/category/网络安全"><span>网络安全</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes/docs/category/windows安全"><span>Windows安全</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">远程注入</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>远程注入</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="远程注入">远程注入<a href="#远程注入" class="hash-link" aria-label="远程注入的直接链接" title="远程注入的直接链接" translate="no">​</a></h2>
+<p>在 Windows 安全语境里，远程注入通常指：一个进程想办法把自己的代码、数据或执行逻辑放进另一个进程的地址空间里，并借助对方进程去运行。</p>
+<p>攻击者这么做，往往不是因为“目标进程更强大”这么简单，而是因为这样做有几个明显好处：</p>
+<ul>
+<li class=""><strong>隐藏自己</strong>：恶意代码不再只待在原始木马进程里，而是躲进一个更正常、更常见的进程中。</li>
+<li class=""><strong>借壳运行</strong>：借用合法进程的文件名、签名、父子进程关系和网络行为，降低被人工或安全产品第一时间注意到的概率。</li>
+<li class=""><strong>绕开简单检测</strong>：很多基础检测只盯“有没有可疑新进程出现”，而注入后可能仍然只看到一个表面正常的宿主进程。</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么一个进程能把内容注入到另一个进程的内存里">为什么一个进程能把内容注入到另一个进程的内存里<a href="#为什么一个进程能把内容注入到另一个进程的内存里" class="hash-link" aria-label="为什么一个进程能把内容注入到另一个进程的内存里的直接链接" title="为什么一个进程能把内容注入到另一个进程的内存里的直接链接" translate="no">​</a></h2>
+<p>从操作系统设计上看，Windows 虽然给每个进程都提供独立的虚拟地址空间，但这并不代表进程之间永远完全隔离。</p>
+<p>只要满足一定权限条件，一个进程就可以通过系统提供的进程对象、句柄和内存管理机制，对别的进程做“受控访问”。这类能力本来是为了调试器、杀毒软件、性能分析器、辅助工具等合法软件准备的，但木马也会滥用这些能力。</p>
+<p>可以把它理解为：</p>
+<ul>
+<li class=""><strong>默认状态</strong>：进程 A 不能随便读写进程 B 的内存。</li>
+<li class=""><strong>满足条件后</strong>：如果 A 成功拿到了 B 的高权限句柄，系统就允许 A 在一定范围内申请、读写、修改 B 的地址空间，甚至触发 B 执行某段逻辑。</li>
+</ul>
+<p>因此，“远程注入为什么能成立”的根本原因不是 Windows 没有隔离，而是 Windows 为合法管理、调试、扩展和兼容需求保留了跨进程操作能力，而这些能力会被攻击者滥用。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="一个木马滥用跨进程操作能力的简单例子">一个木马滥用跨进程操作能力的简单例子<a href="#一个木马滥用跨进程操作能力的简单例子" class="hash-link" aria-label="一个木马滥用跨进程操作能力的简单例子的直接链接" title="一个木马滥用跨进程操作能力的简单例子的直接链接" translate="no">​</a></h3>
+<p>例如，一段已经在本机运行起来的木马，想把自己的一部分逻辑藏进一个更常见的进程里。它通常不会“凭空钻进去”，而是借助 Windows 原本就提供给合法软件使用的跨进程能力，走一条大致如下的链路：</p>
+<ol>
+<li class="">木马先找到一个合适的目标进程，例如当前用户已经打开的 <code>cmd.exe</code>、<code>explorer.exe</code> 或浏览器进程。</li>
+<li class="">然后它尝试获取这个目标进程的高权限句柄。如果当前权限足够，Windows 会允许它对这个进程做进一步操作。</li>
+<li class="">接着它利用系统提供的内存管理能力，在目标进程的地址空间里准备一块新的内存区域。</li>
+<li class="">再把自己想隐藏进去的内容写到那块内存里，这些内容可能是恶意模块的路径、配置数据，或者一段准备在目标进程中运行的代码。</li>
+<li class="">最后，它再滥用线程或执行流控制能力，让目标进程“开始碰到并执行”那块新写进去的内容。</li>
+</ol>
+<p>从系统角度看，这几个动作本身并不都是“非法能力”，因为调试器、辅助工具、性能分析软件也可能用到类似的跨进程访问机制。问题在于，木马把这些原本为了合法管理和兼容性准备的能力串联起来，目的不再是调试或管理，而是隐藏、伪装和执行恶意逻辑。</p>
+<p>也正因为如此，安全产品通常不会只盯着某一个孤立动作，而是重点关注这条链路是否完整出现，例如：一个并不应该具备调试行为的普通进程，先去高权限打开别的进程，随后发生跨进程内存写入，紧接着又出现异常线程执行或内存执行，这种组合就很像典型的注入活动。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么它能拿到别的进程的高权限句柄">为什么它能拿到别的进程的“高权限句柄”<a href="#为什么它能拿到别的进程的高权限句柄" class="hash-link" aria-label="为什么它能拿到别的进程的“高权限句柄”的直接链接" title="为什么它能拿到别的进程的“高权限句柄”的直接链接" translate="no">​</a></h3>
+<p>这里很容易有一个误解：好像是“目标进程把句柄给了木马”。其实通常不是这样。</p>
+<p>更准确地说，木马会向 Windows 内核申请一个指向目标进程对象的句柄，并声明自己希望获得哪些访问权限。真正决定“给不给、给多大权限”的，不是目标进程本身，而是 Windows 的访问控制机制。</p>
+<p>可以把它理解为：</p>
+<ul>
+<li class=""><strong>目标进程</strong>：像一个被管理的对象。</li>
+<li class=""><strong>句柄</strong>：像系统发的一张操作凭证。</li>
+<li class=""><strong>Windows 内核</strong>：像负责审核和发证的管理员。</li>
+</ul>
+<p>当木马去申请这个句柄时，内核通常会检查几类条件：</p>
+<ul>
+<li class=""><strong>调用方的身份令牌</strong>：它当前是什么用户，是否是管理员，是否带有特殊权限。</li>
+<li class=""><strong>目标进程对象的安全描述符</strong>：访问控制规则是否允许这种操作。</li>
+<li class=""><strong>完整性级别</strong>：低完整性或中完整性进程，通常更难操作更高完整性的目标。</li>
+<li class=""><strong>保护级别</strong>：某些系统进程或受保护进程，并不是普通用户态进程能轻易拿到强访问权限的。</li>
+</ul>
+<p>如果这些检查通过，内核就会返回一个具备相应权限的句柄。这个句柄可能允许查询信息、读写内存、控制线程，甚至做更强的跨进程操作。</p>
+<p>因此，所谓“为什么别的进程凭什么给它这个句柄”，答案其实是：<strong>不是别的进程主动给了它，而是内核判断它当前有资格申请到。</strong></p>
+<p>木马常见能拿到较强句柄的原因，通常包括：</p>
+<ul>
+<li class="">它和目标进程处于相同用户上下文，访问限制本来就没有那么高。</li>
+<li class="">它已经提权成管理员，能申请更强的访问权限。</li>
+<li class="">它持有像调试权限这样的高危权限，内核会放宽一部分访问限制。</li>
+<li class="">它并不是从零申请，而是通过句柄继承、句柄复制等方式，间接拿到了别的高权限进程已经持有的句柄。</li>
+</ul>
+<p>这也是为什么安全产品会特别关注“普通进程突然去申请别的进程强访问句柄”这类行为。因为单看这个动作，它可能是调试器或安全软件；但如果后面马上接上跨进程内存写入、远程线程或执行流修改，就很容易指向注入或其他恶意跨进程操作。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="sedebugprivilege-为什么经常在实际排查中出现"><code>SeDebugPrivilege</code> 为什么经常在实际排查中出现<a href="#sedebugprivilege-为什么经常在实际排查中出现" class="hash-link" aria-label="sedebugprivilege-为什么经常在实际排查中出现的直接链接" title="sedebugprivilege-为什么经常在实际排查中出现的直接链接" translate="no">​</a></h3>
+<p><code>SeDebugPrivilege</code> 可以理解为 Windows 提供的一项高危调试权限。它原本是为调试器、系统分析工具、故障排查工具准备的，但在安全事件里也非常常见，因为它会显著提升一个进程去操作其他进程的能力。</p>
+<p>在实际工作里，之所以经常会遇到它，是因为很多和“跨进程强访问”有关的行为，都会和它产生联系，例如：</p>
+<ul>
+<li class="">打开高权限或敏感进程并获取更强访问句柄。</li>
+<li class="">读取其他进程的内存。</li>
+<li class="">向其他进程写入内容。</li>
+<li class="">对目标进程做调试、转储、注入、线程控制等高风险操作。</li>
+</ul>
+<p>换句话说，<code>SeDebugPrivilege</code> 本身不等于恶意，但它会让原本更难做的跨进程操作变得更容易成功，因此在木马、内存马、凭据抓取、进程注入、LSASS 访问、转储工具等场景中都很常见。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么它会让注入更容易">为什么它会让注入更容易<a href="#为什么它会让注入更容易" class="hash-link" aria-label="为什么它会让注入更容易的直接链接" title="为什么它会让注入更容易的直接链接" translate="no">​</a></h3>
+<p>前面提到，木马要想注入别的进程，通常需要先拿到足够强的目标进程句柄。而 <code>SeDebugPrivilege</code> 的价值就在于：当一个进程拥有并启用了这项权限后，Windows 在某些进程对象访问检查上会更宽松，从而让它更容易申请到高权限句柄。</p>
+<p>所以在实际现网中，经常会看到这样一条风险链：</p>
+<ul>
+<li class="">一个本来普通的进程先出现管理员上下文或高权限令牌。</li>
+<li class="">随后它启用 <code>SeDebugPrivilege</code>。</li>
+<li class="">接着它去打开其他敏感进程，申请较强访问权限。</li>
+<li class="">再往后就出现内存读取、内存写入、线程控制或可疑执行。</li>
+</ul>
+<p>如果这几步连起来看，风险就会明显升高。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="需要注意的一点">需要注意的一点<a href="#需要注意的一点" class="hash-link" aria-label="需要注意的一点的直接链接" title="需要注意的一点的直接链接" translate="no">​</a></h3>
+<p><code>SeDebugPrivilege</code> 不是“有了就一定能操作所有进程”。它确实很强，但也不是无限制通行证。</p>
+<p>实际中它仍然会受到一些边界影响，例如：</p>
+<ul>
+<li class="">某些受保护进程或更高保护级别的进程，依然不是普通管理员态进程想碰就能碰。</li>
+<li class="">不同完整性级别、不同会话、不同架构下，实际操作难度也会不同。</li>
+<li class="">现代 EDR 往往会专门监测启用调试权限后紧随其后的高风险行为。</li>
+</ul>
+<p>所以更准确地说，<code>SeDebugPrivilege</code> 常常不是“直接导致注入成功的唯一原因”，而是让攻击者更容易迈过访问检查、拿到强句柄、继续做后续跨进程操作的重要条件之一。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="在排查里怎么理解它">在排查里怎么理解它<a href="#在排查里怎么理解它" class="hash-link" aria-label="在排查里怎么理解它的直接链接" title="在排查里怎么理解它的直接链接" translate="no">​</a></h3>
+<p>在实际排查中，如果你看到某个进程具备或启用了 <code>SeDebugPrivilege</code>，更合理的判断方式不是立刻下结论“它就是木马”，而是继续结合上下文看：</p>
+<ul>
+<li class="">它本来是不是就应该是调试器、EDR、杀毒、转储或运维工具。</li>
+<li class="">它启用这个权限之后，是否马上去打开了别的敏感进程。</li>
+<li class="">后续是否伴随了跨进程读写内存、远程线程、进程转储、LSASS 访问、句柄复制等行为。</li>
+<li class="">它的父进程、路径、签名、命令行和运行场景是否合理。</li>
+</ul>
+<p>如果一个陌生进程、办公软件子进程、脚本解释器子进程，或者临时目录里的程序突然启用了 <code>SeDebugPrivilege</code>，然后紧接着去操作大量其他进程，这通常就是非常值得警惕的信号。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="进程之间并不是想注就能注">进程之间并不是想注就能注<a href="#进程之间并不是想注就能注" class="hash-link" aria-label="进程之间并不是想注就能注的直接链接" title="进程之间并不是想注就能注的直接链接" translate="no">​</a></h2>
+<p>远程注入不是无条件成功的，它通常会受到下面这些因素限制：</p>
+<ul>
+<li class=""><strong>权限级别</strong>：低权限进程通常不能轻易操作高权限进程。</li>
+<li class=""><strong>完整性级别</strong>：中完整性进程想注入高完整性进程，通常会遇到限制。</li>
+<li class=""><strong>令牌权限</strong>：是否具备足够的访问权限，会直接影响能否打开目标进程并操作其内存。</li>
+<li class=""><strong>位数差异</strong>：32 位和 64 位进程之间的注入兼容性更复杂。</li>
+<li class=""><strong>受保护进程机制</strong>：某些系统或安全产品进程会受到更严格保护，不是普通用户态进程能随意注入的。</li>
+<li class=""><strong>EDR / 杀软拦截</strong>：很多安全产品会重点监测跨进程内存写入、远程线程、可疑内存权限变化等行为。</li>
+</ul>
+<p>所以更准确的说法不是“任意进程都能注入任意进程”，而是“在权限、架构、保护状态都合适时，注入才更容易成功”。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="从原理上看远程注入大致做了什么">从原理上看，远程注入大致做了什么<a href="#从原理上看远程注入大致做了什么" class="hash-link" aria-label="从原理上看，远程注入大致做了什么的直接链接" title="从原理上看，远程注入大致做了什么的直接链接" translate="no">​</a></h2>
+<p>如果只看抽象过程，远程注入通常会围绕下面几件事展开：</p>
+<ol>
+<li class="">找到目标进程。</li>
+<li class="">获取对目标进程足够强的操作权限。</li>
+<li class="">在目标进程的地址空间中准备一块可用内存。</li>
+<li class="">把想执行的内容写进去，内容可能是 DLL 路径、shellcode、配置数据或中转代码。</li>
+<li class="">让目标进程里的某个线程开始执行那段内容，或者让它在合适时机加载恶意模块。</li>
+</ol>
+<p>从检测角度看，真正危险的往往不是某一个单点动作，而是这些动作连起来出现，例如：</p>
+<ul>
+<li class="">一个进程先高权限打开另一个进程。</li>
+<li class="">随后发生跨进程内存写入。</li>
+<li class="">紧接着出现远程线程、APC、线程上下文修改或可疑内存执行。</li>
+</ul>
+<p>这类“组合行为”通常比单独一个 API 调用更有检测价值。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么木马喜欢注入到别的进程里">为什么木马喜欢注入到别的进程里<a href="#为什么木马喜欢注入到别的进程里" class="hash-link" aria-label="为什么木马喜欢注入到别的进程里的直接链接" title="为什么木马喜欢注入到别的进程里的直接链接" translate="no">​</a></h2>
+<p>因为目标进程往往能提供“伪装外壳”。常见收益包括：</p>
+<ul>
+<li class=""><strong>文件名更正常</strong>：例如宿主是常见办公、浏览器、控制台或系统组件。</li>
+<li class=""><strong>父子关系更顺眼</strong>：日志里看到的是正常进程链，而不是一个陌生木马独立长时间运行。</li>
+<li class=""><strong>网络访问更不突兀</strong>：某些宿主本来就可能联网。</li>
+<li class=""><strong>更容易长期驻留</strong>：宿主如果经常存在，恶意代码就不需要频繁重新拉起自己。</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么能注入到-cmdexe-这类进程里">为什么能注入到 <code>cmd.exe</code> 这类进程里<a href="#为什么能注入到-cmdexe-这类进程里" class="hash-link" aria-label="为什么能注入到-cmdexe-这类进程里的直接链接" title="为什么能注入到-cmdexe-这类进程里的直接链接" translate="no">​</a></h2>
+<p>先澄清一个概念：<code>cmd.exe</code> 是微软签名的系统自带程序，但它并不是那种“谁都碰不了”的核心受保护系统进程。它本质上是一个普通的用户态控制台程序，只是因为非常常见，所以经常被拿来举例。</p>
+<p>攻击者之所以偏爱 <code>cmd.exe</code>、<code>powershell.exe</code>、<code>explorer.exe</code>、浏览器等进程，主要是因为：</p>
+<ul>
+<li class=""><strong>它们常见</strong>：出现在主机上不奇怪。</li>
+<li class=""><strong>用户和分析人员熟悉</strong>：很多人看到这些名字不会第一时间警觉。</li>
+<li class=""><strong>宿主行为具有迷惑性</strong>：控制台程序、脚本宿主、浏览器本来就可能启动子进程、联网、加载模块。</li>
+</ul>
+<p>之所以“能注入到 <code>cmd.exe</code>”，本质上不是因为 <code>cmd.exe</code> 有什么特殊漏洞，而是因为它和其他普通用户态进程一样，只要注入方具备合适权限并且没有被额外保护，就可能成为注入目标。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="木马常见会挑哪些宿主进程">木马常见会挑哪些宿主进程<a href="#木马常见会挑哪些宿主进程" class="hash-link" aria-label="木马常见会挑哪些宿主进程的直接链接" title="木马常见会挑哪些宿主进程的直接链接" translate="no">​</a></h2>
+<p>从防守视角看，攻击者常选宿主时通常会考虑这些因素：</p>
+<ul>
+<li class=""><strong>是否常驻</strong>：宿主是否经常已经在运行。</li>
+<li class=""><strong>是否常见</strong>：名字是否足够“眼熟”。</li>
+<li class=""><strong>是否和当前权限匹配</strong>：低权限木马更倾向找同权限或更容易操作的进程。</li>
+<li class=""><strong>是否符合场景</strong>：办公终端、服务器、开发机上“正常进程”的画像并不一样。</li>
+<li class=""><strong>是否能减少异常感</strong>：比如某些进程本来就会网络通信、脚本执行、加载动态库。</li>
+</ul>
+<p>因此，木马不一定执着于某一个固定进程名，它更常见的做法是“从当前环境里挑一个最不显眼、最容易成功的宿主”。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="如果木马想注入到-cmdexe它通常如何确保-cmdexe-存在">如果木马想注入到 <code>cmd.exe</code>，它通常如何确保 <code>cmd.exe</code> 存在<a href="#如果木马想注入到-cmdexe它通常如何确保-cmdexe-存在" class="hash-link" aria-label="如果木马想注入到-cmdexe它通常如何确保-cmdexe-存在的直接链接" title="如果木马想注入到-cmdexe它通常如何确保-cmdexe-存在的直接链接" translate="no">​</a></h2>
+<p>这件事从原理上并不复杂，但从防守角度更值得关注的是“它如何选择和维持宿主”。常见思路包括：</p>
+<ul>
+<li class=""><strong>找已经存在的宿主</strong>：如果机器上正好已经有符合条件的 <code>cmd.exe</code> 或其他常见进程，就直接利用现成宿主。</li>
+<li class=""><strong>等待宿主出现</strong>：持续观察，等用户或系统启动某个常见进程后再利用。</li>
+<li class=""><strong>自己拉起一个看似正常的宿主</strong>：表面上启动合法程序，让恶意逻辑躲到这个新进程里。</li>
+<li class=""><strong>放弃固定宿主名</strong>：如果 <code>cmd.exe</code> 不在运行，就换成别的更常见、更容易存活的进程。</li>
+</ul>
+<p>对防守者来说，重点不是只盯着 <code>cmd.exe</code> 这个名字，而是看：</p>
+<ul>
+<li class="">它是不是被异常父进程拉起的。</li>
+<li class="">它是不是以不合理的方式出现并长期驻留。</li>
+<li class="">它启动后是否立即伴随跨进程内存操作、网络外连或可疑线程行为。</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见注入手法防守视角概念版">常见注入手法（防守视角，概念版）<a href="#常见注入手法防守视角概念版" class="hash-link" aria-label="常见注入手法（防守视角，概念版）的直接链接" title="常见注入手法（防守视角，概念版）的直接链接" translate="no">​</a></h2>
+<p>下面这些名称在木马分析、EDR 检测和威胁情报里很常见。理解它们的区别，主要是为了看懂样本分析报告和安全产品告警。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-远程线程注入">1. 远程线程注入<a href="#1-远程线程注入" class="hash-link" aria-label="1. 远程线程注入的直接链接" title="1. 远程线程注入的直接链接" translate="no">​</a></h3>
+<p>核心思路是：把内容写进目标进程后，再想办法让目标进程新开一个线程去执行那段内容。</p>
+<p>它的特点是思路直观、概念上最好理解，所以在很多入门材料里最常见；但也正因为太典型，安全产品通常会重点监测这类链路。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-dll-注入">2. DLL 注入<a href="#2-dll-注入" class="hash-link" aria-label="2. DLL 注入的直接链接" title="2. DLL 注入的直接链接" translate="no">​</a></h3>
+<p>核心思路是：不是直接塞一段自定义代码去跑，而是让目标进程加载某个 DLL，然后恶意逻辑在 DLL 中执行。</p>
+<p>这类方法在现网中长期存在，因为 DLL 本来就是 Windows 进程的正常组成部分，所以从“外形”上更像合法行为，但其前后文依然可能暴露异常。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-apc-注入">3. APC 注入<a href="#3-apc-注入" class="hash-link" aria-label="3. APC 注入的直接链接" title="3. APC 注入的直接链接" translate="no">​</a></h3>
+<p>核心思路是把执行机会挂到目标线程的异步过程调用（APC）机制上，等待线程进入合适状态时再执行。</p>
+<p>这种方式比直接新开远程线程更“绕”，但检测重点仍然会落在跨进程写入、线程操控和异常执行流上。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-线程上下文修改--线程劫持">4. 线程上下文修改 / 线程劫持<a href="#4-线程上下文修改--线程劫持" class="hash-link" aria-label="4. 线程上下文修改 / 线程劫持的直接链接" title="4. 线程上下文修改 / 线程劫持的直接链接" translate="no">​</a></h3>
+<p>不是新建线程，而是想办法接管目标进程现有线程的执行流，让它“转头去跑”恶意内容。</p>
+<p>这类手法的隐蔽性通常比直接创建远程线程更强，但实现复杂度也更高。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-反射式-dll-加载--手工映射">5. 反射式 DLL 加载 / 手工映射<a href="#5-反射式-dll-加载--手工映射" class="hash-link" aria-label="5. 反射式 DLL 加载 / 手工映射的直接链接" title="5. 反射式 DLL 加载 / 手工映射的直接链接" translate="no">​</a></h3>
+<p>不是走系统最常见的模块加载路径，而是由攻击者自己在内存中处理模块装载细节，尽量减少明显的落盘或标准加载痕迹。</p>
+<p>它们之所以常被提起，是因为很多样本希望降低普通模块枚举和文件落地检测的可见性。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="process-hollowing进程镂空">Process Hollowing（进程镂空）<a href="#process-hollowing进程镂空" class="hash-link" aria-label="Process Hollowing（进程镂空）的直接链接" title="Process Hollowing（进程镂空）的直接链接" translate="no">​</a></h2>
+<p><code>Process Hollowing</code> 常被译为“进程镂空”或“掏空进程”。它和一般的“把代码写进一个已经在运行的进程里”不完全一样。</p>
+<p>它的核心思想是：</p>
+<ul>
+<li class="">先创建一个看起来完全合法的进程，而且通常让它以挂起状态启动。</li>
+<li class="">然后不让这个新进程真正按原始程序逻辑继续跑，而是把它原本应该执行的内容替换、覆盖或重定向为攻击者自己的内容。</li>
+<li class="">最后再恢复执行，于是系统表面上看到的是一个合法进程名，但真正运行的主体逻辑已经不是原来的程序了。</li>
+</ul>
+<p>之所以叫“镂空”，是因为外壳看起来还是那个合法进程，但里面真正执行的“内容”已经被挖空并换掉了。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="它和普通远程注入的区别">它和普通远程注入的区别<a href="#它和普通远程注入的区别" class="hash-link" aria-label="它和普通远程注入的区别的直接链接" title="它和普通远程注入的区别的直接链接" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>普通远程注入</strong>：更像是在别人房子里塞进一段新东西，让对方替你运行。</li>
+<li class=""><strong>Process Hollowing</strong>：更像是先搭一个看起来正常的新房子，再把房子里原本该住的人换掉。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="攻击者为什么喜欢它">攻击者为什么喜欢它<a href="#攻击者为什么喜欢它" class="hash-link" aria-label="攻击者为什么喜欢它的直接链接" title="攻击者为什么喜欢它的直接链接" translate="no">​</a></h3>
+<ul>
+<li class="">进程名、文件路径、签名表面上都可能很正常。</li>
+<li class="">对人工排查来说，“明明是合法进程，为什么行为这么怪”会增加迷惑性。</li>
+<li class="">某些简单检测会更关注陌生恶意进程本身，而不是“合法进程的真实映像是否被替换”。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="防守时可以关注什么">防守时可以关注什么<a href="#防守时可以关注什么" class="hash-link" aria-label="防守时可以关注什么的直接链接" title="防守时可以关注什么的直接链接" translate="no">​</a></h3>
+<ul>
+<li class="">合法进程以异常方式被创建，尤其是挂起启动后伴随异常内存操作。</li>
+<li class="">进程映像、内存布局、入口点附近行为和磁盘上的原始文件不一致。</li>
+<li class="">父子进程关系看似正常，但后续行为明显不符合该程序画像。</li>
+<li class="">新进程刚出现就伴随可疑网络通信、异常模块、异常线程或可执行内存活动。</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="防守视角下远程注入常见的风险信号">防守视角下，远程注入常见的风险信号<a href="#防守视角下远程注入常见的风险信号" class="hash-link" aria-label="防守视角下，远程注入常见的风险信号的直接链接" title="防守视角下，远程注入常见的风险信号的直接链接" translate="no">​</a></h2>
+<ul>
+<li class="">一个普通进程突然高权限打开大量其他进程。</li>
+<li class="">出现跨进程内存写入、读写执行权限切换、远程线程、线程劫持等组合行为。</li>
+<li class="">常见宿主进程的父进程异常，例如 Office、脚本解释器、临时目录程序、下载目录程序去拉起它们。</li>
+<li class=""><code>cmd.exe</code>、<code>powershell.exe</code>、<code>rundll32.exe</code>、<code>regsvr32.exe</code>、浏览器等进程出现与其日常画像不符的网络或内存行为。</li>
+<li class="">新创建的合法进程在极短时间内表现出 Hollowing 特征，例如挂起启动、映像异常、入口点不匹配。</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="可以怎么理解这类技术">可以怎么理解这类技术<a href="#可以怎么理解这类技术" class="hash-link" aria-label="可以怎么理解这类技术的直接链接" title="可以怎么理解这类技术的直接链接" translate="no">​</a></h2>
+<p>一句话概括：远程注入并不是“黑客凭空钻进别人进程”，而是滥用了 Windows 为调试、扩展和管理提供的跨进程能力，让恶意代码寄生到另一个进程里运行。</p>
+<p>而像 <code>cmd.exe</code> 这样的宿主之所以常被提到，不是因为它有神秘特权，而是因为它足够常见、足够像正常行为。<code>Process Hollowing</code> 则更进一步，它不是简单“借住”，而是搭一个看似正常的壳，再把里面真正运行的内容换掉。</p>
+<p>如果从安全运营角度看，真正重要的不是死记某一个 API 名字，而是识别那条可疑链路：<strong>谁打开了谁、谁往谁的内存里写了东西、谁触发了异常执行，以及这个宿主进程的出现方式到底合不合理。</strong></p></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="文件选项卡"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes/docs/网络安全/Windows安全/组件与工具"><div class="pagination-nav__sublabel">上一页</div><div class="pagination-nav__label">组件与工具</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes/docs/category/leetcode"><div class="pagination-nav__sublabel">下一页</div><div class="pagination-nav__label">Leetcode</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#远程注入" class="table-of-contents__link toc-highlight">远程注入</a></li><li><a href="#为什么一个进程能把内容注入到另一个进程的内存里" class="table-of-contents__link toc-highlight">为什么一个进程能把内容注入到另一个进程的内存里</a><ul><li><a href="#一个木马滥用跨进程操作能力的简单例子" class="table-of-contents__link toc-highlight">一个木马滥用跨进程操作能力的简单例子</a></li><li><a href="#为什么它能拿到别的进程的高权限句柄" class="table-of-contents__link toc-highlight">为什么它能拿到别的进程的“高权限句柄”</a></li><li><a href="#sedebugprivilege-为什么经常在实际排查中出现" class="table-of-contents__link toc-highlight"><code>SeDebugPrivilege</code> 为什么经常在实际排查中出现</a></li><li><a href="#为什么它会让注入更容易" class="table-of-contents__link toc-highlight">为什么它会让注入更容易</a></li><li><a href="#需要注意的一点" class="table-of-contents__link toc-highlight">需要注意的一点</a></li><li><a href="#在排查里怎么理解它" class="table-of-contents__link toc-highlight">在排查里怎么理解它</a></li></ul></li><li><a href="#进程之间并不是想注就能注" class="table-of-contents__link toc-highlight">进程之间并不是想注就能注</a></li><li><a href="#从原理上看远程注入大致做了什么" class="table-of-contents__link toc-highlight">从原理上看，远程注入大致做了什么</a></li><li><a href="#为什么木马喜欢注入到别的进程里" class="table-of-contents__link toc-highlight">为什么木马喜欢注入到别的进程里</a></li><li><a href="#为什么能注入到-cmdexe-这类进程里" class="table-of-contents__link toc-highlight">为什么能注入到 <code>cmd.exe</code> 这类进程里</a></li><li><a href="#木马常见会挑哪些宿主进程" class="table-of-contents__link toc-highlight">木马常见会挑哪些宿主进程</a></li><li><a href="#如果木马想注入到-cmdexe它通常如何确保-cmdexe-存在" class="table-of-contents__link toc-highlight">如果木马想注入到 <code>cmd.exe</code>，它通常如何确保 <code>cmd.exe</code> 存在</a></li><li><a href="#常见注入手法防守视角概念版" class="table-of-contents__link toc-highlight">常见注入手法（防守视角，概念版）</a><ul><li><a href="#1-远程线程注入" class="table-of-contents__link toc-highlight">1. 远程线程注入</a></li><li><a href="#2-dll-注入" class="table-of-contents__link toc-highlight">2. DLL 注入</a></li><li><a href="#3-apc-注入" class="table-of-contents__link toc-highlight">3. APC 注入</a></li><li><a href="#4-线程上下文修改--线程劫持" class="table-of-contents__link toc-highlight">4. 线程上下文修改 / 线程劫持</a></li><li><a href="#5-反射式-dll-加载--手工映射" class="table-of-contents__link toc-highlight">5. 反射式 DLL 加载 / 手工映射</a></li></ul></li><li><a href="#process-hollowing进程镂空" class="table-of-contents__link toc-highlight">Process Hollowing（进程镂空）</a><ul><li><a href="#它和普通远程注入的区别" class="table-of-contents__link toc-highlight">它和普通远程注入的区别</a></li><li><a href="#攻击者为什么喜欢它" class="table-of-contents__link toc-highlight">攻击者为什么喜欢它</a></li><li><a href="#防守时可以关注什么" class="table-of-contents__link toc-highlight">防守时可以关注什么</a></li></ul></li><li><a href="#防守视角下远程注入常见的风险信号" class="table-of-contents__link toc-highlight">防守视角下，远程注入常见的风险信号</a></li><li><a href="#可以怎么理解这类技术" class="table-of-contents__link toc-highlight">可以怎么理解这类技术</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/notes/docs/intro">Notes</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://x.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">X<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 M0dZer0's Notes, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
