@@ -234,7 +234,7 @@ Process Injection
 
 阶段。
 
-如果想单独理解“为什么很多 SYSTEM 进程仍然能被写内存、申请内存和做注入”，更适合继续看 [注入.md](/Users/zouruoqin/Desktop/notes/docs/网络安全/银狐木马/注入.md)。
+如果想单独理解“为什么很多 SYSTEM 进程仍然能被写内存、申请内存和做注入”，更适合继续看 [注入](./注入.md)。
 
 ## 小结
 
