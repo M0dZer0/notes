@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">特殊IPv4地址 | M0dZer0&#x27;s Notes</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://m0dzer0.github.io/notes/en/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://m0dzer0.github.io/notes/en/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://m0dzer0.github.io/notes/en/docs/知识笔记/特殊IPv4地址"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" property="og:locale:alternate" content="zh_Hans"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="特殊IPv4地址 | M0dZer0&#x27;s Notes"><meta data-rh="true" name="description" content="特殊 IPv4 地址"><meta data-rh="true" property="og:description" content="特殊 IPv4 地址"><link data-rh="true" rel="icon" href="/notes/en/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://m0dzer0.github.io/notes/en/docs/知识笔记/特殊IPv4地址"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/知识笔记/特殊IPv4地址" hreflang="zh-Hans"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/en/docs/知识笔记/特殊IPv4地址" hreflang="en"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/知识笔记/特殊IPv4地址" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"知识笔记","item":"https://m0dzer0.github.io/notes/en/docs/category/知识笔记"},{"@type":"ListItem","position":2,"name":"特殊IPv4地址","item":"https://m0dzer0.github.io/notes/en/docs/知识笔记/特殊IPv4地址"}]}</script><link rel="stylesheet" href="/notes/en/assets/css/styles.587d0ee5.css">
-<script src="/notes/en/assets/js/runtime~main.b391c98f.js" defer="defer"></script>
+<script src="/notes/en/assets/js/runtime~main.732f7a74.js" defer="defer"></script>
 <script src="/notes/en/assets/js/main.07757ce1.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -213,7 +213,227 @@
 <p>做渗透测试、靶场、虚拟机实验时，经常随手就配一段 <code>192.168.x.x</code>。</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么它这么眼熟">为什么它这么眼熟<a href="#为什么它这么眼熟" class="hash-link" aria-label="Direct link to 为什么它这么眼熟" title="Direct link to 为什么它这么眼熟" translate="no">​</a></h3>
 <p>因为家用网络几乎天天见，所以很多人一提“内网 IP”，脑子里第一个跳出来的就是 <code>192.168.x.x</code>。</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-这些私有地址有什么共同点">6. 这些私有地址有什么共同点<a href="#6-这些私有地址有什么共同点" class="hash-link" aria-label="Direct link to 6. 这些私有地址有什么共同点" title="Direct link to 6. 这些私有地址有什么共同点" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-100640010">6. <code>100.64.0.0/10</code><a href="#6-100640010" class="hash-link" aria-label="Direct link to 6-100640010" title="Direct link to 6-100640010" translate="no">​</a></h2>
+<p><code>100.64.0.0/10</code> 也经常被误以为是“普通私网段”，但它和 <code>10/8</code>、<code>172.16/12</code>、<code>192.168/16</code> 不一样。</p>
+<p>它不是 RFC 1918 私有地址，而是 <strong>RFC 6598</strong> 专门定义的 <strong>共享地址空间（Shared Address Space）</strong>，主要给 <strong>CGN（Carrier-Grade NAT，运营商级 NAT）</strong> 使用。</p>
+<p>范围是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">100.64.0.0 - 100.127.255.255</span><br></span></code></pre></div></div>
+<p>也就是说，第二个八位段是 <code>64</code> 到 <code>127</code>。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="它和-rfc-1918-私网的区别">它和 RFC 1918 私网的区别<a href="#它和-rfc-1918-私网的区别" class="hash-link" aria-label="Direct link to 它和 RFC 1918 私网的区别" title="Direct link to 它和 RFC 1918 私网的区别" translate="no">​</a></h3>
+<ul>
+<li class="">RFC 1918 私网是给企业、家庭、云上 VPC、实验环境等“最终用户内网”使用的</li>
+<li class=""><code>100.64.0.0/10</code> 更偏向运营商内部 CGN 场景，用来连接大量用户到公网出口</li>
+<li class="">它同样不是公网可达地址，但语义上和经典私网不同</li>
+</ul>
+<p>所以更准确的说法是：</p>
+<ul>
+<li class=""><code>100.64.0.0/10</code> 是<strong>特殊保留地址空间 / 共享地址空间</strong></li>
+<li class="">它<strong>不属于传统的 RFC 1918 三大私网段</strong></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么会定义这段地址">为什么会定义这段地址<a href="#为什么会定义这段地址" class="hash-link" aria-label="Direct link to 为什么会定义这段地址" title="Direct link to 为什么会定义这段地址" translate="no">​</a></h3>
+<p>运营商做大规模 NAT 时，如果继续大量占用 <code>10.x.x.x</code>、<code>192.168.x.x</code>，就容易和用户自己家里或企业内网的地址冲突。</p>
+<p>RFC 6598 单独划出 <code>100.64.0.0/10</code>，就是为了让运营商内部 NAT 网络和用户私网更容易区分。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见场景-5">常见场景<a href="#常见场景-5" class="hash-link" aria-label="Direct link to 常见场景" title="Direct link to 常见场景" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-运营商级-nat">1. 运营商级 NAT<a href="#1-运营商级-nat" class="hash-link" aria-label="Direct link to 1. 运营商级 NAT" title="Direct link to 1. 运营商级 NAT" translate="no">​</a></h4>
+<p>很多宽带、移动网络、蜂窝网络环境里，终端设备可能先拿到一个 <code>100.64.x.x</code> 到 <code>100.127.x.x</code> 的地址，再经过运营商 NAT 出公网。</p>
+<p>这时用户看到的“设备地址”可能不是公网 IP，也不是家里常见的 <code>192.168.x.x</code>，而是 <code>100.64/10</code> 这一段。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-云厂商内部通信">2. 云厂商内部通信<a href="#2-云厂商内部通信" class="hash-link" aria-label="Direct link to 2. 云厂商内部通信" title="Direct link to 2. 云厂商内部通信" translate="no">​</a></h4>
+<p>在云环境里，这一段也并不少见。某些云平台内部服务、元数据访问链路、内部网关、管控面通信等，会用到这类地址。</p>
+<p>比如在腾讯云场景里，<code>100.64/10</code> 往往更像“平台内部网络的一部分”，而不是一个对外互联网地址。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-安全规则和降噪过滤">3. 安全规则和降噪过滤<a href="#3-安全规则和降噪过滤" class="hash-link" aria-label="Direct link to 3. 安全规则和降噪过滤" title="Direct link to 3. 安全规则和降噪过滤" translate="no">​</a></h4>
+<p>做安全检测、日志清洗、规则编写时，很多人只会先想到 RFC 1918 三段私网，但如果场景里有云平台内部通信或 CGN 网络，<code>100.64/10</code> 也值得单独考虑。</p>
+<p>例如：</p>
+<ul>
+<li class="">作为“内部通信”白名单范围的一部分</li>
+<li class="">用于过滤明显不具备公网可达性的地址</li>
+<li class="">在误报消减时，避免把云平台内部地址误当成公网恶意 IP</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="一个常见误区">一个常见误区<a href="#一个常见误区" class="hash-link" aria-label="Direct link to 一个常见误区" title="Direct link to 一个常见误区" translate="no">​</a></h3>
+<p>很多人会把“不是公网 IP”直接等同于“RFC 1918 私网”，这并不准确。</p>
+<p>要单独记住：</p>
+<ul>
+<li class=""><code>100.64.0.0/10</code> 是 RFC 6598 共享地址空间</li>
+<li class="">它不是 RFC 1918 私有地址</li>
+<li class="">但它同样通常不会作为普通公网可路由地址出现</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="正则匹配时怎么理解-10">正则匹配时怎么理解 <code>/10</code><a href="#正则匹配时怎么理解-10" class="hash-link" aria-label="Direct link to 正则匹配时怎么理解-10" title="Direct link to 正则匹配时怎么理解-10" translate="no">​</a></h3>
+<p><code>100.64.0.0/10</code> 覆盖的第二段范围是 <code>64</code> 到 <code>127</code>。</p>
+<p>所以像下面这样的写法，本质上就是在匹配这个范围：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.</span><br></span></code></pre></div></div>
+<p>可以拆成：</p>
+<ul>
+<li class=""><code>6[4-9]</code> -&gt; <code>64</code> 到 <code>69</code></li>
+<li class=""><code>[7-9]\d</code> -&gt; <code>70</code> 到 <code>99</code></li>
+<li class=""><code>1[01]\d</code> -&gt; <code>100</code> 到 <code>119</code></li>
+<li class=""><code>12[0-7]</code> -&gt; <code>120</code> 到 <code>127</code></li>
+</ul>
+<p>拼起来正好覆盖 <code>64</code> 到 <code>127</code>，也就对应了 <code>100.64.0.0/10</code>。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-1692540016">7. <code>169.254.0.0/16</code><a href="#7-1692540016" class="hash-link" aria-label="Direct link to 7-1692540016" title="Direct link to 7-1692540016" translate="no">​</a></h2>
+<p><code>169.254.x.x</code> 是 <strong>链路本地地址（Link-Local）</strong>，来自 RFC 3927。</p>
+<p>范围是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">169.254.0.0 - 169.254.255.255</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="它的特点">它的特点<a href="#它的特点" class="hash-link" aria-label="Direct link to 它的特点" title="Direct link to 它的特点" translate="no">​</a></h3>
+<ul>
+<li class="">通常在主机没有成功拿到 DHCP 地址时自动生成</li>
+<li class="">只能在本地二层网络里使用</li>
+<li class="">不能被正常路由到更远的网络</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见场景-6">常见场景<a href="#常见场景-6" class="hash-link" aria-label="Direct link to 常见场景" title="Direct link to 常见场景" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-dhcp-失败后的自动地址">1. DHCP 失败后的自动地址<a href="#1-dhcp-失败后的自动地址" class="hash-link" aria-label="Direct link to 1. DHCP 失败后的自动地址" title="Direct link to 1. DHCP 失败后的自动地址" translate="no">​</a></h4>
+<p>如果一台机器本来应该自动获取 IP，但 DHCP 服务器没响应，系统可能会自己给网卡配一个 <code>169.254.x.x</code> 地址。</p>
+<p>这通常意味着：</p>
+<ul>
+<li class="">网卡是通的</li>
+<li class="">但拿地址流程出了问题</li>
+</ul>
+<p>所以排障时一旦看到 <code>169.254.x.x</code>，第一反应往往就是先检查 DHCP、交换机、VLAN、网线或云网络配置。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-云元数据服务">2. 云元数据服务<a href="#2-云元数据服务" class="hash-link" aria-label="Direct link to 2. 云元数据服务" title="Direct link to 2. 云元数据服务" translate="no">​</a></h4>
+<p>很多云平台的元数据服务也使用链路本地地址，最常见的例子是：</p>
+<ul>
+<li class=""><code>169.254.169.254</code></li>
+</ul>
+<p>这个地址在云安全、云主机排障、SSRF 风险分析里都非常常见。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="容易混淆的点-2">容易混淆的点<a href="#容易混淆的点-2" class="hash-link" aria-label="Direct link to 容易混淆的点" title="Direct link to 容易混淆的点" translate="no">​</a></h3>
+<ul>
+<li class=""><code>169.254.x.x</code> 不是 RFC 1918 私网</li>
+<li class="">它更像“本链路临时可用”的特殊地址</li>
+<li class="">它不能拿来当通用内网规划地址</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-255255255255">8. <code>255.255.255.255</code><a href="#8-255255255255" class="hash-link" aria-label="Direct link to 8-255255255255" title="Direct link to 8-255255255255" translate="no">​</a></h2>
+<p><code>255.255.255.255</code> 是 <strong>受限广播地址（Limited Broadcast）</strong>。</p>
+<p>它表示：</p>
+<ul>
+<li class="">向当前本地网络广播</li>
+<li class="">数据包不会被正常路由转发到其他网络</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见场景-7">常见场景<a href="#常见场景-7" class="hash-link" aria-label="Direct link to 常见场景" title="Direct link to 常见场景" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-dhcp-广播">1. DHCP 广播<a href="#1-dhcp-广播" class="hash-link" aria-label="Direct link to 1. DHCP 广播" title="Direct link to 1. DHCP 广播" translate="no">​</a></h4>
+<p>主机还不知道自己是谁、也不知道 DHCP 服务器是谁时，常会向 <code>255.255.255.255</code> 发广播包。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-老一些的广播发现机制">2. 老一些的广播发现机制<a href="#2-老一些的广播发现机制" class="hash-link" aria-label="Direct link to 2. 老一些的广播发现机制" title="Direct link to 2. 老一些的广播发现机制" translate="no">​</a></h4>
+<p>某些局域网发现协议、初始化阶段的网络服务，也可能会往这个地址发广播。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="和-0000-的区别">和 <code>0.0.0.0</code> 的区别<a href="#和-0000-的区别" class="hash-link" aria-label="Direct link to 和-0000-的区别" title="Direct link to 和-0000-的区别" translate="no">​</a></h3>
+<p>这两个地址经常一起出现在 DHCP 场景里，但语义不同：</p>
+<ul>
+<li class=""><code>0.0.0.0</code> 更像“我还没有地址”</li>
+<li class=""><code>255.255.255.255</code> 更像“我要向本地所有人喊话”</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-文档示例专用地址">9. 文档示例专用地址<a href="#9-文档示例专用地址" class="hash-link" aria-label="Direct link to 9. 文档示例专用地址" title="Direct link to 9. 文档示例专用地址" translate="no">​</a></h2>
+<p>有三段 IPv4 地址不是给真实生产网络用的，而是专门留给<strong>文档、教程、示例配置</strong>使用。</p>
+<p>分别是：</p>
+<ul>
+<li class=""><code>192.0.2.0/24</code>：TEST-NET-1</li>
+<li class=""><code>198.51.100.0/24</code>：TEST-NET-2</li>
+<li class=""><code>203.0.113.0/24</code>：TEST-NET-3</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="它们的作用">它们的作用<a href="#它们的作用" class="hash-link" aria-label="Direct link to 它们的作用" title="Direct link to 它们的作用" translate="no">​</a></h3>
+<p>这些地址的设计目的很直接：</p>
+<ul>
+<li class="">写教材、博客、产品文档时，可以放心拿来举例</li>
+<li class="">不容易和读者自己的真实公网或内网环境撞上</li>
+<li class="">比随手写一个“看起来像公网”的地址更规范</li>
+</ul>
+<p>例如文档里写：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">server 203.0.113.10</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">client 198.51.100.25</span><br></span></code></pre></div></div>
+<p>读者一看就知道这是示例地址，而不是你真的在指向某个互联网主机。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么值得记">为什么值得记<a href="#为什么值得记" class="hash-link" aria-label="Direct link to 为什么值得记" title="Direct link to 为什么值得记" translate="no">​</a></h3>
+<p>做安全分析、写规则、读厂商文档时，经常会碰到这些网段。</p>
+<p>如果你知道它们是“示例专用”，就不会：</p>
+<ul>
+<li class="">误以为这是某个真实的对外资产</li>
+<li class="">把文档示例 IP 当成 IOC 或告警目标</li>
+<li class="">在培训材料里继续随手乱写真实公网地址</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="最容易记的方法">最容易记的方法<a href="#最容易记的方法" class="hash-link" aria-label="Direct link to 最容易记的方法" title="Direct link to 最容易记的方法" translate="no">​</a></h3>
+<p>看到下面这些段，先想到“文档示例”：</p>
+<ul>
+<li class=""><code>192.0.2.x</code></li>
+<li class=""><code>198.51.100.x</code></li>
+<li class=""><code>203.0.113.x</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="10-198180015">10. <code>198.18.0.0/15</code><a href="#10-198180015" class="hash-link" aria-label="Direct link to 10-198180015" title="Direct link to 10-198180015" translate="no">​</a></h2>
+<p><code>198.18.0.0/15</code> 是专门给<strong>网络设备性能测试 / 基准测试</strong>保留的地址段。</p>
+<p>范围是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">198.18.0.0 - 198.19.255.255</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="它是干什么的">它是干什么的<a href="#它是干什么的" class="hash-link" aria-label="Direct link to 它是干什么的" title="Direct link to 它是干什么的" translate="no">​</a></h3>
+<p>这段地址最早就是为了做网络互联设备测试时，避免测试环境误撞真实互联网地址。</p>
+<p>常见用途包括：</p>
+<ul>
+<li class="">防火墙吞吐测试</li>
+<li class="">路由器转发性能测试</li>
+<li class="">IDS / IPS / 代理设备压测</li>
+<li class="">实验室里的隔离流量模拟</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么它容易被忽略">为什么它容易被忽略<a href="#为什么它容易被忽略" class="hash-link" aria-label="Direct link to 为什么它容易被忽略" title="Direct link to 为什么它容易被忽略" translate="no">​</a></h3>
+<p>它看起来很像一段“普通公网地址”，但实际不是给互联网真实主机分配用的。</p>
+<p>所以如果你在：</p>
+<ul>
+<li class="">测试报告</li>
+<li class="">厂商基准文档</li>
+<li class="">网络实验环境抓包</li>
+</ul>
+<p>里看到 <code>198.18.x.x</code> 或 <code>198.19.x.x</code>，先别急着把它理解成外部真实地址。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="一个实用判断">一个实用判断<a href="#一个实用判断" class="hash-link" aria-label="Direct link to 一个实用判断" title="Direct link to 一个实用判断" translate="no">​</a></h3>
+<p>如果某条通信、配置、性能压测流量里出现了大量 <code>198.18/15</code>，大概率是在做实验、压测或仿真，不是正常的业务对公网访问。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="11-2240004">11. <code>224.0.0.0/4</code><a href="#11-2240004" class="hash-link" aria-label="Direct link to 11-2240004" title="Direct link to 11-2240004" translate="no">​</a></h2>
+<p><code>224.0.0.0/4</code> 是 <strong>多播地址（Multicast）</strong>。</p>
+<p>范围是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">224.0.0.0 - 239.255.255.255</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="它和普通单播地址不一样">它和普通单播地址不一样<a href="#它和普通单播地址不一样" class="hash-link" aria-label="Direct link to 它和普通单播地址不一样" title="Direct link to 它和普通单播地址不一样" translate="no">​</a></h3>
+<p>平时最常见的是“单播”，也就是一个源发给一个目标。</p>
+<p>多播更像是：</p>
+<ul>
+<li class="">一个发送者发给一组接收者</li>
+<li class="">只有加入该多播组的主机才接收这份流量</li>
+</ul>
+<p>所以 <code>224.x.x.x</code> 到 <code>239.x.x.x</code> 看起来像“目标 IP”，但它表达的不是某一台普通主机，而是一个多播组。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见场景-8">常见场景<a href="#常见场景-8" class="hash-link" aria-label="Direct link to 常见场景" title="Direct link to 常见场景" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-局域网发现和控制协议">1. 局域网发现和控制协议<a href="#1-局域网发现和控制协议" class="hash-link" aria-label="Direct link to 1. 局域网发现和控制协议" title="Direct link to 1. 局域网发现和控制协议" translate="no">​</a></h4>
+<p>很多自动发现、邻居通告、组播协议都会用到多播。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-流媒体或一对多分发">2. 流媒体或一对多分发<a href="#2-流媒体或一对多分发" class="hash-link" aria-label="Direct link to 2. 流媒体或一对多分发" title="Direct link to 2. 流媒体或一对多分发" translate="no">​</a></h4>
+<p>在合适的网络环境里，多播适合做：</p>
+<ul>
+<li class="">视频分发</li>
+<li class="">一对多通知</li>
+<li class="">某些工业或专网控制场景</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-路由协议">3. 路由协议<a href="#3-路由协议" class="hash-link" aria-label="Direct link to 3. 路由协议" title="Direct link to 3. 路由协议" translate="no">​</a></h4>
+<p>部分动态路由协议也会使用多播地址收发控制报文。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="需要顺手记的点">需要顺手记的点<a href="#需要顺手记的点" class="hash-link" aria-label="Direct link to 需要顺手记的点" title="Direct link to 需要顺手记的点" translate="no">​</a></h3>
+<ul>
+<li class=""><code>224.0.0.0/4</code> 不是普通公网主机地址段</li>
+<li class="">看到目标地址是 <code>224-239</code>，先想“多播”</li>
+<li class="">它和广播不完全一样，多播是“发给加入这个组的人”</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="一个常见细节">一个常见细节<a href="#一个常见细节" class="hash-link" aria-label="Direct link to 一个常见细节" title="Direct link to 一个常见细节" translate="no">​</a></h3>
+<p><code>239.0.0.0/8</code> 经常被当作组织内部使用的管理范围多播地址，所以它和“面向全网的多播”在感觉上也不太一样。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="12-2400004">12. <code>240.0.0.0/4</code><a href="#12-2400004" class="hash-link" aria-label="Direct link to 12-2400004" title="Direct link to 12-2400004" translate="no">​</a></h2>
+<p><code>240.0.0.0/4</code> 一般被称为 <strong>保留地址（Reserved for Future Use）</strong>。</p>
+<p>范围是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">240.0.0.0 - 255.255.255.254</span><br></span></code></pre></div></div>
+<p>注意：</p>
+<ul>
+<li class=""><code>255.255.255.255</code> 通常单独看作受限广播地址</li>
+<li class="">所以它虽然数值上落在这个大范围附近，但语义要单独区分</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="它的特点-1">它的特点<a href="#它的特点-1" class="hash-link" aria-label="Direct link to 它的特点" title="Direct link to 它的特点" translate="no">​</a></h3>
+<ul>
+<li class="">历史上大多数系统不会把这段当作普通可用单播地址</li>
+<li class="">很多网络设备、协议栈、应用程序会直接拒绝或特殊处理这类地址</li>
+<li class="">在现实生产网络里通常不应该把它当成正常主机地址使用</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么要知道它">为什么要知道它<a href="#为什么要知道它" class="hash-link" aria-label="Direct link to 为什么要知道它" title="Direct link to 为什么要知道它" translate="no">​</a></h3>
+<p>因为它特别容易在阅读日志时造成错觉。</p>
+<p>例如看到一个 <code>250.x.x.x</code>、<code>251.x.x.x</code> 的地址，如果不熟，很容易下意识觉得这是“某个奇怪公网 IP”。</p>
+<p>其实更应该先警觉：</p>
+<ul>
+<li class="">这可能是构造数据</li>
+<li class="">可能是协议解析错误</li>
+<li class="">可能是伪造样本或无效输入</li>
+<li class="">也可能是工具把异常字节错误地显示成了 IPv4 地址</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="实战里的判断方式">实战里的判断方式<a href="#实战里的判断方式" class="hash-link" aria-label="Direct link to 实战里的判断方式" title="Direct link to 实战里的判断方式" translate="no">​</a></h3>
+<p>如果不是在做协议研究或非常特殊的实验环境里，看到 <code>240-255.255.255.254</code> 这段，通常先按“异常、保留、非正常主机地址”理解会更稳妥。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="13-这些私有地址有什么共同点">13. 这些私有地址有什么共同点<a href="#13-这些私有地址有什么共同点" class="hash-link" aria-label="Direct link to 13. 这些私有地址有什么共同点" title="Direct link to 13. 这些私有地址有什么共同点" translate="no">​</a></h2>
 <p>以下三段都属于 RFC 1918 私有地址：</p>
 <ul>
 <li class=""><code>10.0.0.0/8</code></li>
@@ -227,7 +447,15 @@
 <li class="">访问公网通常依赖 NAT 或代理</li>
 </ul>
 <p>这就是为什么你在不同公司、不同家庭网络里，都可能看到一样的 <code>192.168.1.10</code>。</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-一个最容易用到的区分方法">7. 一个最容易用到的区分方法<a href="#7-一个最容易用到的区分方法" class="hash-link" aria-label="Direct link to 7. 一个最容易用到的区分方法" title="Direct link to 7. 一个最容易用到的区分方法" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="顺手区分一下哪些不是公网但也不是-rfc-1918">顺手区分一下：哪些“不是公网”但也不是 RFC 1918<a href="#顺手区分一下哪些不是公网但也不是-rfc-1918" class="hash-link" aria-label="Direct link to 顺手区分一下：哪些“不是公网”但也不是 RFC 1918" title="Direct link to 顺手区分一下：哪些“不是公网”但也不是 RFC 1918" translate="no">​</a></h3>
+<p>这一点很容易混：</p>
+<ul>
+<li class=""><code>100.64.0.0/10</code>：RFC 6598 共享地址空间，常见于 CGN 或云平台内部通信</li>
+<li class=""><code>169.254.0.0/16</code>：链路本地地址，常见于 DHCP 失败或云元数据访问</li>
+<li class=""><code>127.0.0.0/8</code>：回环地址，只在本机内部使用</li>
+</ul>
+<p>所以看到“不可公网路由”的地址，最好继续往下分一层，不要全部粗暴归类成“私网”。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="14-一个最容易用到的区分方法">14. 一个最容易用到的区分方法<a href="#14-一个最容易用到的区分方法" class="hash-link" aria-label="Direct link to 14. 一个最容易用到的区分方法" title="Direct link to 14. 一个最容易用到的区分方法" translate="no">​</a></h2>
 <p>看到地址时可以先这么判断：</p>
 <ul>
 <li class=""><code>127.x.x.x</code>：回环，本机自己</li>
@@ -235,8 +463,15 @@
 <li class=""><code>10.x.x.x</code>：私有地址，大型内网常见</li>
 <li class=""><code>172.16.x.x</code> 到 <code>172.31.x.x</code>：私有地址，中型内网或容器网络常见</li>
 <li class=""><code>192.168.x.x</code>：私有地址，家庭路由和小型局域网最常见</li>
+<li class=""><code>100.64.x.x</code> 到 <code>100.127.x.x</code>：RFC 6598 共享地址空间，CGN 或云平台内部通信要重点留意</li>
+<li class=""><code>169.254.x.x</code>：链路本地地址，先怀疑 DHCP 或元数据服务</li>
+<li class=""><code>255.255.255.255</code>：本地广播地址</li>
+<li class=""><code>192.0.2.x</code> / <code>198.51.100.x</code> / <code>203.0.113.x</code>：文档示例地址</li>
+<li class=""><code>198.18.x.x</code> / <code>198.19.x.x</code>：网络设备测试、压测、基准环境常见</li>
+<li class=""><code>224-239.x.x.x</code>：多播地址</li>
+<li class=""><code>240-255.255.255.254</code>：保留地址，看到时优先按异常或特殊用途理解</li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-开发和排障里最常见的区别">8. 开发和排障里最常见的区别<a href="#8-开发和排障里最常见的区别" class="hash-link" aria-label="Direct link to 8. 开发和排障里最常见的区别" title="Direct link to 8. 开发和排障里最常见的区别" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="15-开发和排障里最常见的区别">15. 开发和排障里最常见的区别<a href="#15-开发和排障里最常见的区别" class="hash-link" aria-label="Direct link to 15. 开发和排障里最常见的区别" title="Direct link to 15. 开发和排障里最常见的区别" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="服务绑定在-127001">服务绑定在 <code>127.0.0.1</code><a href="#服务绑定在-127001" class="hash-link" aria-label="Direct link to 服务绑定在-127001" title="Direct link to 服务绑定在-127001" translate="no">​</a></h3>
 <ul>
 <li class="">只能本机访问</li>
@@ -254,19 +489,68 @@
 <li class="">大概率是内网目标</li>
 <li class="">跨网络访问时要考虑路由、VPN、NAT、跳板机</li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-小结">9. 小结<a href="#9-小结" class="hash-link" aria-label="Direct link to 9. 小结" title="Direct link to 9. 小结" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="访问目标是-10064-127">访问目标是 <code>100.64-127.</code><a href="#访问目标是-10064-127" class="hash-link" aria-label="Direct link to 访问目标是-10064-127" title="Direct link to 访问目标是-10064-127" translate="no">​</a></h3>
+<ul>
+<li class="">很可能不是普通公网地址</li>
+<li class="">要结合运营商网络、云平台内部网络、VPC 连通关系来判断</li>
+<li class="">在云安全和日志分析里，通常值得先按“内部或半内部通信”理解</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="访问目标是-169254">访问目标是 <code>169.254.</code><a href="#访问目标是-169254" class="hash-link" aria-label="Direct link to 访问目标是-169254" title="Direct link to 访问目标是-169254" translate="no">​</a></h3>
+<ul>
+<li class="">先看是不是链路本地地址</li>
+<li class="">云环境里重点关注是不是元数据服务</li>
+<li class="">本地网络里则常常意味着自动寻址或 DHCP 异常</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="访问目标是-19202--19851100--2030113">访问目标是 <code>192.0.2.</code> / <code>198.51.100.</code> / <code>203.0.113.</code><a href="#访问目标是-19202--19851100--2030113" class="hash-link" aria-label="Direct link to 访问目标是-19202--19851100--2030113" title="Direct link to 访问目标是-19202--19851100--2030113" translate="no">​</a></h3>
+<ul>
+<li class="">先判断是不是文档、教程、培训材料或示例配置</li>
+<li class="">不要直接把它当成真实外部资产</li>
+<li class="">在安全场景里通常不该直接当作真实 IOC 使用</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="访问目标是-19818-或-19819">访问目标是 <code>198.18.</code> 或 <code>198.19.</code><a href="#访问目标是-19818-或-19819" class="hash-link" aria-label="Direct link to 访问目标是-19818-或-19819" title="Direct link to 访问目标是-19818-或-19819" translate="no">​</a></h3>
+<ul>
+<li class="">很可能是压测、仿真、实验网络</li>
+<li class="">常见于网络设备性能测试</li>
+<li class="">和真实公网业务访问语义通常不同</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="访问目标是-224-239">访问目标是 <code>224-239.</code><a href="#访问目标是-224-239" class="hash-link" aria-label="Direct link to 访问目标是-224-239" title="Direct link to 访问目标是-224-239" translate="no">​</a></h3>
+<ul>
+<li class="">先按多播理解</li>
+<li class="">看是不是发现协议、路由协议或一对多分发流量</li>
+<li class="">不要把它当成一台“普通目标主机”去想</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="访问目标是-240-255255255254">访问目标是 <code>240-255.255.255.254</code><a href="#访问目标是-240-255255255254" class="hash-link" aria-label="Direct link to 访问目标是-240-255255255254" title="Direct link to 访问目标是-240-255255255254" translate="no">​</a></h3>
+<ul>
+<li class="">先当成保留地址或异常数据</li>
+<li class="">很多情况下说明日志、输入、样本或解析链路有特殊情况</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="16-小结">16. 小结<a href="#16-小结" class="hash-link" aria-label="Direct link to 16. 小结" title="Direct link to 16. 小结" translate="no">​</a></h2>
 <ul>
 <li class=""><code>0.0.0.0</code>：通常表示“未指定”或“所有地址”，服务监听和默认路由里最常见。</li>
 <li class=""><code>127.0.0.1</code>：本机回环地址，只在自己机器内部打转。</li>
 <li class=""><code>10.x.x.x</code>：私有地址，大地址段，企业网络和云上网络常见。</li>
 <li class=""><code>172.16.x.x</code> 到 <code>172.31.x.x</code>：私有地址，注意不是所有 <code>172.</code> 都是私网。</li>
 <li class=""><code>192.168.x.x</code>：私有地址，家庭和小型办公网络最常见。</li>
+<li class=""><code>100.64.0.0/10</code>：RFC 6598 共享地址空间，不是 RFC 1918 私网，但也通常不作为普通公网地址使用。</li>
+<li class=""><code>169.254.0.0/16</code>：链路本地地址，DHCP 异常和云元数据场景很常见。</li>
+<li class=""><code>255.255.255.255</code>：本地广播地址。</li>
+<li class=""><code>192.0.2.0/24</code>、<code>198.51.100.0/24</code>、<code>203.0.113.0/24</code>：文档和示例专用地址。</li>
+<li class=""><code>198.18.0.0/15</code>：网络设备测试和基准压测常用地址段。</li>
+<li class=""><code>224.0.0.0/4</code>：多播地址。</li>
+<li class=""><code>240.0.0.0/4</code>：保留地址，通常不应按正常主机地址理解。</li>
 </ul>
 <p>如果只是快速判断一个地址值不值得警觉，最简单的经验就是：</p>
 <ul>
 <li class=""><code>127</code> 看本机</li>
 <li class=""><code>0.0.0.0</code> 看监听范围或默认路由</li>
 <li class=""><code>10/172.16-31/192.168</code> 看内网</li>
-</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes/en/docs/知识笔记/正则（regex）"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">正则（regex）</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes/en/docs/知识笔记/环境配置all-in-one"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">环境配置all-in-one</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#特殊-ipv4-地址" class="table-of-contents__link toc-highlight">特殊 IPv4 地址</a></li><li><a href="#1-0000" class="table-of-contents__link toc-highlight">1. <code>0.0.0.0</code></a><ul><li><a href="#常见场景" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#容易混淆的点" class="table-of-contents__link toc-highlight">容易混淆的点</a></li></ul></li><li><a href="#2-1270008" class="table-of-contents__link toc-highlight">2. <code>127.0.0.0/8</code></a><ul><li><a href="#最常见的地址" class="table-of-contents__link toc-highlight">最常见的地址</a></li><li><a href="#常见场景-1" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#localhost-和-127001-的关系" class="table-of-contents__link toc-highlight"><code>localhost</code> 和 <code>127.0.0.1</code> 的关系</a></li></ul></li><li><a href="#3-100008" class="table-of-contents__link toc-highlight">3. <code>10.0.0.0/8</code></a><ul><li><a href="#特点" class="table-of-contents__link toc-highlight">特点</a></li><li><a href="#常见场景-2" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#为什么它很常见" class="table-of-contents__link toc-highlight">为什么它很常见</a></li></ul></li><li><a href="#4-172160012" class="table-of-contents__link toc-highlight">4. <code>172.16.0.0/12</code></a><ul><li><a href="#常见场景-3" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#容易混淆的点-1" class="table-of-contents__link toc-highlight">容易混淆的点</a></li></ul></li><li><a href="#5-1921680016" class="table-of-contents__link toc-highlight">5. <code>192.168.0.0/16</code></a><ul><li><a href="#常见场景-4" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#为什么它这么眼熟" class="table-of-contents__link toc-highlight">为什么它这么眼熟</a></li></ul></li><li><a href="#6-这些私有地址有什么共同点" class="table-of-contents__link toc-highlight">6. 这些私有地址有什么共同点</a></li><li><a href="#7-一个最容易用到的区分方法" class="table-of-contents__link toc-highlight">7. 一个最容易用到的区分方法</a></li><li><a href="#8-开发和排障里最常见的区别" class="table-of-contents__link toc-highlight">8. 开发和排障里最常见的区别</a><ul><li><a href="#服务绑定在-127001" class="table-of-contents__link toc-highlight">服务绑定在 <code>127.0.0.1</code></a></li><li><a href="#服务绑定在-0000" class="table-of-contents__link toc-highlight">服务绑定在 <code>0.0.0.0</code></a></li><li><a href="#访问目标是-10--17216-31--192168" class="table-of-contents__link toc-highlight">访问目标是 <code>10.</code> / <code>172.16-31.</code> / <code>192.168.</code></a></li></ul></li><li><a href="#9-小结" class="table-of-contents__link toc-highlight">9. 小结</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/notes/en/docs/intro">Notes</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://x.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">X<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 M0dZer0's Notes, Inc. Built with Docusaurus.</div></div></div></footer></div>
+<li class=""><code>100.64-127</code> 看 CGN 或云内部通信</li>
+<li class=""><code>169.254</code> 看链路本地或元数据服务</li>
+<li class=""><code>255.255.255.255</code> 看广播</li>
+<li class=""><code>192.0.2/198.51.100/203.0.113</code> 看文档示例</li>
+<li class=""><code>198.18-19</code> 看测试和压测</li>
+<li class=""><code>224-239</code> 看多播</li>
+<li class=""><code>240-255.255.255.254</code> 看保留或异常</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes/en/docs/知识笔记/正则（regex）"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">正则（regex）</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes/en/docs/知识笔记/环境配置all-in-one"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">环境配置all-in-one</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#特殊-ipv4-地址" class="table-of-contents__link toc-highlight">特殊 IPv4 地址</a></li><li><a href="#1-0000" class="table-of-contents__link toc-highlight">1. <code>0.0.0.0</code></a><ul><li><a href="#常见场景" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#容易混淆的点" class="table-of-contents__link toc-highlight">容易混淆的点</a></li></ul></li><li><a href="#2-1270008" class="table-of-contents__link toc-highlight">2. <code>127.0.0.0/8</code></a><ul><li><a href="#最常见的地址" class="table-of-contents__link toc-highlight">最常见的地址</a></li><li><a href="#常见场景-1" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#localhost-和-127001-的关系" class="table-of-contents__link toc-highlight"><code>localhost</code> 和 <code>127.0.0.1</code> 的关系</a></li></ul></li><li><a href="#3-100008" class="table-of-contents__link toc-highlight">3. <code>10.0.0.0/8</code></a><ul><li><a href="#特点" class="table-of-contents__link toc-highlight">特点</a></li><li><a href="#常见场景-2" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#为什么它很常见" class="table-of-contents__link toc-highlight">为什么它很常见</a></li></ul></li><li><a href="#4-172160012" class="table-of-contents__link toc-highlight">4. <code>172.16.0.0/12</code></a><ul><li><a href="#常见场景-3" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#容易混淆的点-1" class="table-of-contents__link toc-highlight">容易混淆的点</a></li></ul></li><li><a href="#5-1921680016" class="table-of-contents__link toc-highlight">5. <code>192.168.0.0/16</code></a><ul><li><a href="#常见场景-4" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#为什么它这么眼熟" class="table-of-contents__link toc-highlight">为什么它这么眼熟</a></li></ul></li><li><a href="#6-100640010" class="table-of-contents__link toc-highlight">6. <code>100.64.0.0/10</code></a><ul><li><a href="#它和-rfc-1918-私网的区别" class="table-of-contents__link toc-highlight">它和 RFC 1918 私网的区别</a></li><li><a href="#为什么会定义这段地址" class="table-of-contents__link toc-highlight">为什么会定义这段地址</a></li><li><a href="#常见场景-5" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#一个常见误区" class="table-of-contents__link toc-highlight">一个常见误区</a></li><li><a href="#正则匹配时怎么理解-10" class="table-of-contents__link toc-highlight">正则匹配时怎么理解 <code>/10</code></a></li></ul></li><li><a href="#7-1692540016" class="table-of-contents__link toc-highlight">7. <code>169.254.0.0/16</code></a><ul><li><a href="#它的特点" class="table-of-contents__link toc-highlight">它的特点</a></li><li><a href="#常见场景-6" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#容易混淆的点-2" class="table-of-contents__link toc-highlight">容易混淆的点</a></li></ul></li><li><a href="#8-255255255255" class="table-of-contents__link toc-highlight">8. <code>255.255.255.255</code></a><ul><li><a href="#常见场景-7" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#和-0000-的区别" class="table-of-contents__link toc-highlight">和 <code>0.0.0.0</code> 的区别</a></li></ul></li><li><a href="#9-文档示例专用地址" class="table-of-contents__link toc-highlight">9. 文档示例专用地址</a><ul><li><a href="#它们的作用" class="table-of-contents__link toc-highlight">它们的作用</a></li><li><a href="#为什么值得记" class="table-of-contents__link toc-highlight">为什么值得记</a></li><li><a href="#最容易记的方法" class="table-of-contents__link toc-highlight">最容易记的方法</a></li></ul></li><li><a href="#10-198180015" class="table-of-contents__link toc-highlight">10. <code>198.18.0.0/15</code></a><ul><li><a href="#它是干什么的" class="table-of-contents__link toc-highlight">它是干什么的</a></li><li><a href="#为什么它容易被忽略" class="table-of-contents__link toc-highlight">为什么它容易被忽略</a></li><li><a href="#一个实用判断" class="table-of-contents__link toc-highlight">一个实用判断</a></li></ul></li><li><a href="#11-2240004" class="table-of-contents__link toc-highlight">11. <code>224.0.0.0/4</code></a><ul><li><a href="#它和普通单播地址不一样" class="table-of-contents__link toc-highlight">它和普通单播地址不一样</a></li><li><a href="#常见场景-8" class="table-of-contents__link toc-highlight">常见场景</a></li><li><a href="#需要顺手记的点" class="table-of-contents__link toc-highlight">需要顺手记的点</a></li><li><a href="#一个常见细节" class="table-of-contents__link toc-highlight">一个常见细节</a></li></ul></li><li><a href="#12-2400004" class="table-of-contents__link toc-highlight">12. <code>240.0.0.0/4</code></a><ul><li><a href="#它的特点-1" class="table-of-contents__link toc-highlight">它的特点</a></li><li><a href="#为什么要知道它" class="table-of-contents__link toc-highlight">为什么要知道它</a></li><li><a href="#实战里的判断方式" class="table-of-contents__link toc-highlight">实战里的判断方式</a></li></ul></li><li><a href="#13-这些私有地址有什么共同点" class="table-of-contents__link toc-highlight">13. 这些私有地址有什么共同点</a><ul><li><a href="#顺手区分一下哪些不是公网但也不是-rfc-1918" class="table-of-contents__link toc-highlight">顺手区分一下：哪些“不是公网”但也不是 RFC 1918</a></li></ul></li><li><a href="#14-一个最容易用到的区分方法" class="table-of-contents__link toc-highlight">14. 一个最容易用到的区分方法</a></li><li><a href="#15-开发和排障里最常见的区别" class="table-of-contents__link toc-highlight">15. 开发和排障里最常见的区别</a><ul><li><a href="#服务绑定在-127001" class="table-of-contents__link toc-highlight">服务绑定在 <code>127.0.0.1</code></a></li><li><a href="#服务绑定在-0000" class="table-of-contents__link toc-highlight">服务绑定在 <code>0.0.0.0</code></a></li><li><a href="#访问目标是-10--17216-31--192168" class="table-of-contents__link toc-highlight">访问目标是 <code>10.</code> / <code>172.16-31.</code> / <code>192.168.</code></a></li><li><a href="#访问目标是-10064-127" class="table-of-contents__link toc-highlight">访问目标是 <code>100.64-127.</code></a></li><li><a href="#访问目标是-169254" class="table-of-contents__link toc-highlight">访问目标是 <code>169.254.</code></a></li><li><a href="#访问目标是-19202--19851100--2030113" class="table-of-contents__link toc-highlight">访问目标是 <code>192.0.2.</code> / <code>198.51.100.</code> / <code>203.0.113.</code></a></li><li><a href="#访问目标是-19818-或-19819" class="table-of-contents__link toc-highlight">访问目标是 <code>198.18.</code> 或 <code>198.19.</code></a></li><li><a href="#访问目标是-224-239" class="table-of-contents__link toc-highlight">访问目标是 <code>224-239.</code></a></li><li><a href="#访问目标是-240-255255255254" class="table-of-contents__link toc-highlight">访问目标是 <code>240-255.255.255.254</code></a></li></ul></li><li><a href="#16-小结" class="table-of-contents__link toc-highlight">16. 小结</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/notes/en/docs/intro">Notes</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://x.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">X<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 M0dZer0's Notes, Inc. Built with Docusaurus.</div></div></div></footer></div>
 </body>
 </html>
