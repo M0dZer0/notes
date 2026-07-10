@@ -1,4 +1,4 @@
-## SeDebug：银狐提权链里的关键中间能力
+## SeDebug
 
 如果把银狐（Silver Fox / ValleyRAT / Winos）的提权和后续攻击动作拆开看，`SeDebugPrivilege` 很适合被单独理解成一个“中间能力”。
 
@@ -27,7 +27,7 @@ Process Injection / TrustedInstaller / 防御绕过
 - 它的前置条件是什么。
 - 它启用之后通常会接哪些动作。
 
-## `SeDebugPrivilege` 到底是什么
+## 定义
 
 `SeDebugPrivilege` 是 Windows 提供的一项调试权限。
 
@@ -50,7 +50,7 @@ SeDebugPrivilege
 
 而不是把它理解成某种自动把权限抬到 SYSTEM 的“后门开关”。
 
-## 银狐通常怎么启用它
+## 启用
 
 从公开分析来看，银狐启用 `SeDebugPrivilege` 的方式并不特殊，基本还是调用 Windows 官方 API：
 
@@ -70,7 +70,7 @@ AdjustTokenPrivileges
 
 也就是说，银狐常见做法不是“创造一个新的权限”，而是把当前令牌里原本已经存在、但默认没打开的权限切换到启用状态。
 
-## 一个很重要的误区：它不是提权漏洞
+## 误区
 
 很多人在刚接触恶意样本时，会误以为：
 
@@ -102,7 +102,7 @@ AdjustTokenPrivileges
 提权本身
 ```
 
-## 它的前置条件通常是什么
+## 前置条件
 
 要理解 `SeDebugPrivilege` 在银狐里的位置，一个很重要的问题是：
 
@@ -137,13 +137,13 @@ Enable SeDebugPrivilege
 
 这也是为什么把 `SeDebugPrivilege` 放在“提权之后”理解，会更符合公开样本里的真实链路。
 
-## 为什么银狐拿到它以后很危险
+## 作用
 
 因为在管理员基础上，再启用 `SeDebugPrivilege`，很多原本更难成功的高危动作就会变得更容易。
 
 在银狐链路里，它通常会把能力往两个方向放大。
 
-## 方向一：帮助它接近 SYSTEM
+### SYSTEM 路径
 
 银狐常见的一条路线是：
 
@@ -175,7 +175,7 @@ SeDebugPrivilege
 Token Theft 更容易成功
 ```
 
-## 方向二：帮助它进入注入与防御绕过阶段
+### 注入与绕过
 
 当银狐已经是管理员，甚至已经通过 Token Theft 拿到 SYSTEM 之后，`SeDebugPrivilege` 还会继续发挥作用。
 
@@ -198,7 +198,7 @@ SeDebugPrivilege
 
 换句话说，`SeDebugPrivilege` 在银狐里既服务于“往上拿权限”，也服务于“拿到更高权限后的利用”。
 
-## 为什么单独看到 `SeDebugPrivilege` 不能直接定性
+## 检测
 
 虽然它很关键，但在实际检测里，单独看到 `AdjustTokenPrivileges` 或 `SeDebugPrivilege Enabled` 还不能直接等于恶意。
 

@@ -95,7 +95,7 @@
 
 这样实例上的程序就不需要把长期 AK/SK 写死在代码或配置文件中，而是通过元数据服务动态获取临时凭证。
 
-## 不同云厂商的请求特点
+## 厂商差异
 
 虽然三家都叫“元数据服务”，但请求方式并不完全一样。
 
@@ -139,7 +139,7 @@ curl -s -H "Metadata: true" --noproxy "*" \
 - 也可使用链路本地地址 `169.254.0.23`
 - 路径层级比较直观，很多接口是“列目录 -> 继续深入目录 -> 取具体值”的形式
 
-## 腾讯云元数据服务
+## 腾讯云
 
 这一节重点记腾讯云，因为日常排障和云安全分析里经常会遇到。
 
@@ -157,7 +157,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/
 curl http://169.254.0.23/latest/meta-data/
 ```
 
-### 根目录常见内容
+### 根目录
 
 腾讯云元数据根目录里常见这些条目：
 
@@ -178,9 +178,9 @@ curl http://metadata.tencentyun.com/latest/meta-data/
 
 也就是说，看到带 `/` 结尾的一般是目录，继续往下查；不带 `/` 的一般就是具体值。
 
-## 腾讯云常用请求
+## 常用请求
 
-### 1. 获取地域和可用区
+### 地域与可用区
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/placement/region
@@ -193,7 +193,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/placement/zone
 - 启动脚本按地域加载配置
 - 排障时确认业务部署位置
 
-### 2. 获取实例内网 IP 和公网 IP
+### 实例 IP
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/local-ipv4
@@ -206,7 +206,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/public-ipv4
 - 程序启动时上报自身地址
 - 排查网络问题时快速确认地址
 
-### 3. 获取实例 ID 和 UUID
+### 实例标识
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/instance-id
@@ -218,7 +218,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/uuid
 - `instance-id` 是更常用的实例唯一标识
 - `uuid` 也可用于标识实例，但做资产标识时一般优先使用 `instance-id`
 
-### 4. 获取主网卡 MAC 地址
+### 主网卡 MAC
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/mac
@@ -229,7 +229,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/mac
 - 后续查询具体网卡目录
 - 做网卡与 IP 的精细映射
 
-### 5. 列出所有网卡
+### 网卡列表
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/
@@ -241,7 +241,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/
 52:54:00:BF:B3:51/
 ```
 
-### 6. 查看某张网卡的详细信息
+### 网卡详情
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:54:00:BF:B3:51/
@@ -257,7 +257,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:
 - `primary-local-ipv4`
 - `public-ipv4s`
 
-### 7. 获取 VPC 和子网信息
+### VPC 与子网
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:54:00:BF:B3:51/vpc-id
@@ -269,7 +269,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:
 - 判断实例在哪个 VPC / 子网
 - 和 CMDB、网络策略系统做关联
 
-### 8. 查看网卡绑定的内网 IP 列表
+### 网卡 IP 列表
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:54:00:BF:B3:51/local-ipv4s/
@@ -277,7 +277,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:
 
 如果一个网卡绑定多个内网 IP，这里会返回一个列表。
 
-### 9. 查看某个内网 IP 的详细信息
+### 内网 IP 详情
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:54:00:BF:B3:51/local-ipv4s/10.104.13.59
@@ -299,7 +299,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:
 curl http://metadata.tencentyun.com/latest/meta-data/network/interfaces/macs/52:54:00:BF:B3:51/local-ipv4s/10.104.13.59/subnet-mask
 ```
 
-### 10. 获取云盘信息
+### 云盘信息
 
 先列出云盘：
 
@@ -333,7 +333,7 @@ CLOUD_PREMIUM
 
 这个信息在性能排障时很有用，可以快速确认当前挂载的是高性能云盘、SSD 还是其他类型。
 
-### 11. 获取计费与生命周期信息
+### 生命周期信息
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/payment/charge-type
@@ -348,7 +348,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/spot/termination-time
 - 预判实例到期时间
 - 竞价实例中断前做摘流、迁移、关机等保护动作
 
-### 12. 获取实例所属 AppId
+### AppId
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/app-id
@@ -356,7 +356,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/app-id
 
 这个字段常用于和账号体系、资源归属体系做关联。
 
-### 13. 获取 CAM 角色临时凭证
+### CAM 临时凭证
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/cam/security-credentials/CVMas
@@ -374,7 +374,7 @@ curl http://metadata.tencentyun.com/latest/meta-data/cam/security-credentials/CV
 这一类接口最敏感，因为它返回的是可用于访问云 API 的临时身份凭证。只要实例绑定了角色，运行在实例上的程序就可能通过它获取权限。
 :::
 
-### 14. 获取用户数据
+### 用户数据
 
 ```bash
 curl http://metadata.tencentyun.com/latest/user-data
@@ -386,11 +386,11 @@ curl http://metadata.tencentyun.com/latest/user-data
 - cloud-init 获取用户自定义配置
 - 自动注册节点或注入业务环境变量
 
-## 从云安全角度怎么看元数据服务
+## 安全视角
 
 元数据服务本身不是漏洞，它是云平台的基础能力。但它经常出现在安全事件中，因为它离实例身份非常近。
 
-### 风险点
+### 风险
 
 #### SSRF 打到元数据服务
 
@@ -411,7 +411,7 @@ curl http://metadata.tencentyun.com/latest/user-data
 
 有些团队会把初始化脚本、配置片段，甚至敏感参数放进 `user-data`。如果访问控制做得不好，这部分内容也可能被拿到。
 
-### 防护思路
+### 防护
 
 - 尽量不要在 `user-data` 中放长期密钥、数据库密码等明文敏感信息。
 - 给实例绑定最小权限角色，避免拿到临时凭证后权限过大。
@@ -435,7 +435,7 @@ curl http://metadata.tencentyun.com/latest/user-data
   - `cam/security-credentials/<RoleName>`
   - `user-data`
 
-## 一组最常用的腾讯云速查命令
+## 速查命令
 
 ```bash
 curl http://metadata.tencentyun.com/latest/meta-data/

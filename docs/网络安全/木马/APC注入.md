@@ -1,4 +1,4 @@
-## APC 注入：银狐为什么常把代码排进 `taskhostw.exe` 的线程里
+## APC 注入
 
 先说结论：
 
@@ -39,7 +39,7 @@ taskhostw.exe 是银狐常见宿主之一
 - 目标是否是常见白进程。
 - 注入后是否有内存载荷、反射加载、持久化或 C2 通信。
 
-## `QueueUserAPC` 本来是什么
+## 机制
 
 `QueueUserAPC` 是 Windows 提供的一个正常 API，用来把一个 APC（Asynchronous Procedure Call，异步过程调用）排队到某个线程上。
 
@@ -73,7 +73,7 @@ QueueUserAPC
 
 它和 `WriteProcessMemory`、`CreateRemoteThread` 一样，本质上是正常能力，只是可能被木马滥用。
 
-## APC 注入从原理上是在做什么
+## 流程
 
 攻击者利用 APC 的核心思想是：
 
@@ -103,7 +103,7 @@ QueueUserAPC
 
 而不是一个陌生恶意 EXE 长时间裸奔在进程列表里。
 
-## 为什么攻击者喜欢 APC，而不是总用 `CreateRemoteThread`
+## 优势
 
 很多 Windows 恶意代码的经典注入链是：
 
@@ -121,7 +121,7 @@ CreateRemoteThread
 
 而 APC 注入的常见优势在于：
 
-## 第一：少一个非常显眼的新线程创建动作
+### 线程痕迹
 
 如果用 `CreateRemoteThread`，很多产品会直接把它视为高危信号。
 
@@ -135,7 +135,7 @@ CreateRemoteThread
 
 因此从行为外观上看，它通常比“直接远程创建线程”更绕一些，也更容易逃过基础规则。
 
-## 第二：更适合 shellcode 和纯内存载荷
+### 内存载荷
 
 银狐近年来越来越多地采用：
 
@@ -157,7 +157,7 @@ APC 注入
 - 进程树里看到的是系统进程或常见白进程。
 - 更适合多阶段加载和分层隐藏。
 
-## 第三：从 EDR 视角更像“线程执行流被借用”
+### 执行流借用
 
 `QueueUserAPC` 利用的是目标线程原本就存在的执行机制。
 
@@ -176,7 +176,7 @@ APC 注入
 APC 在基础规则下往往更隐蔽
 ```
 
-## 为什么很多银狐样本喜欢 `taskhostw.exe`
+## 宿主选择
 
 `taskhostw.exe`（Task Host for Windows）是 Windows 的系统宿主进程，常见路径是：
 
@@ -186,7 +186,7 @@ C:\Windows\System32\taskhostw.exe
 
 它经常被攻击者选中，不是因为它“神秘”，而是因为它具备很典型的宿主价值。
 
-## 一，它是微软签名、系统原生、长期存在的白进程
+### 白进程属性
 
 它的几个现实优势非常直接：
 
@@ -201,7 +201,7 @@ C:\Windows\System32\taskhostw.exe
 Trusted Process / Shellcode Carrier
 ```
 
-## 二，它比 `notepad.exe`、`calc.exe` 这类“演示型宿主”更适合真实驻留
+### 驻留条件
 
 很多教学材料爱拿记事本举例，但真实攻击里攻击者更关心：
 
@@ -218,7 +218,7 @@ Trusted Process / Shellcode Carrier
 
 而不只是 PoC 演示对象。
 
-## 三，它在行为画像上不那么突兀
+### 行为画像
 
 `taskhostw.exe` 本身就是 Windows 的任务宿主类进程，负责托管一定范围内的任务或组件逻辑。
 
@@ -236,7 +236,7 @@ notepad.exe 突然联网
 
 更不容易第一时间引起非专业人员警觉。
 
-## 但银狐并不只用 `taskhostw.exe`
+### 常见目标
 
 这点非常重要。
 
@@ -264,7 +264,7 @@ taskhostw.exe 是银狐常见的 APC 注入宿主之一
 但不是唯一宿主
 ```
 
-## 为什么很多公开报告都反复提 `taskhostw.exe`
+## TTP 价值
 
 不是因为：
 
@@ -306,7 +306,7 @@ ValleyRAT / Winos 生态
 
 这组组合特征。
 
-## 为什么说它是银狐的“高相关行为特征”，但不是专属特征
+### 归因边界
 
 因为需要区分两件事。
 
@@ -339,7 +339,7 @@ QueueUserAPC -> taskhostw.exe
 
 > 这是一个高价值注入行为。如果它再叠加 ValleyRAT/Winos 的加载方式、持久化、BYOVD、计划任务、C2 基础设施等特征，那么银狐归因的可信度就会明显提升。
 
-## 从银狐攻击链看，APC 通常出现在什么位置
+### 攻击链位置
 
 从近年公开分析来看，银狐常见不是“单文件直接运行 RAT”，而是更倾向于：
 
@@ -363,13 +363,13 @@ APC 注入常见白进程
 把恶意执行从原始 Loader 平滑转移到更可信的宿主
 ```
 
-## EDR 检测 APC 注入，不能只盯 `QueueUserAPC`
+## 检测
 
 因为 `QueueUserAPC` 本身是合法 API，单独看它误报会很高。
 
 真正更有价值的，是把它放回完整行为链里看。
 
-## 一类高价值链：跨进程写入 + APC
+### 高价值链一：跨进程写入
 
 最常见的高危组合通常是：
 
@@ -395,7 +395,7 @@ QueueUserAPC
 - `dllhost.exe`
 - `dwm.exe`
 
-## 二类高价值链：来源可疑
+### 高价值链二：来源上下文
 
 即使目标是正常白进程，来源上下文也很关键。
 
@@ -416,7 +416,7 @@ QueueUserAPC
 
 那风险会更高。
 
-## 三类高价值链：注入后目标进程出现异常行为
+### 高价值链三：后续异常行为
 
 很多时候真正把告警置信度拉高的，不是注入动作本身，而是后续结果。
 
@@ -441,7 +441,7 @@ QueueUserAPC
 taskhostw.exe 异常网络通信 / 内存执行
 ```
 
-## 四类高价值链：和银狐其他 TTP 组合出现
+### 高价值链四：组合特征
 
 如果想把“APC 注入”进一步和银狐归因联系起来，通常要叠加其他特征一起看，例如：
 
@@ -456,7 +456,7 @@ taskhostw.exe 异常网络通信 / 内存执行
 
 这些组合远比单独一个 `QueueUserAPC` 更有归因价值。
 
-## 为什么不能把检测规则只写成 `taskhostw.exe`
+### 规则边界
 
 如果规则只盯：
 
@@ -475,7 +475,7 @@ QueueUserAPC -> dwm.exe
 
 所以更合理的检测思路通常是三层。
 
-## 第一层：识别注入行为链本身
+### 检测分层
 
 例如：
 
@@ -497,7 +497,7 @@ QueueUserAPC
 有没有发生 APC 注入
 ```
 
-## 第二层：给目标进程加权
+#### 目标进程
 
 例如对这些目标提高风险分值：
 
@@ -513,7 +513,7 @@ QueueUserAPC
 注入的是不是低噪声白进程宿主
 ```
 
-## 第三层：给来源和后续动作加权
+#### 来源与后续动作
 
 例如：
 
@@ -528,7 +528,7 @@ QueueUserAPC
 这条 APC 注入链是不是更像真实入侵，而不是正常软件行为
 ```
 
-## 和传统远程线程注入相比，APC 更像什么
+## 对比
 
 如果粗略比较几类常见手法：
 
@@ -548,7 +548,7 @@ QueueUserAPC
 
 这也是它在银狐 / ValleyRAT 这类 Loader + 内存载荷链里很受欢迎的原因。
 
-## 一个适合记住的简化理解
+## 简化理解
 
 如果把这篇笔记压缩成一句话，可以记成：
 
@@ -558,9 +558,8 @@ QueueUserAPC 是 Windows 正常线程回调机制，银狐常利用它把 shellc
 
 ## 参考资料
 
-- MITRE ATT&CK, `T1055.004 - Asynchronous Procedure Call`: <https://attack.mitre.org/techniques/T1055/004/>
-- Check Point Research, *Cracking ValleyRAT: From Builder Secrets to Kernel Rootkits*: <https://research.checkpoint.com/2025/cracking-valleyrat-from-builder-secrets-to-kernel-rootkits/>
-- Morphisec, *Rat Race: ValleyRAT Malware Targets Organizations with New Delivery Techniques*: <https://www.morphisec.com/blog/rat-race-valleyrat-malware-china/>
-- Microsoft Learn, `QueueUserAPC` function: <https://learn.microsoft.com/windows/win32/api/processthreadsapi/nf-processthreadsapi-queueuserapc>
-- Microsoft Learn, Asynchronous Procedure Calls: <https://learn.microsoft.com/windows/win32/sync/asynchronous-procedure-calls>
-
+- MITRE ATT&CK, `T1055.004 - Asynchronous Procedure Call`: [attack.mitre.org/techniques/T1055/004/](https://attack.mitre.org/techniques/T1055/004/)
+- Check Point Research, *Cracking ValleyRAT: From Builder Secrets to Kernel Rootkits*: [research.checkpoint.com](https://research.checkpoint.com/2025/cracking-valleyrat-from-builder-secrets-to-kernel-rootkits/)
+- Morphisec, *Rat Race: ValleyRAT Malware Targets Organizations with New Delivery Techniques*: [morphisec.com](https://www.morphisec.com/blog/rat-race-valleyrat-malware-china/)
+- Microsoft Learn, `QueueUserAPC` function: [learn.microsoft.com](https://learn.microsoft.com/windows/win32/api/processthreadsapi/nf-processthreadsapi-queueuserapc)
+- Microsoft Learn, Asynchronous Procedure Calls: [learn.microsoft.com](https://learn.microsoft.com/windows/win32/sync/asynchronous-procedure-calls)
