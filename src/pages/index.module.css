@@ -227,6 +227,95 @@
   padding: 2rem 0 6rem;
 }
 
+.recommendedSection {
+  padding: 2rem 0 1rem;
+}
+
+.recommendedWrap {
+  display: grid;
+  gap: 2rem;
+}
+
+.recommendationGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.recommendedCard {
+  position: relative;
+  display: grid;
+  min-height: 12.5rem;
+  padding: 1.3rem;
+  border: 1px solid var(--home-border);
+  border-radius: 1.5rem;
+  background: var(--home-surface-strong);
+  box-shadow: var(--home-shadow-soft);
+  color: var(--home-text);
+  overflow: hidden;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.recommendedCard::after {
+  content: '';
+  position: absolute;
+  inset: auto -20% -55% 40%;
+  height: 10rem;
+  background: radial-gradient(circle, rgba(10, 132, 255, 0.2), transparent 70%);
+  pointer-events: none;
+}
+
+.recommendedCard:hover,
+.recommendedCard:focus-visible {
+  color: var(--home-text);
+  border-color: var(--home-accent);
+  box-shadow: var(--home-shadow);
+  text-decoration: none;
+  transform: translateY(-4px);
+}
+
+.recommendedTopline,
+.recommendedFooter {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.recommendedIndex,
+.recommendedDate,
+.recommendedFooter {
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  color: var(--home-muted);
+}
+
+.recommendedIndex {
+  font-weight: 700;
+}
+
+.recommendedDate {
+  text-align: right;
+}
+
+.recommendedTitle {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  margin: 1.3rem 0;
+  font-family: 'Avenir Next Condensed', 'DIN Alternate', 'Arial Narrow', sans-serif;
+  font-size: 1.55rem;
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+}
+
+.recommendedFooter span:last-child {
+  color: var(--home-chip-text);
+  font-size: 1.1rem;
+}
+
 .timelineWrap {
   display: grid;
   gap: 2rem;
@@ -339,7 +428,8 @@
   }
 
   .heroGrid,
-  .highlightsGrid {
+  .highlightsGrid,
+  .recommendationGrid {
     grid-template-columns: 1fr;
   }
 
@@ -408,6 +498,7 @@
 
   .heroPanel,
   .highlightCard,
+  .recommendedCard,
   .timelineContent {
     border-radius: 1.2rem;
   }

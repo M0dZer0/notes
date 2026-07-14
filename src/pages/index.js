@@ -9,6 +9,7 @@ import homeStats from '@site/src/data/home-stats.json';
 import styles from './index.module.css';
 
 const stats = homeStats.stats;
+const recentNotes = homeStats.recentNotes;
 
 const timeline = [
   {
@@ -177,6 +178,51 @@ function HighlightsSection() {
   );
 }
 
+function RecommendedSection() {
+  return (
+    <section className={styles.recommendedSection}>
+      <div className={clsx('container', styles.recommendedWrap)}>
+        <motion.div
+          className={styles.recommendedIntro}
+          initial={{opacity: 0, y: 20}}
+          whileInView={{opacity: 1, y: 0}}
+          viewport={{once: true, amount: 0.5}}
+          transition={{duration: 0.6, ease: 'easeOut'}}>
+          <Heading as="h2" className={styles.sectionTitle}>
+            推荐阅读
+          </Heading>
+          <p className={styles.sectionSubtitle}>Recently updated notes.</p>
+        </motion.div>
+
+        <div className={styles.recommendationGrid}>
+          {recentNotes.map((note, index) => (
+            <motion.article
+              key={note.id}
+              initial={{opacity: 0, y: 24}}
+              whileInView={{opacity: 1, y: 0}}
+              viewport={{once: true, amount: 0.35}}
+              transition={{duration: 0.55, delay: index * 0.08, ease: 'easeOut'}}>
+              <Link className={styles.recommendedCard} to={`/docs/${note.id}`}>
+                <div className={styles.recommendedTopline}>
+                  <span className={styles.recommendedIndex}>0{index + 1}</span>
+                  <span className={styles.recommendedDate}>更新于 {note.updatedLabel}</span>
+                </div>
+                <Heading as="h3" className={styles.recommendedTitle}>
+                  {note.title}
+                </Heading>
+                <div className={styles.recommendedFooter}>
+                  <span>{note.category}</span>
+                  <span aria-hidden="true">↗</span>
+                </div>
+              </Link>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function TimelineSection() {
   return (
     <section className={styles.timelineSection}>
@@ -233,6 +279,7 @@ export default function Home() {
       <main className={styles.homepage}>
         <HeroSection />
         <HighlightsSection />
+        <RecommendedSection />
         <TimelineSection />
       </main>
     </Layout>

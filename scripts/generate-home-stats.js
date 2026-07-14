@@ -56,6 +56,47 @@ function formatDate(date) {
   }).format(date);
 }
 
+function formatUpdatedDate(date) {
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+    .format(date)
+    .replaceAll('/', '.');
+}
+
+function getNoteTitle(source, filePath) {
+  const content = source.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, '');
+  const heading = content.match(/^#{1,2}\s+(.+)$/m);
+
+  if (heading) {
+    return heading[1]
+      .replace(/[`*_]/g, '')
+      .replace(/\s+#+\s*$/, '')
+      .trim();
+  }
+
+  return path.basename(filePath, path.extname(filePath));
+}
+
+function createRecentNote(filePath) {
+  const source = fs.readFileSync(filePath, 'utf8');
+  const fileStats = fs.statSync(filePath);
+  const relativePath = path.relative(path.join(ROOT, 'docs'), filePath);
+  const id = relativePath.replace(/\.(md|mdx)$/i, '').split(path.sep).join('/');
+  const category = path.dirname(relativePath).split(path.sep).join(' / ');
+  const updatedAt = new Date(fileStats.mtimeMs);
+
+  return {
+    id,
+    title: getNoteTitle(source, filePath),
+    category: category === '.' ? '笔记' : category,
+    updatedAt: updatedAt.toISOString(),
+    updatedLabel: formatUpdatedDate(updatedAt),
+  };
+}
+
 const markdownFiles = TARGET_DIRS.flatMap((dir) => {
   const fullDir = path.join(ROOT, dir);
   return fs.existsSync(fullDir) ? walkMarkdownFiles(fullDir) : [];
@@ -83,6 +124,10 @@ const stats = markdownFiles.reduce(
 
 const createdAt = Number.isFinite(stats.createdAtMs) ? new Date(stats.createdAtMs) : new Date();
 const ageInYears = (Date.now() - createdAt.getTime()) / (365.25 * 24 * 60 * 60 * 1000);
+const recentNotes = markdownFiles
+  .map(createRecentNote)
+  .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
+  .slice(0, 3);
 
 const payload = {
   generatedAt: new Date().toISOString(),
@@ -93,6 +138,7 @@ const payload = {
     createAnimatedStat('Markdown Files', stats.fileCount, `${stats.fileCount} tracked notes`),
     createAnimatedStat('Lines Written', stats.lineCount, `${compactNumber(stats.charCount)} chars total`),
   ],
+  recentNotes,
 };
 
 fs.mkdirSync(path.dirname(OUTPUT_FILE), {recursive: true});
