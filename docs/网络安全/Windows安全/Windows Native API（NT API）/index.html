@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="zh-Hans" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-网络安全/Windows安全/Windows Native API（NT API）" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Windows Native API（NT API） | M0dZer0&#x27;s Notes</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://m0dzer0.github.io/notes/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://m0dzer0.github.io/notes/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/Windows Native API（NT API）"><meta data-rh="true" property="og:locale" content="zh_Hans"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" name="docusaurus_locale" content="zh-Hans"><meta data-rh="true" name="docsearch:language" content="zh-Hans"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Windows Native API（NT API） | M0dZer0&#x27;s Notes"><meta data-rh="true" name="description" content="Windows Native API（NT API）"><meta data-rh="true" property="og:description" content="Windows Native API（NT API）"><link data-rh="true" rel="icon" href="/notes/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/Windows Native API（NT API）"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/Windows Native API（NT API）" hreflang="zh-Hans"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/en/docs/网络安全/Windows安全/Windows Native API（NT API）" hreflang="en"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/Windows Native API（NT API）" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"网络安全","item":"https://m0dzer0.github.io/notes/docs/category/网络安全"},{"@type":"ListItem","position":2,"name":"Windows安全","item":"https://m0dzer0.github.io/notes/docs/category/windows安全"},{"@type":"ListItem","position":3,"name":"Windows Native API（NT API）","item":"https://m0dzer0.github.io/notes/docs/网络安全/Windows安全/Windows Native API（NT API）"}]}</script><link rel="stylesheet" href="/notes/assets/css/styles.fcc4eb7b.css">
+<script src="/notes/assets/js/runtime~main.b5e4fe76.js" defer="defer"></script>
+<script src="/notes/assets/js/main.191a87b8.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/notes/img/favicon.ico"><div role="region" aria-label="跳到主要内容"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">跳到主要内容</a></div><nav aria-label="主导航" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="切换导航栏" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes/"><div class="navbar__logo"><img src="/notes/img/favicon.ico" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/notes/img/favicon.ico" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">M0dZer0&#x27;s Notes</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes/docs/intro">Notes</a><a href="https://m0dzer0.github.io" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Blog</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/m0dzer0" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="回到顶部" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="文档侧边栏" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/intro"><span title="介绍" class="linkLabel_WmDU">介绍</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/开发笔记"><span title="开发笔记" class="categoryLinkLabel_W154">开发笔记</span></a><button aria-label="展开侧边栏分类 &#x27;开发笔记&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/知识笔记"><span title="知识笔记" class="categoryLinkLabel_W154">知识笔记</span></a><button aria-label="展开侧边栏分类 &#x27;知识笔记&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/notes/docs/category/网络安全"><span title="网络安全" class="categoryLinkLabel_W154">网络安全</span></a><button aria-label="折叠侧边栏分类 &#x27;网络安全&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/云安全"><span title="云安全" class="categoryLinkLabel_W154">云安全</span></a><button aria-label="展开侧边栏分类 &#x27;云安全&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/ctf"><span title="CTF" class="categoryLinkLabel_W154">CTF</span></a><button aria-label="展开侧边栏分类 &#x27;CTF&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/安全产品"><span title="安全产品" class="categoryLinkLabel_W154">安全产品</span></a><button aria-label="展开侧边栏分类 &#x27;安全产品&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" tabindex="0" href="/notes/docs/category/windows安全"><span title="Windows安全" class="categoryLinkLabel_W154">Windows安全</span></a><button aria-label="折叠侧边栏分类 &#x27;Windows安全&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/Windows安全/Sysmon"><span title="Sysmon" class="linkLabel_WmDU">Sysmon</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes/docs/网络安全/Windows安全/Windows Native API（NT API）"><span title="Windows Native API（NT API）" class="linkLabel_WmDU">Windows Native API（NT API）</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/Windows安全/组件与工具"><span title="组件与工具" class="linkLabel_WmDU">组件与工具</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/Windows安全/远程注入"><span title="远程注入" class="linkLabel_WmDU">远程注入</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/notes/docs/网络安全/木马/APC注入"><span title="木马" class="categoryLinkLabel_W154">木马</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/leetcode"><span title="Leetcode" class="categoryLinkLabel_W154">Leetcode</span></a><button aria-label="展开侧边栏分类 &#x27;Leetcode&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/Dlink_DIR-882_POC"><span title="Root Remote Code Execution (RCE) in D-Link DIR-882" class="linkLabel_WmDU">Root Remote Code Execution (RCE) in D-Link DIR-882</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/写作指南"><span title="写作指南" class="linkLabel_WmDU">写作指南</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="页面路径"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="主页面" class="breadcrumbs__link" href="/notes/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes/docs/category/网络安全"><span>网络安全</span></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes/docs/category/windows安全"><span>Windows安全</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Windows Native API（NT API）</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>Windows Native API（NT API）</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="windows-native-apint-api">Windows Native API（NT API）<a href="#windows-native-apint-api" class="hash-link" aria-label="Windows Native API（NT API）的直接链接" title="Windows Native API（NT API）的直接链接" translate="no">​</a></h2>
+<p>在 Windows 安全语境里，<code>NtWriteVirtualMemory</code>、<code>NtOpenProcess</code>、<code>NtCreateThreadEx</code> 这类接口常被称为“未公开内核 API”。这个说法不算完全准确。</p>
+<p>更准确地说，它们通常属于 <strong>Windows Native API / NT API</strong>：很多接口由用户态的 <code>ntdll.dll</code> 导出；它们比 Win32 API 更接近 Windows 内核对象和系统服务边界；但文档完整度、兼容性承诺和长期稳定性通常不如高层 Win32 API。</p>
+<p>从学习和检测角度，更适合把它们理解为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">比 Win32 更底层</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">更贴近系统调用边界</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">经常被攻防双方关注</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">但不等于“神秘后门接口”</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="分层">分层<a href="#分层" class="hash-link" aria-label="分层的直接链接" title="分层的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="win32-到-native-api">Win32 到 Native API<a href="#win32-到-native-api" class="hash-link" aria-label="Win32 到 Native API的直接链接" title="Win32 到 Native API的直接链接" translate="no">​</a></h3>
+<p>理解这类 API，最重要的是先把 Windows 的接口分层想清楚。许多常见能力并不是应用程序直接“调用内核”，而是会经过一层层封装。</p>
+<p>例如跨进程写内存，常见抽象关系可以理解为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">应用程序</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">WriteProcessMemory</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">KernelBase / Kernel32 的参数整理与兼容层</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">ntdll!NtWriteVirtualMemory</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">系统调用入口</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">内核中的内存管理与对象访问检查逻辑</span><br></span></code></pre></div></div>
+<p>所以，<code>NtWriteVirtualMemory</code> 可以理解为 <code>WriteProcessMemory</code> 更底层的一层能力。</p>
+<p>不过需要注意：</p>
+<ul>
+<li class="">高层 API 并不只是机械转发一行代码，中间还可能有参数处理、兼容性适配、异常转换和边界检查。</li>
+<li class="">不同 Windows 版本的实现细节可能变化。因此更稳妥的说法是“<code>WriteProcessMemory</code> 常见情况下会下沉到 <code>NtWriteVirtualMemory</code> 这一层能力”，而不是将某一版本的调用细节绝对化。</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么会被称为未公开-api">为什么会被称为“未公开 API”<a href="#为什么会被称为未公开-api" class="hash-link" aria-label="为什么会被称为“未公开 API”的直接链接" title="为什么会被称为“未公开 API”的直接链接" translate="no">​</a></h4>
+<p>这种说法能流行，通常有几个原因：</p>
+<ul>
+<li class="">安全分析文章更常讨论 <code>Nt*</code> 接口，而非普通开发文档中的 Win32 API。</li>
+<li class="">这类接口的参数风格、返回值和命名更接近内核对象模型，不像面向一般业务开发者的易用封装。</li>
+<li class="">微软对 Win32 API 的兼容性承诺通常更强；不少 Native API 虽长期存在，却不适合作为普通应用长期绑定的稳定 ABI。</li>
+</ul>
+<p>因此，<code>Nt*</code> / <code>Zw*</code> 更像是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">系统内部长期使用</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">许多接口也确实可见、可调用</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">但不是微软最鼓励普通应用直接依赖的稳定开发层</span><br></span></code></pre></div></div>
+<p>这和“完全私有、谁也看不到”并不是一回事。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="ntwritevirtualmemory">NtWriteVirtualMemory<a href="#ntwritevirtualmemory" class="hash-link" aria-label="NtWriteVirtualMemory的直接链接" title="NtWriteVirtualMemory的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="定义">定义<a href="#定义" class="hash-link" aria-label="定义的直接链接" title="定义的直接链接" translate="no">​</a></h3>
+<p><code>NtWriteVirtualMemory</code> 是 Windows Native API 中与“向目标进程地址空间写入数据”相关的接口。放在更熟悉的 Win32 语境里，它通常对应：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">WriteProcessMemory</span><br></span></code></pre></div></div>
+<p>公开攻防分析中经常会看到这样的 Win32 链路：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">OpenProcess</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">VirtualAllocEx</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">WriteProcessMemory</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">CreateRemoteThread</span><br></span></code></pre></div></div>
+<p>从更底层的 Native API 视角看，经常对应为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">NtOpenProcess</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">NtAllocateVirtualMemory</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">NtWriteVirtualMemory</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">NtCreateThreadEx</span><br></span></code></pre></div></div>
+<p>这也是为什么逆向、恶意代码分析和 EDR 对抗文章喜欢直接讨论 <code>NtWriteVirtualMemory</code>。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="权限误解">权限误解<a href="#权限误解" class="hash-link" aria-label="权限误解的直接链接" title="权限误解的直接链接" translate="no">​</a></h4>
+<p>很多人第一次看到 <code>NtWriteVirtualMemory</code>，会下意识认为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">既然它更底层</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">是不是就比 WriteProcessMemory 更能绕过权限检查？</span><br></span></code></pre></div></div>
+<p>这通常是误解。更准确地说：</p>
+<ul>
+<li class=""><code>NtWriteVirtualMemory</code> 更接近系统服务边界。</li>
+<li class="">它不是“无条件写任何进程内存”的万能接口。</li>
+<li class="">调用方仍要先拿到有效的目标进程句柄。</li>
+<li class="">句柄仍须具有合适访问权限，例如 <code>PROCESS_VM_WRITE</code>，并通常配套 <code>PROCESS_VM_OPERATION</code>。</li>
+<li class="">内核仍会结合令牌、DACL、完整性级别和保护状态做访问检查。</li>
+</ul>
+<p>因此：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">NtWriteVirtualMemory</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">≠</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">绕过安全模型</span><br></span></code></pre></div></div>
+<p>它只是更贴近安全模型真正生效的位置。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见-native-api">常见 Native API<a href="#常见-native-api" class="hash-link" aria-label="常见 Native API的直接链接" title="常见 Native API的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="接口对照">接口对照<a href="#接口对照" class="hash-link" aria-label="接口对照的直接链接" title="接口对照的直接链接" translate="no">​</a></h3>
+<p>下面这些接口，在 Windows 安全、恶意代码分析和 EDR 遥测里都很常见。</p>
+<table><thead><tr><th>Win32 / 常见高层能力</th><th>Native API / NT API</th><th>作用</th></tr></thead><tbody><tr><td><code>OpenProcess</code></td><td><code>NtOpenProcess</code></td><td>打开目标进程对象并申请句柄</td></tr><tr><td><code>ReadProcessMemory</code></td><td><code>NtReadVirtualMemory</code></td><td>读取目标进程地址空间内容</td></tr><tr><td><code>WriteProcessMemory</code></td><td><code>NtWriteVirtualMemory</code></td><td>向目标进程地址空间写数据</td></tr><tr><td><code>VirtualAllocEx</code></td><td><code>NtAllocateVirtualMemory</code></td><td>在目标进程中申请虚拟内存</td></tr><tr><td><code>VirtualProtectEx</code></td><td><code>NtProtectVirtualMemory</code></td><td>修改目标进程内存页保护属性</td></tr><tr><td><code>CreateRemoteThread</code></td><td><code>NtCreateThreadEx</code></td><td>在目标进程中创建线程</td></tr><tr><td><code>QueueUserAPC</code></td><td><code>NtQueueApcThread</code></td><td>向目标线程排队 APC</td></tr><tr><td><code>CreateFileMapping</code></td><td><code>NtCreateSection</code></td><td>创建节区对象</td></tr><tr><td><code>MapViewOfFile</code> / 跨进程节区映射</td><td><code>NtMapViewOfSection</code></td><td>将节区映射到进程地址空间</td></tr><tr><td><code>DuplicateHandle</code></td><td><code>NtDuplicateObject</code></td><td>复制已有句柄</td></tr><tr><td><code>SetThreadContext</code></td><td><code>NtSetContextThread</code></td><td>修改目标线程上下文</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="行为链">行为链<a href="#行为链" class="hash-link" aria-label="行为链的直接链接" title="行为链的直接链接" translate="no">​</a></h3>
+<p>从攻击链角度看，这些 API 的价值通常不在于孤立存在，而在于组成一条完整的行为链。</p>
+<p>例如：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">NtOpenProcess</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">NtAllocateVirtualMemory / NtMapViewOfSection</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">NtWriteVirtualMemory</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">NtProtectVirtualMemory</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">NtCreateThreadEx / NtQueueApcThread / NtSetContextThread</span><br></span></code></pre></div></div>
+<p>从防守角度，这条链比单独出现一个 <code>NtWriteVirtualMemory</code> 更有检测意义。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="设计原理">设计原理<a href="#设计原理" class="hash-link" aria-label="设计原理的直接链接" title="设计原理的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="win32-与-native-api">Win32 与 Native API<a href="#win32-与-native-api" class="hash-link" aria-label="Win32 与 Native API的直接链接" title="Win32 与 Native API的直接链接" translate="no">​</a></h3>
+<p>Windows 之所以有 Win32 API 和 Native API 这样的分层，不是为了“方便恶意软件调用”，而是需要区分：</p>
+<ul>
+<li class="">面向普通应用的兼容层。</li>
+<li class="">面向对象管理、内存管理等底层服务边界。</li>
+</ul>
+<p>Win32 API 更像微软给大多数应用开发者准备的稳定接口层，通常具有以下特点：</p>
+<ul>
+<li class="">语义更友好。</li>
+<li class="">文档更完整。</li>
+<li class="">错误处理和参数风格更贴近应用开发习惯。</li>
+<li class="">长期兼容性承诺更强。</li>
+</ul>
+<p>Native API 则更贴近内核服务边界：</p>
+<ul>
+<li class="">更接近 Windows 内核对象模型。</li>
+<li class="">参数和返回值更偏系统内部风格，例如 <code>NTSTATUS</code>。</li>
+<li class="">能更直接映射到对象管理、内存管理、线程管理和 I/O 管理能力。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="对象句柄与权限">对象、句柄与权限<a href="#对象句柄与权限" class="hash-link" aria-label="对象、句柄与权限的直接链接" title="对象、句柄与权限的直接链接" translate="no">​</a></h3>
+<p>Windows 并不是按“这个 API 名字危险不危险”来做安全判断，而是更多围绕对象和句柄模型控制能力。</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">进程、线程、节区、令牌、文件</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">都是内核对象</span><br></span></code></pre></div></div>
+<p>用户态程序要操作这些对象，通常需要先拿到：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">句柄（Handle）</span><br></span></code></pre></div></div>
+<p>句柄本质上像一张由内核发放的操作凭证。真正决定能否写入其他进程内存的核心，不是调用 <code>WriteProcessMemory</code> 还是 <code>NtWriteVirtualMemory</code>，而是：</p>
+<ul>
+<li class="">是否成功打开目标进程对象。</li>
+<li class="">获得的句柄是否包含足够访问掩码。</li>
+<li class="">令牌、完整性级别、特权和目标对象的安全描述符是否允许操作。</li>
+</ul>
+<p>所以：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">API 只是入口形式</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">句柄与访问控制才是权限判断的核心</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="系统调用边界">系统调用边界<a href="#系统调用边界" class="hash-link" aria-label="系统调用边界的直接链接" title="系统调用边界的直接链接" translate="no">​</a></h3>
+<p>即便用户态程序调用的是 <code>Nt*</code>，也不是在用户态“替代了内核”。请求仍要跨越系统调用边界进入内核态，再由内核执行对象访问检查、地址校验、内存管理或线程管理逻辑。</p>
+<p>Native API 的价值更多在于：</p>
+<ul>
+<li class="">更接近系统调用边界。</li>
+<li class="">更忠实地反映底层服务能力。</li>
+<li class="">研究人员和攻击者可能用它绕过一部分高层封装与兼容层。</li>
+</ul>
+<p>但这不意味着安全检查消失。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="nt-与-zw">Nt 与 Zw<a href="#nt-与-zw" class="hash-link" aria-label="Nt 与 Zw的直接链接" title="Nt 与 Zw的直接链接" translate="no">​</a></h4>
+<p>用户态讨论时，经常会看到 <code>NtOpenProcess</code>、<code>ZwOpenProcess</code> 这样的成对名称。学习安全时最重要的结论是：</p>
+<ul>
+<li class="">用户态通常主要接触 <code>ntdll.dll</code> 导出的 <code>Nt*</code> 接口。</li>
+<li class=""><code>Nt</code> / <code>Zw</code> 的真正区别，主要体现在内核态调用时对调用者模式和参数探测语义的处理。</li>
+<li class="">分析用户态恶意代码或 EDR 遥测时，通常不必过多纠结二者的命名差异。</li>
+</ul>
+<p>更值得关注的是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">它最终操作什么对象</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">需要什么句柄权限</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">是否构成完整的高风险行为链</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="攻防视角">攻防视角<a href="#攻防视角" class="hash-link" aria-label="攻防视角的直接链接" title="攻防视角的直接链接" translate="no">​</a></h2>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="攻击者为什么关注">攻击者为什么关注<a href="#攻击者为什么关注" class="hash-link" aria-label="攻击者为什么关注的直接链接" title="攻击者为什么关注的直接链接" translate="no">​</a></h4>
+<p>这些 API 更贴近底层能力，容易直接对应到以下动作：</p>
+<ul>
+<li class="">跨进程打开句柄。</li>
+<li class="">读写目标进程内存。</li>
+<li class="">修改页面权限。</li>
+<li class="">映射节区。</li>
+<li class="">创建远程线程。</li>
+<li class="">修改线程上下文。</li>
+</ul>
+<p>这不意味着 API 本身恶意，但它们确实是实现跨进程操作时经常出现的能力边界。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="防守者为什么关注">防守者为什么关注<a href="#防守者为什么关注" class="hash-link" aria-label="防守者为什么关注的直接链接" title="防守者为什么关注的直接链接" translate="no">​</a></h4>
+<p>从防守者角度，Native API 的价值在于：</p>
+<ul>
+<li class="">比纯高层 Win32 API 更接近真实系统服务行为。</li>
+<li class="">很多恶意样本会直接使用 <code>Nt*</code>，而不是只停留在 <code>Kernel32</code> / <code>KernelBase</code> 层。</li>
+<li class="">若只监控高层 API，可能遗漏一部分更贴近底层的实现路径。</li>
+</ul>
+<p>因此终端安全产品通常同时关注：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">Win32 层调用</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">+</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">ntdll!Nt* 层调用</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">+</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">内核对象访问与系统遥测</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="edr-检测">EDR 检测<a href="#edr-检测" class="hash-link" aria-label="EDR 检测的直接链接" title="EDR 检测的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="检测对象">检测对象<a href="#检测对象" class="hash-link" aria-label="检测对象的直接链接" title="检测对象的直接链接" translate="no">​</a></h3>
+<p>如果只问“EDR 要不要检测 <code>NtWriteVirtualMemory</code>”，答案当然是要。</p>
+<p>但可靠的检测对象通常不是某一次孤立调用，而是下面这条完整序列：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">获取跨进程能力</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">修改内存</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">建立执行</span><br></span></code></pre></div></div>
+<p>例如，以下组合通常比单点 API 更有价值：</p>
+<ul>
+<li class="">先申请目标进程高权限句柄，随后立即发生跨进程写内存。</li>
+<li class="">先写内存，随后内存页从 <code>RW</code> 变为 <code>RX</code> 或 <code>RWX</code>。</li>
+<li class="">跨进程写入后，紧接着出现远程线程、APC、线程上下文修改或异常模块加载。</li>
+<li class="">目标进程是敏感进程、常见宿主，或不应被普通业务进程操作的对象。</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="用户态观测">用户态观测<a href="#用户态观测" class="hash-link" aria-label="用户态观测的直接链接" title="用户态观测的直接链接" translate="no">​</a></h4>
+<p>许多产品会观测，甚至 Hook 下列更常见的高层入口：</p>
+<ul>
+<li class=""><code>OpenProcess</code></li>
+<li class=""><code>ReadProcessMemory</code></li>
+<li class=""><code>WriteProcessMemory</code></li>
+<li class=""><code>VirtualAllocEx</code></li>
+<li class=""><code>VirtualProtectEx</code></li>
+<li class=""><code>CreateRemoteThread</code></li>
+<li class=""><code>QueueUserAPC</code></li>
+<li class=""><code>SetThreadContext</code></li>
+</ul>
+<p>优点是语义直观、参数更贴近开发者习惯，也能覆盖很多普通样本和红队工具的调用路径。</p>
+<p>局限也很明显：样本若直接改走 <code>ntdll!Nt*</code>，只 Hook 这一层可能不够；用户态 Hook 本身也可能被绕过、卸钩或篡改。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="ntdllnt-层">ntdll!Nt* 层<a href="#ntdllnt-层" class="hash-link" aria-label="ntdll!Nt* 层的直接链接" title="ntdll!Nt* 层的直接链接" translate="no">​</a></h4>
+<p>用户态进一步下沉时，常见关注点包括：</p>
+<ul>
+<li class=""><code>ntdll!NtOpenProcess</code></li>
+<li class=""><code>ntdll!NtReadVirtualMemory</code></li>
+<li class=""><code>ntdll!NtWriteVirtualMemory</code></li>
+<li class=""><code>ntdll!NtAllocateVirtualMemory</code></li>
+<li class=""><code>ntdll!NtProtectVirtualMemory</code></li>
+<li class=""><code>ntdll!NtCreateThreadEx</code></li>
+<li class=""><code>ntdll!NtQueueApcThread</code></li>
+<li class=""><code>ntdll!NtMapViewOfSection</code></li>
+<li class=""><code>ntdll!NtDuplicateObject</code></li>
+<li class=""><code>ntdll!NtSetContextThread</code></li>
+</ul>
+<p>这一层更接近系统调用边界，因此覆盖面通常比只看 <code>Kernel32</code> / <code>KernelBase</code> 更好。</p>
+<p>但 <code>ntdll</code> Hook 仍不是最终可信源：它适合做高语义遥测和行为拼接，不应作为唯一防线。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="内核侧观测">内核侧观测<a href="#内核侧观测" class="hash-link" aria-label="内核侧观测的直接链接" title="内核侧观测的直接链接" translate="no">​</a></h4>
+<p>从稳健、长期兼容且受支持的 EDR 实现角度，应重点依赖内核侧受支持能力，而不是 SSDT Hook 或内核 inline hook。常见重点包括：</p>
+<ul>
+<li class=""><code>ObRegisterCallbacks</code>。</li>
+<li class="">进程、线程、映像加载通知回调。</li>
+<li class="">ETW 遥测。</li>
+<li class="">文件、注册表、网络和内存行为的关联分析。</li>
+</ul>
+<p>其中一类关键能力是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">对象回调观察谁在申请高风险句柄</span><br></span></code></pre></div></div>
+<p>对于进程 / 线程对象，应重点关注：</p>
+<ul>
+<li class=""><code>PROCESS_VM_READ</code></li>
+<li class=""><code>PROCESS_VM_WRITE</code></li>
+<li class=""><code>PROCESS_VM_OPERATION</code></li>
+<li class=""><code>PROCESS_CREATE_THREAD</code></li>
+<li class=""><code>PROCESS_DUP_HANDLE</code></li>
+<li class=""><code>THREAD_SET_CONTEXT</code></li>
+<li class=""><code>THREAD_SUSPEND_RESUME</code></li>
+</ul>
+<p>这些信息通常比某个 API 名字更稳定，因为它们直接反映：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">该进程是否真的获得了跨进程操作能力</span><br></span></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="为什么不推荐-ssdt-hook">为什么不推荐 SSDT Hook<a href="#为什么不推荐-ssdt-hook" class="hash-link" aria-label="为什么不推荐 SSDT Hook的直接链接" title="为什么不推荐 SSDT Hook的直接链接" translate="no">​</a></h4>
+<p>学习 Native API 时，很容易想到：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">既然 Nt* 最后进入系统调用</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">那 EDR 是否直接 Hook SSDT 最好？</span><br></span></code></pre></div></div>
+<p>从现代 Windows 的产品化实现角度，这通常不是推荐方向，原因包括：</p>
+<ul>
+<li class="">兼容性与稳定性风险高。</li>
+<li class="">容易与 PatchGuard、内核完整性保护机制冲突。</li>
+<li class="">维护成本高，版本差异大。</li>
+<li class="">对商业 EDR 来说，不是稳妥的长期工程方案。</li>
+</ul>
+<p>更现实的答案是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">用受支持的对象回调、内核通知、ETW 和多源行为关联</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">去观察同一条攻击链</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="关联判断">关联判断<a href="#关联判断" class="hash-link" aria-label="关联判断的直接链接" title="关联判断的直接链接" translate="no">​</a></h3>
+<p>成熟的检测逻辑不是“某个 <code>Nt*</code> 一出现就判恶意”，而是看上下文。高价值判断点包括：</p>
+<ul>
+<li class="">调用方是否应具备调试器、辅助功能、性能分析或安全产品属性。</li>
+<li class="">目标是否属于浏览器、<code>explorer.exe</code>、<code>lsass.exe</code>、办公软件、脚本宿主或其他高价值宿主。</li>
+<li class="">短时间内是否连续出现“开句柄 → 写内存 → 改权限 → 建执行”。</li>
+<li class="">线程起始地址是否位于私有内存，而不是受信任模块映像。</li>
+<li class="">是否出现私有可执行内存、异常映像映射、线程上下文突变或 APC 执行。</li>
+<li class="">父子进程关系、签名、命令行、落地路径和会话信息是否异常。</li>
+</ul>
+<p>可以将成熟产品的逻辑概括为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">多点观测</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">把句柄、内存、线程、模块和进程画像串起来</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">↓</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">再做风险判断</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="误报边界">误报边界<a href="#误报边界" class="hash-link" aria-label="误报边界的直接链接" title="误报边界的直接链接" translate="no">​</a></h2>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="合法使用场景">合法使用场景<a href="#合法使用场景" class="hash-link" aria-label="合法使用场景的直接链接" title="合法使用场景的直接链接" translate="no">​</a></h4>
+<p>这些能力并不天然等于恶意。以下合法软件都可能使用类似能力：</p>
+<ul>
+<li class="">调试器。</li>
+<li class="">IDE。</li>
+<li class="">性能分析器。</li>
+<li class="">自动化与辅助工具。</li>
+<li class="">安全产品本身。</li>
+<li class="">浏览器、多进程沙箱和部分反作弊组件。</li>
+</ul>
+<p>因此如果只看到：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">NtWriteVirtualMemory 出现了</span><br></span></code></pre></div></div>
+<p>误报通常会非常高。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="判断原则">判断原则<a href="#判断原则" class="hash-link" aria-label="判断原则的直接链接" title="判断原则的直接链接" translate="no">​</a></h3>
+<p>合理的方式始终是把行为放回完整语境：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">谁在调用</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">对谁调用</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">前面拿到了什么权限</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">后面又建立了什么执行</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="小结">小结<a href="#小结" class="hash-link" aria-label="小结的直接链接" title="小结的直接链接" translate="no">​</a></h2>
+<blockquote>
+<p><code>NtWriteVirtualMemory</code> 这类 Windows Native API，本质上是比 Win32 更贴近系统调用和内核对象模型的一层接口；它们不是“绕过安全模型的神秘后门”，但因为更靠近真实跨进程能力边界，所以在恶意代码分析和 EDR 检测里都非常关键。</p>
+</blockquote></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="文件选项卡"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes/docs/网络安全/Windows安全/Sysmon"><div class="pagination-nav__sublabel">上一页</div><div class="pagination-nav__label">Sysmon</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes/docs/网络安全/Windows安全/组件与工具"><div class="pagination-nav__sublabel">下一页</div><div class="pagination-nav__label">组件与工具</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#windows-native-apint-api" class="table-of-contents__link toc-highlight">Windows Native API（NT API）</a></li><li><a href="#分层" class="table-of-contents__link toc-highlight">分层</a><ul><li><a href="#win32-到-native-api" class="table-of-contents__link toc-highlight">Win32 到 Native API</a></li></ul></li><li><a href="#ntwritevirtualmemory" class="table-of-contents__link toc-highlight">NtWriteVirtualMemory</a><ul><li><a href="#定义" class="table-of-contents__link toc-highlight">定义</a></li></ul></li><li><a href="#常见-native-api" class="table-of-contents__link toc-highlight">常见 Native API</a><ul><li><a href="#接口对照" class="table-of-contents__link toc-highlight">接口对照</a></li><li><a href="#行为链" class="table-of-contents__link toc-highlight">行为链</a></li></ul></li><li><a href="#设计原理" class="table-of-contents__link toc-highlight">设计原理</a><ul><li><a href="#win32-与-native-api" class="table-of-contents__link toc-highlight">Win32 与 Native API</a></li><li><a href="#对象句柄与权限" class="table-of-contents__link toc-highlight">对象、句柄与权限</a></li><li><a href="#系统调用边界" class="table-of-contents__link toc-highlight">系统调用边界</a></li></ul></li><li><a href="#攻防视角" class="table-of-contents__link toc-highlight">攻防视角</a></li><li><a href="#edr-检测" class="table-of-contents__link toc-highlight">EDR 检测</a><ul><li><a href="#检测对象" class="table-of-contents__link toc-highlight">检测对象</a></li><li><a href="#关联判断" class="table-of-contents__link toc-highlight">关联判断</a></li></ul></li><li><a href="#误报边界" class="table-of-contents__link toc-highlight">误报边界</a><ul><li><a href="#判断原则" class="table-of-contents__link toc-highlight">判断原则</a></li></ul></li><li><a href="#小结" class="table-of-contents__link toc-highlight">小结</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/notes/docs/intro">Notes</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://x.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">X<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 M0dZer0's Notes, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
