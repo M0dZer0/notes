@@ -1,3 +1,4 @@
+const {execFileSync} = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -70,12 +71,26 @@ function getNoteTitle(filePath) {
   return path.basename(filePath, path.extname(filePath));
 }
 
+function getGitLastCommitDate(filePath) {
+  try {
+    const output = execFileSync('git', ['log', '-1', '--format=%cI', '--', path.relative(ROOT, filePath)], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+
+    return output ? new Date(output) : null;
+  } catch {
+    return null;
+  }
+}
+
 function createRecentNote(filePath) {
   const fileStats = fs.statSync(filePath);
   const relativePath = path.relative(path.join(ROOT, 'docs'), filePath);
   const id = relativePath.replace(/\.(md|mdx)$/i, '').split(path.sep).join('/');
   const category = path.dirname(relativePath).split(path.sep).join(' / ');
-  const updatedAt = new Date(fileStats.mtimeMs);
+  const updatedAt = getGitLastCommitDate(filePath) ?? new Date(fileStats.mtimeMs);
 
   return {
     id,
