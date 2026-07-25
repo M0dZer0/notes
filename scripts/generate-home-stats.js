@@ -66,22 +66,11 @@ function formatUpdatedDate(date) {
     .replaceAll('/', '.');
 }
 
-function getNoteTitle(source, filePath) {
-  const content = source.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, '');
-  const heading = content.match(/^#{1,2}\s+(.+)$/m);
-
-  if (heading) {
-    return heading[1]
-      .replace(/[`*_]/g, '')
-      .replace(/\s+#+\s*$/, '')
-      .trim();
-  }
-
+function getNoteTitle(filePath) {
   return path.basename(filePath, path.extname(filePath));
 }
 
 function createRecentNote(filePath) {
-  const source = fs.readFileSync(filePath, 'utf8');
   const fileStats = fs.statSync(filePath);
   const relativePath = path.relative(path.join(ROOT, 'docs'), filePath);
   const id = relativePath.replace(/\.(md|mdx)$/i, '').split(path.sep).join('/');
@@ -90,7 +79,7 @@ function createRecentNote(filePath) {
 
   return {
     id,
-    title: getNoteTitle(source, filePath),
+    title: getNoteTitle(filePath),
     category: category === '.' ? '笔记' : category,
     updatedAt: updatedAt.toISOString(),
     updatedLabel: formatUpdatedDate(updatedAt),
