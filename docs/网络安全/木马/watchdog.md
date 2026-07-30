@@ -1,5 +1,3 @@
-## watchdog
-
 在分析银狐（Silver Fox / ValleyRAT / Winos）这类木马时，很多人都会遇到一个很烦的现象：
 
 > 明明已经把样本进程结束了，过一会儿它又起来了。

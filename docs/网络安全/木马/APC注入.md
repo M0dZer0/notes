@@ -1,5 +1,3 @@
-## APC 注入
-
 先说结论：
 
 > `APC 注入 -> taskhostw.exe` 不是 Windows 恶意软件的通用唯一特征，但它已经成为近两年银狐（Silver Fox）/ ValleyRAT / Winos 系列样本中反复出现的一种代表性注入方式。因此更适合把它理解成银狐的一个**高相关行为特征**，而不是银狐的专属 IOC。

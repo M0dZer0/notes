@@ -1,5 +1,3 @@
-## Windows Native API（NT API）
-
 在 Windows 安全语境里，`NtWriteVirtualMemory`、`NtOpenProcess`、`NtCreateThreadEx` 这类接口常被称为“未公开内核 API”。这个说法不算完全准确。
 
 更准确地说，它们通常属于 **Windows Native API / NT API**：很多接口由用户态的 `ntdll.dll` 导出；它们比 Win32 API 更接近 Windows 内核对象和系统服务边界；但文档完整度、兼容性承诺和长期稳定性通常不如高层 Win32 API。
