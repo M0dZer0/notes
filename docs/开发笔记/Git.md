@@ -247,6 +247,71 @@ git push --force-with-lease origin your-branch-name
   - **企业合规：** 某些公司为了追踪责任，要求每一行代码都有开发者的显式确认。
 - **意义：** 这不是加密签名（那叫 GPG 签名），而是一份**数字声明**。
 
+##### 让 Agent 成为共同贡献者
+
+如果一次提交由开发者和 AI Agent 共同完成，可以在 Commit Message 末尾加入 `Co-authored-by` trailer，记录 Agent 参与了该提交。它不会改变提交的 Author 或 Committer，只是在提交元数据中补充共同贡献者。
+
+常见 Agent 的写法如下：
+
+| Agent | Commit trailer |
+| --- | --- |
+| Codex | `Co-authored-by: Codex <codex@openai.com>` |
+| Claude | `Co-authored-by: Claude <noreply@anthropic.com>` |
+| Cursor | `Co-authored-by: Cursor <cursoragent@cursor.com>` |
+
+trailer 应放在提交信息的最后，并与前面的正文之间保留一个空行。例如，提交由 Codex 协助完成：
+
+```text
+补充 Git 使用笔记
+
+Co-authored-by: Codex <codex@openai.com>
+```
+
+在命令行中，可以用两个 `-m` 参数保留正文与 trailer 之间的空行：
+
+```bash
+git commit -m "补充 Git 使用笔记" \
+  -m "Co-authored-by: Codex <codex@openai.com>"
+```
+
+由 Claude 或 Cursor 协助时，替换最后一行即可：
+
+```bash
+git commit -m "补充 Git 使用笔记" \
+  -m "Co-authored-by: Claude <noreply@anthropic.com>"
+
+git commit -m "补充 Git 使用笔记" \
+  -m "Co-authored-by: Cursor <cursoragent@cursor.com>"
+```
+
+如果多个 Agent 共同参与，可以连续加入多行 trailer：
+
+```text
+补充 Git 使用笔记
+
+Co-authored-by: Codex <codex@openai.com>
+Co-authored-by: Claude <noreply@anthropic.com>
+Co-authored-by: Cursor <cursoragent@cursor.com>
+```
+
+提交后可使用以下命令检查完整的 Commit Message：
+
+```bash
+git show -s --format=full HEAD
+```
+
+如果提交尚未推送，可以通过 `--amend` 为最近一次提交补充共同贡献者：
+
+```bash
+git commit --amend
+```
+
+在编辑器中保留原提交信息，空一行，再把 `Co-authored-by` 放在最后。`--amend` 会生成新的 Commit ID；如果原提交已经推送，还需要重写远程历史，因此应先确认不会影响其他协作者。
+
+:::note
+`Co-authored-by` 是 Git 提交信息中的约定格式。GitHub 是否将其显示为可点击的账号和贡献者，还取决于该邮箱是否被对应平台账号验证或被平台识别；即使没有关联账号，trailer 仍会保留在 Git 历史中。
+:::
+
 #### 推送（Push）
 
 - **作用**：把你本地已经 **Commit（提交）** 的记录上传到远程仓库。
