@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-Hans" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-网络安全/木马/C2通信" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">C2通信 | M0dZer0&#x27;s Notes</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://m0dzer0.github.io/notes/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://m0dzer0.github.io/notes/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://m0dzer0.github.io/notes/docs/网络安全/木马/C2通信"><meta data-rh="true" property="og:locale" content="zh_Hans"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" name="docusaurus_locale" content="zh-Hans"><meta data-rh="true" name="docsearch:language" content="zh-Hans"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="C2通信 | M0dZer0&#x27;s Notes"><meta data-rh="true" name="description" content="概念"><meta data-rh="true" property="og:description" content="概念"><link data-rh="true" rel="icon" href="/notes/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://m0dzer0.github.io/notes/docs/网络安全/木马/C2通信"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/网络安全/木马/C2通信" hreflang="zh-Hans"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/en/docs/网络安全/木马/C2通信" hreflang="en"><link data-rh="true" rel="alternate" href="https://m0dzer0.github.io/notes/docs/网络安全/木马/C2通信" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"网络安全","item":"https://m0dzer0.github.io/notes/docs/category/网络安全"},{"@type":"ListItem","position":2,"name":"C2通信","item":"https://m0dzer0.github.io/notes/docs/网络安全/木马/C2通信"}]}</script><link rel="stylesheet" href="/notes/assets/css/styles.fcc4eb7b.css">
+<script src="/notes/assets/js/runtime~main.8088b70e.js" defer="defer"></script>
+<script src="/notes/assets/js/main.0e8853c9.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/notes/img/favicon.ico"><div role="region" aria-label="跳到主要内容"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">跳到主要内容</a></div><nav aria-label="主导航" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="切换导航栏" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/notes/"><div class="navbar__logo"><img src="/notes/img/favicon.ico" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/notes/img/favicon.ico" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">M0dZer0&#x27;s Notes</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/notes/docs/intro">Notes</a><a href="https://m0dzer0.github.io" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Blog</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/m0dzer0" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="回到顶部" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="文档侧边栏" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/intro"><span title="介绍" class="linkLabel_WmDU">介绍</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/开发笔记"><span title="开发笔记" class="categoryLinkLabel_W154">开发笔记</span></a><button aria-label="展开侧边栏分类 &#x27;开发笔记&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/知识笔记"><span title="知识笔记" class="categoryLinkLabel_W154">知识笔记</span></a><button aria-label="展开侧边栏分类 &#x27;知识笔记&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/notes/docs/category/网络安全"><span title="网络安全" class="categoryLinkLabel_W154">网络安全</span></a><button aria-label="折叠侧边栏分类 &#x27;网络安全&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/云安全"><span title="云安全" class="categoryLinkLabel_W154">云安全</span></a><button aria-label="展开侧边栏分类 &#x27;云安全&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/ctf"><span title="CTF" class="categoryLinkLabel_W154">CTF</span></a><button aria-label="展开侧边栏分类 &#x27;CTF&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/安全产品"><span title="安全产品" class="categoryLinkLabel_W154">安全产品</span></a><button aria-label="展开侧边栏分类 &#x27;安全产品&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" tabindex="0" href="/notes/docs/category/windows安全"><span title="Windows安全" class="categoryLinkLabel_W154">Windows安全</span></a><button aria-label="展开侧边栏分类 &#x27;Windows安全&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" tabindex="0" href="/notes/docs/网络安全/木马/APC注入"><span title="木马" class="categoryLinkLabel_W154">木马</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/APC注入"><span title="APC注入" class="linkLabel_WmDU">APC注入</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/notes/docs/网络安全/木马/C2通信"><span title="C2通信" class="linkLabel_WmDU">C2通信</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/CustomAction"><span title="CustomAction" class="linkLabel_WmDU">CustomAction</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/SeDebug"><span title="SeDebug" class="linkLabel_WmDU">SeDebug</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/watchdog"><span title="watchdog" class="linkLabel_WmDU">watchdog</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/安全产品致盲"><span title="安全产品致盲" class="linkLabel_WmDU">安全产品致盲</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/提权"><span title="提权" class="linkLabel_WmDU">提权</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/注入"><span title="注入" class="linkLabel_WmDU">注入</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/白加黑利用"><span title="白加黑利用" class="linkLabel_WmDU">白加黑利用</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/计划任务"><span title="计划任务" class="linkLabel_WmDU">计划任务</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/notes/docs/网络安全/木马/进程空洞化（Process Hollowing）"><span title="进程空洞化（Process Hollowing）" class="linkLabel_WmDU">进程空洞化（Process Hollowing）</span></a></li></ul></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/notes/docs/category/leetcode"><span title="Leetcode" class="categoryLinkLabel_W154">Leetcode</span></a><button aria-label="展开侧边栏分类 &#x27;Leetcode&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/CVE-2026-52648"><span title="CVE-2026-52648" class="linkLabel_WmDU">CVE-2026-52648</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/notes/docs/写作指南"><span title="写作指南" class="linkLabel_WmDU">写作指南</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="页面路径"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="主页面" class="breadcrumbs__link" href="/notes/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/notes/docs/category/网络安全"><span>网络安全</span></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">木马</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">C2通信</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>C2通信</h1></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="概念">概念<a href="#概念" class="hash-link" aria-label="概念的直接链接" title="概念的直接链接" translate="no">​</a></h2>
+<p>C2（Command and Control，命令与控制）通信，是木马与攻击者控制端之间交换心跳、主机信息、任务和结果的通信机制。它通常不只是“连接一个服务器”，而是一整套协议，包括：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">初始化</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 注册主机</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 获取唯一标识</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 建立加密会话</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 周期性心跳</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 接收任务</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 回传结果</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 失败重试或切换备用地址</span><br></span></code></pre></div></div>
+<p>从木马行为分析角度，C2 的价值主要体现在三点：</p>
+<ul>
+<li class="">让攻击者持续控制受害主机；</li>
+<li class="">为后续命令、下载、注入和数据窃取提供通道；</li>
+<li class="">通过加密、伪装和周期性通信降低被发现的概率。</li>
+</ul>
+<p>因此，检测 C2 不能只依赖域名或 IP 黑名单，还需要把网络流量、进程行为、主机标识采集和加密实现结合起来分析。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="通信阶段">通信阶段<a href="#通信阶段" class="hash-link" aria-label="通信阶段的直接链接" title="通信阶段的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-初始连接与注册">1. 初始连接与注册<a href="#1-初始连接与注册" class="hash-link" aria-label="1. 初始连接与注册的直接链接" title="1. 初始连接与注册的直接链接" translate="no">​</a></h3>
+<p>木马首次运行时，通常会向 C2 发送一条注册请求，用于报告主机环境并获取后续配置：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">启动</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 收集主机信息</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 生成或读取主机 ID</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 发送注册包</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 接收会话参数、任务或心跳间隔</span><br></span></code></pre></div></div>
+<p>注册信息可能包括：</p>
+<ul>
+<li class="">主机唯一标识；</li>
+<li class="">计算机名、用户名和当前会话；</li>
+<li class="">Windows 版本、语言和时区；</li>
+<li class="">处理器、内存和磁盘信息；</li>
+<li class="">当前权限、是否为虚拟机以及安全软件信息；</li>
+<li class="">IP 地址、代理配置和网络环境；</li>
+<li class="">木马版本、功能模块和已执行阶段。</li>
+</ul>
+<p>首次注册前出现大量硬件、系统和安全软件信息采集，再紧接着访问低信誉公网地址，是较有价值的行为组合。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-心跳与任务轮询">2. 心跳与任务轮询<a href="#2-心跳与任务轮询" class="hash-link" aria-label="2. 心跳与任务轮询的直接链接" title="2. 心跳与任务轮询的直接链接" translate="no">​</a></h3>
+<p>注册完成后，木马可能采用固定周期、随机抖动或失败退避机制发送心跳：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">等待 N 秒</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 发送心跳或拉取任务</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 解析响应</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 执行任务</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 回传结果</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 进入下一轮等待</span><br></span></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beacon-是什么">Beacon 是什么<a href="#beacon-是什么" class="hash-link" aria-label="Beacon 是什么的直接链接" title="Beacon 是什么的直接链接" translate="no">​</a></h4>
+<p>Beacon 在 C2 通信中通常指木马按照一定策略，周期性向控制端“报到”或请求任务的通信行为，也可以指实现这种通信功能的木马组件。中文语境中常译为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">信标 / 心跳 / 上线探测</span><br></span></code></pre></div></div>
+<p>一次典型 Beacon 可以抽象为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">等待一段时间</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 连接 C2</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 发送 Host ID、状态和结果</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 拉取待执行任务</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 接收响应</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 断开或保持连接</span><br></span></code></pre></div></div>
+<p>它的核心作用是维持“主机仍然在线”的状态，并让控制端能够在不主动连接受害主机的情况下下发命令。Beacon 不一定每次都包含完整任务，有时只发送状态和主机标识；如果服务端有任务，才会返回命令、配置或下载地址。</p>
+<p>Beacon 与普通心跳的侧重点略有不同：</p>
+<ul>
+<li class=""><strong>心跳</strong>更强调连接是否存活或服务是否正常；</li>
+<li class=""><strong>Beacon</strong>通常还承担上线、主机识别、任务轮询、结果回传和会话维持。</li>
+</ul>
+<p>实际实现中两者经常混用，因此检测时重点应放在通信时序和上下文，而不是术语本身。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beacon-的时间策略">Beacon 的时间策略<a href="#beacon-的时间策略" class="hash-link" aria-label="Beacon 的时间策略的直接链接" title="Beacon 的时间策略的直接链接" translate="no">​</a></h4>
+<p>为了避免形成过于明显的固定周期，木马可能使用以下策略：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">固定间隔：每隔 N 秒通信</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">随机抖动：N ± 随机时间</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">失败退避：连接失败后逐渐延长等待时间</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">任务唤醒：收到任务后立即回连或上传结果</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">工作时段：只在特定时间范围内通信</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">长短睡眠：根据任务类型切换等待时间</span><br></span></code></pre></div></div>
+<p>例如，观察到的连接间隔可能并不完全相同，但仍会围绕某个基准值分布。随机抖动会降低简单的固定间隔规则效果，却通常不能消除长期统计上的周期性。</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beacon-的通信内容">Beacon 的通信内容<a href="#beacon-的通信内容" class="hash-link" aria-label="Beacon 的通信内容的直接链接" title="Beacon 的通信内容的直接链接" translate="no">​</a></h4>
+<p>Beacon 请求或响应中可能包含：</p>
+<ul>
+<li class="">Host ID、木马版本和会话标识；</li>
+<li class="">当前用户名、计算机名、权限和在线状态；</li>
+<li class="">上一次任务的执行结果或错误码；</li>
+<li class="">待执行命令、模块下载地址和配置更新；</li>
+<li class="">文件列表、系统信息或其他收集结果；</li>
+<li class="">下一次通信间隔、备用 C2 和代理配置。</li>
+</ul>
+<p>如果采用自定义加密协议，网络侧可能只能看到固定头部、长度字段和高熵数据，但仍可通过请求方向、包长、间隔、重试和进程上下文识别 Beacon。</p>
+<p>常见任务类型包括：</p>
+<ul>
+<li class="">下载或更新模块；</li>
+<li class="">执行命令或脚本；</li>
+<li class="">收集文件、屏幕或系统信息；</li>
+<li class="">上传压缩包或执行结果；</li>
+<li class="">加载内存模块、注入其他进程；</li>
+<li class="">修改配置、持久化或自删除。</li>
+</ul>
+<p>周期性不一定是严格固定的。较成熟的实现会加入随机延迟、失败重试、代理切换和睡眠时间，以减少简单的固定间隔检测。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="主机唯一标识">主机唯一标识<a href="#主机唯一标识" class="hash-link" aria-label="主机唯一标识的直接链接" title="主机唯一标识的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="标识的作用">标识的作用<a href="#标识的作用" class="hash-link" aria-label="标识的作用的直接链接" title="标识的作用的直接链接" translate="no">​</a></h3>
+<p>C2 需要知道“当前连接来自哪台主机”，因此木马通常会在首次运行时生成或收集一个 Host ID，并在后续请求中重复携带。服务端可能据此：</p>
+<ul>
+<li class="">区分不同受害主机；</li>
+<li class="">关联同一主机的多次上线；</li>
+<li class="">保存任务状态和配置；</li>
+<li class="">防止重复注册；</li>
+<li class="">判断主机是否已经执行过某个阶段。</li>
+</ul>
+<p>Host ID 只是主机标识，不等于安全认证。若协议没有额外的会话认证，攻击者或分析人员可能伪造该字段。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见组成字段">常见组成字段<a href="#常见组成字段" class="hash-link" aria-label="常见组成字段的直接链接" title="常见组成字段的直接链接" translate="no">​</a></h3>
+<p>较常见的组合是读取多个系统属性，再拼接、编码或哈希生成最终标识：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">主板 UUID</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + OS 序列号</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + HKLM\SOFTWARE\Microsoft\Cryptography\MachineGuid</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 计算机名或磁盘信息</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 规范化</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 哈希 / 编码</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → Host ID</span><br></span></code></pre></div></div>
+<p>其中：</p>
+<ul>
+<li class=""><strong>主板 UUID</strong>：通常来自 SMBIOS，可通过 WMI、系统固件信息或其他硬件查询接口获得；</li>
+<li class=""><strong>OS 序列号</strong>：可能来自系统授权或操作系统相关信息；</li>
+<li class=""><strong>MachineGuid</strong>：常见位置为 <code>HKLM\SOFTWARE\Microsoft\Cryptography\MachineGuid</code>，用于区分 Windows 安装实例；</li>
+<li class=""><strong>计算机名、用户名、磁盘序列号</strong>：有时作为补充字段，帮助提高区分度。</li>
+</ul>
+<p>在 Windows 遥测中，可能看到以下相关访问：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">WMI / SMBIOS 查询</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 注册表读取 MachineGuid</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 系统版本与序列号查询</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 随后访问公网 C2</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="生成方式">生成方式<a href="#生成方式" class="hash-link" aria-label="生成方式的直接链接" title="生成方式的直接链接" translate="no">​</a></h3>
+<p>一种常见抽象流程是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">读取多个字段</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 去除空格、大小写和分隔符差异</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 按固定顺序拼接</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → Hash / HMAC</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → Base64、十六进制或自定义编码</span><br></span></code></pre></div></div>
+<p>例如，分析时可以把以下字段作为候选输入进行验证：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">normalized(board_uuid + os_serial + machine_guid)</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → SHA-256 或其他摘要</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 截取部分字节作为 Host ID</span><br></span></code></pre></div></div>
+<p>实际样本可能使用 MD5、SHA-1、SHA-256、CRC、异或或自定义混淆。不要因为 Host ID 看起来是十六进制字符串，就直接断定它使用了某一种哈希算法。应结合样本中的输入长度、调用 API、输出长度和多台主机样本进行验证。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="稳定性与误判">稳定性与误判<a href="#稳定性与误判" class="hash-link" aria-label="稳定性与误判的直接链接" title="稳定性与误判的直接链接" translate="no">​</a></h3>
+<p>硬件和系统字段并不总是稳定：</p>
+<ul>
+<li class="">虚拟机克隆可能产生重复或相同的 UUID；</li>
+<li class="">重装系统可能改变 <code>MachineGuid</code>；</li>
+<li class="">主板更换可能改变 SMBIOS UUID；</li>
+<li class="">某些设备字段为空、格式异常或被厂商统一填充；</li>
+<li class="">隐私工具、系统加固或权限限制可能阻止部分查询。</li>
+</ul>
+<p>因此，木马可能采用多字段回退逻辑：某个字段读取失败时使用其他字段，或者将首次生成的随机 ID 写入注册表、文件或配置中长期保存。</p>
+<p>检测时，单独读取 <code>MachineGuid</code> 或查询 SMBIOS 并不等于恶意；更有价值的是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">多种硬件 / 系统标识采集</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 本地拼接、哈希或编码</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 立即向异常公网地址发送</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="加密通信">加密通信<a href="#加密通信" class="hash-link" aria-label="加密通信的直接链接" title="加密通信的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="加密的目的">加密的目的<a href="#加密的目的" class="hash-link" aria-label="加密的目的的直接链接" title="加密的目的的直接链接" translate="no">​</a></h3>
+<p>C2 加密通常用于保护以下内容：</p>
+<ul>
+<li class="">Host ID 和注册信息；</li>
+<li class="">命令、任务和执行参数；</li>
+<li class="">文件列表、系统信息和凭据；</li>
+<li class="">下载模块或更新包；</li>
+<li class="">心跳、错误码和结果数据。</li>
+</ul>
+<p>加密不一定意味着使用了标准 TLS。木马可能使用：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">HTTPS / TLS</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">自定义 TCP + 对称加密</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">HTTP 外观 + 加密 Body</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">DNS 查询中的编码数据</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">WebSocket 或其他长连接</span><br></span></code></pre></div></div>
+<p>需要区分“传输层加密”和“应用层加密”：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">TLS</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 保护传输通道</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">应用层 AES / RC4 / XOR / 自定义算法</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 保护消息内容</span><br></span></code></pre></div></div>
+<p>两者可以单独使用，也可能叠加使用。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="windows-cryptoapi-密钥派生">Windows CryptoAPI 密钥派生<a href="#windows-cryptoapi-密钥派生" class="hash-link" aria-label="Windows CryptoAPI 密钥派生的直接链接" title="Windows CryptoAPI 密钥派生的直接链接" translate="no">​</a></h3>
+<p>较早或兼容性较强的 Windows 木马可能使用 CryptoAPI 生成或派生对称密钥。典型 API 组合可以抽象为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">CryptAcquireContextW</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 获取 CSP 密码服务提供程序上下文</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptCreateHash</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptHashData(种子、配置或主机相关数据)</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptDeriveKey</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptEncrypt / CryptDecrypt</span><br></span></code></pre></div></div>
+<p>其中：</p>
+<ul>
+<li class=""><code>CryptAcquireContextW</code>：获取或创建加密服务提供程序（CSP）上下文，本身不等于完成密钥派生；</li>
+<li class=""><code>CryptCreateHash</code>、<code>CryptHashData</code>：将密码、配置、硬编码常量或主机信息处理为哈希对象；</li>
+<li class=""><code>CryptDeriveKey</code>：根据哈希结果派生对称密钥，例如用于 AES、RC4 或 3DES；</li>
+<li class=""><code>CryptEncrypt</code> / <code>CryptDecrypt</code>：对 C2 请求、响应或本地载荷进行加解密。</li>
+</ul>
+<p>常见抽象链路是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">硬编码密钥 / 配置种子 / Host ID</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → HashData</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptDeriveKey</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 加密注册包、心跳和任务数据</span><br></span></code></pre></div></div>
+<p>也可能使用随机数生成会话材料：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">CryptAcquireContextW</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptGenRandom</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 生成随机密钥或 IV</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 加密通信内容</span><br></span></code></pre></div></div>
+<p>需要注意，<code>CryptAcquireContextW + CryptDeriveKey</code> 只能说明样本使用了 CryptoAPI 相关能力，不能单独证明算法、密钥和通信协议。仍需结合 <code>ALG_ID</code>、密钥长度、哈希输入、初始化向量和调用上下文分析。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="cng-与其他实现">CNG 与其他实现<a href="#cng-与其他实现" class="hash-link" aria-label="CNG 与其他实现的直接链接" title="CNG 与其他实现的直接链接" translate="no">​</a></h3>
+<p>较新的实现可能使用 Windows CNG：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">BCryptOpenAlgorithmProvider</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → BCryptGenerateSymmetricKey</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → BCryptEncrypt / BCryptDecrypt</span><br></span></code></pre></div></div>
+<p>也可能静态或动态链接第三方密码库。常见分析线索包括：</p>
+<ul>
+<li class="">AES、RC4、ChaCha20 等算法常量；</li>
+<li class="">Base64、十六进制和自定义编码函数；</li>
+<li class="">固定 IV、固定密钥或配置中的密钥材料；</li>
+<li class="">加密前后的长度变化、填充和消息头；</li>
+<li class="">哈希、HMAC、随机数和密钥派生调用。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="弱加密与协议特征">弱加密与协议特征<a href="#弱加密与协议特征" class="hash-link" aria-label="弱加密与协议特征的直接链接" title="弱加密与协议特征的直接链接" translate="no">​</a></h3>
+<p>恶意样本中的“加密通信”不一定安全。常见问题包括：</p>
+<ul>
+<li class="">密钥硬编码在样本或配置中；</li>
+<li class="">多台主机使用相同密钥；</li>
+<li class="">直接用 Host ID 作为密钥；</li>
+<li class="">固定 IV 或没有随机数；</li>
+<li class="">只加密 Body，不验证完整性；</li>
+<li class="">自定义 XOR、滚动异或或压缩后编码；</li>
+<li class="">TLS 证书校验被关闭或使用固定证书指纹。</li>
+</ul>
+<p>这些问题既有助于逆向还原协议，也有助于网络检测和流量聚类。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见-c2-传输形态">常见 C2 传输形态<a href="#常见-c2-传输形态" class="hash-link" aria-label="常见 C2 传输形态的直接链接" title="常见 C2 传输形态的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="http--https">HTTP / HTTPS<a href="#http--https" class="hash-link" aria-label="HTTP / HTTPS的直接链接" title="HTTP / HTTPS的直接链接" translate="no">​</a></h3>
+<p>常见表现是向固定或动态 URL 发起周期性请求，将注册信息、心跳或加密数据放入：</p>
+<ul>
+<li class="">POST Body；</li>
+<li class="">Cookie；</li>
+<li class="">查询参数；</li>
+<li class="">自定义 Header；</li>
+<li class="">multipart 或伪装成图片、更新包的响应。</li>
+</ul>
+<p>可重点观察：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">固定 URI / Header 顺序</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 固定或相近请求体长度</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 周期性访问</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 响应中出现高熵二进制数据</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="dns-c2">DNS C2<a href="#dns-c2" class="hash-link" aria-label="DNS C2的直接链接" title="DNS C2的直接链接" translate="no">​</a></h3>
+<p>木马可能把 Host ID、命令片段或结果编码到子域名中，通过 TXT、A 或 AAAA 查询与控制端交互。重点特征包括：</p>
+<ul>
+<li class="">子域名长度异常；</li>
+<li class="">字符集集中在 Base32、Base64 变体或十六进制；</li>
+<li class="">查询频率固定；</li>
+<li class="">同一主机持续查询大量低信誉子域名；</li>
+<li class="">NXDOMAIN 比例异常或域名生命周期很短。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="长连接与自定义-tcp">长连接与自定义 TCP<a href="#长连接与自定义-tcp" class="hash-link" aria-label="长连接与自定义 TCP的直接链接" title="长连接与自定义 TCP的直接链接" translate="no">​</a></h3>
+<p>木马可能建立长连接，使用自定义头部、长度字段、序列号和加密 Body：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">连接建立</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 握手 / 注册</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 长时间保持</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 心跳</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 双向任务与结果</span><br></span></code></pre></div></div>
+<p>即使无法解密，也可以通过连接时长、包长、方向、间隔和重连规律进行行为分析。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="c2-流量检测">C2 流量检测<a href="#c2-流量检测" class="hash-link" aria-label="C2 流量检测的直接链接" title="C2 流量检测的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ioc-检测">IOC 检测<a href="#ioc-检测" class="hash-link" aria-label="IOC 检测的直接链接" title="IOC 检测的直接链接" translate="no">​</a></h3>
+<p>IOC 适合快速阻断和回溯，常见维度包括：</p>
+<ul>
+<li class="">C2 IP、域名、URL 和 URI；</li>
+<li class="">TLS 证书指纹、证书主题和异常自签名证书；</li>
+<li class="">SNI、JA3 / JA4、HTTP User-Agent；</li>
+<li class="">DNS TXT 查询、异常子域名和注册信息；</li>
+<li class="">代理、跳板、重定向和云存储地址；</li>
+<li class="">下载文件、配置文件、互斥体、注册表键和任务名称；</li>
+<li class="">Host ID 字段格式、固定请求头和加密包头。</li>
+</ul>
+<p>IOC 的局限是容易变更。攻击者更换 IP、域名、证书或路径后，静态规则可能立即失效，因此 IOC 应与行为规则结合。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="网络行为检测">网络行为检测<a href="#网络行为检测" class="hash-link" aria-label="网络行为检测的直接链接" title="网络行为检测的直接链接" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="周期性-beacon">周期性 Beacon<a href="#周期性-beacon" class="hash-link" aria-label="周期性 Beacon的直接链接" title="周期性 Beacon的直接链接" translate="no">​</a></h4>
+<p>检测同一进程到同一目的地的重复连接，重点计算 Beacon 的时间和内容特征：</p>
+<ul>
+<li class="">连接间隔的平均值和方差；</li>
+<li class="">连接间隔是否围绕固定基准值或呈现随机抖动；</li>
+<li class="">请求和响应大小；</li>
+<li class="">请求方向是否稳定为“客户端发起、服务端短响应”；</li>
+<li class="">是否存在注册包、心跳包、任务包和结果包的不同长度模式；</li>
+<li class="">失败后的重试与退避；</li>
+<li class="">工作时间外的连接；</li>
+<li class="">多台主机是否出现相似目的地和时间模式。</li>
+</ul>
+<p>典型行为是：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">低频、长时间、固定目的地</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 请求长度相近</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 间隔具有周期性或稳定抖动</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 进程本身不是常见网络客户端</span><br></span></code></pre></div></div>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="异常加密流量">异常加密流量<a href="#异常加密流量" class="hash-link" aria-label="异常加密流量的直接链接" title="异常加密流量的直接链接" translate="no">​</a></h4>
+<p>加密本身不能作为恶意判定依据，但以下组合值得关注：</p>
+<ul>
+<li class="">非浏览器、非更新程序发起 TLS 连接；</li>
+<li class="">目的地稀有、注册时间短或信誉低；</li>
+<li class="">TLS 指纹与进程正常业务不匹配；</li>
+<li class="">证书校验异常、固定证书或自签名证书；</li>
+<li class="">连接前刚刚采集 MachineGuid、SMBIOS 和系统序列号；</li>
+<li class="">加密请求中存在固定长度、固定头部或明显的注册—心跳时序。</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="dns-异常">DNS 异常<a href="#dns-异常" class="hash-link" aria-label="DNS 异常的直接链接" title="DNS 异常的直接链接" translate="no">​</a></h4>
+<p>可结合以下指标：</p>
+<ul>
+<li class="">子域名熵和长度；</li>
+<li class="">唯一子域名数量；</li>
+<li class="">请求间隔；</li>
+<li class="">NXDOMAIN 和 TXT 响应比例；</li>
+<li class="">域名年龄、解析变化和 ASN；</li>
+<li class="">同一进程是否直接访问 DNS，而不是通过企业解析链路。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="终端行为检测">终端行为检测<a href="#终端行为检测" class="hash-link" aria-label="终端行为检测的直接链接" title="终端行为检测的直接链接" translate="no">​</a></h3>
+<p>将网络连接与进程、文件和系统 API 关联，通常比单纯分析流量更容易定性：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">用户目录 / 临时目录进程</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 查询 MachineGuid、SMBIOS、OS 序列号</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptAcquireContextW / CryptDeriveKey</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 访问稀有公网地址</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 周期性发送加密数据</span><br></span></code></pre></div></div>
+<p>重点关联：</p>
+<ul>
+<li class="">发起连接的进程路径、签名和父子进程关系；</li>
+<li class="">是否刚完成 UAC 绕过、令牌复制或进程注入；</li>
+<li class="">是否在联网前读取主机唯一标识；</li>
+<li class="">是否加载 WinINet、WinHTTP、Schannel 或自定义网络库；</li>
+<li class="">是否使用 CryptoAPI、CNG 或第三方加密库；</li>
+<li class="">是否同时创建配置文件、互斥体、服务或计划任务；</li>
+<li class="">网络连接后是否出现命令执行、文件下载、内存加载或数据压缩。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="流量聚类与关联">流量聚类与关联<a href="#流量聚类与关联" class="hash-link" aria-label="流量聚类与关联的直接链接" title="流量聚类与关联的直接链接" translate="no">​</a></h3>
+<p>当域名和 IP 不稳定时，可使用以下特征进行聚类：</p>
+<ul>
+<li class="">请求 URI 和 Header 顺序；</li>
+<li class="">请求、响应长度分布；</li>
+<li class="">Beacon 间隔和重试模式；</li>
+<li class="">TLS ClientHello 指纹；</li>
+<li class="">DNS 子域名编码格式；</li>
+<li class="">加密数据包头和版本字段；</li>
+<li class="">Host ID 长度、字符集和位置；</li>
+<li class="">进程路径、启动来源和访问目标的组合。</li>
+</ul>
+<p>这类特征适合发现同一木马的不同基础设施，而不依赖某一个固定 IOC。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="高价值检测链">高价值检测链<a href="#高价值检测链" class="hash-link" aria-label="高价值检测链的直接链接" title="高价值检测链的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="注册型-c2">注册型 C2<a href="#注册型-c2" class="hash-link" aria-label="注册型 C2的直接链接" title="注册型 C2的直接链接" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">读取 MachineGuid / SMBIOS UUID / OS 序列号</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 拼接、哈希或编码</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 读取配置中的地址</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 首次 HTTP(S) 注册</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 周期性心跳</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="自定义加密-c2">自定义加密 C2<a href="#自定义加密-c2" class="hash-link" aria-label="自定义加密 C2的直接链接" title="自定义加密 C2的直接链接" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">CryptAcquireContextW</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptCreateHash / CryptHashData</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptDeriveKey</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → CryptEncrypt / CryptDecrypt</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → WinHTTP / WinINet / 原生 Socket 通信</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="提权后-c2">提权后 C2<a href="#提权后-c2" class="hash-link" aria-label="提权后 C2的直接链接" title="提权后 C2的直接链接" translate="no">​</a></h3>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">提权或进程注入</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 收集主机和安全产品信息</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 加密注册</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 周期性 Beacon</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 下载模块、执行命令或回传数据</span><br></span></code></pre></div></div>
+<p>如果 C2 进程同时具备高权限、异常宿主进程、加密 API 调用、硬件标识采集和周期性外联，优先级应明显高于单独的网络连接事件。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="研判边界">研判边界<a href="#研判边界" class="hash-link" aria-label="研判边界的直接链接" title="研判边界的直接链接" translate="no">​</a></h2>
+<p>需要区分以下结论：</p>
+<ul>
+<li class="">访问 <code>MachineGuid</code>、SMBIOS 或系统序列号，只能说明进行了主机信息采集；</li>
+<li class="">调用 <code>CryptAcquireContextW</code> 或 <code>CryptDeriveKey</code>，只能说明使用了 CryptoAPI 相关能力；</li>
+<li class="">周期性 HTTPS 连接不等于 C2，备份、更新和监控软件也可能有类似行为；</li>
+<li class="">高熵数据不等于恶意加密，正常压缩、上传和加密业务同样可能产生高熵流量；</li>
+<li class="">域名或 IP 命中 IOC 可以提升风险，但仍应结合进程、时间线和后续任务行为；</li>
+<li class="">加密流量无法解密时，仍可通过连接元数据、时序、包长、TLS 指纹和终端行为进行判断。</li>
+</ul>
+<p>较高置信度的结论通常来自下面的组合：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">异常进程</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 主机唯一标识采集</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 自定义加密或异常 TLS 行为</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 周期性外联</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 稀有或低信誉目的地</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 后续命令、下载、注入或数据回传</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="小结">小结<a href="#小结" class="hash-link" aria-label="小结的直接链接" title="小结的直接链接" translate="no">​</a></h2>
+<p>C2 通信可以概括为：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">识别主机</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 建立加密通道</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 周期性保持上线</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 接收任务</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  → 执行并回传结果</span><br></span></code></pre></div></div>
+<p>其中，主板 UUID、OS 序列号和 <code>MachineGuid</code> 等字段常被组合成 Host ID；<code>CryptAcquireContextW</code>、<code>CryptDeriveKey</code> 及相关哈希、加密 API 可能用于生成会话密钥和保护数据。</p>
+<p>检测时不要只看一个域名、一个 IP 或一个加密 API，而要把以下证据串起来：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#403f53;--prism-background-color:#FBFBFB"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#403f53;background-color:#FBFBFB"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#403f53"><span class="token plain">主机标识采集</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 密钥派生 / 加密</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 周期性网络连接</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 稀有目的地或异常协议</span><br></span><span class="token-line" style="color:#403f53"><span class="token plain">  + 进程和后续任务行为</span><br></span></code></pre></div></div>
+<p>这比单独依赖 IOC 更能发现更换基础设施、使用 HTTPS 或采用自定义加密协议的 C2。</p></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="文件选项卡"><a class="pagination-nav__link pagination-nav__link--prev" href="/notes/docs/网络安全/木马/APC注入"><div class="pagination-nav__sublabel">上一页</div><div class="pagination-nav__label">APC注入</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/notes/docs/网络安全/木马/CustomAction"><div class="pagination-nav__sublabel">下一页</div><div class="pagination-nav__label">CustomAction</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#概念" class="table-of-contents__link toc-highlight">概念</a></li><li><a href="#通信阶段" class="table-of-contents__link toc-highlight">通信阶段</a><ul><li><a href="#1-初始连接与注册" class="table-of-contents__link toc-highlight">1. 初始连接与注册</a></li><li><a href="#2-心跳与任务轮询" class="table-of-contents__link toc-highlight">2. 心跳与任务轮询</a></li></ul></li><li><a href="#主机唯一标识" class="table-of-contents__link toc-highlight">主机唯一标识</a><ul><li><a href="#标识的作用" class="table-of-contents__link toc-highlight">标识的作用</a></li><li><a href="#常见组成字段" class="table-of-contents__link toc-highlight">常见组成字段</a></li><li><a href="#生成方式" class="table-of-contents__link toc-highlight">生成方式</a></li><li><a href="#稳定性与误判" class="table-of-contents__link toc-highlight">稳定性与误判</a></li></ul></li><li><a href="#加密通信" class="table-of-contents__link toc-highlight">加密通信</a><ul><li><a href="#加密的目的" class="table-of-contents__link toc-highlight">加密的目的</a></li><li><a href="#windows-cryptoapi-密钥派生" class="table-of-contents__link toc-highlight">Windows CryptoAPI 密钥派生</a></li><li><a href="#cng-与其他实现" class="table-of-contents__link toc-highlight">CNG 与其他实现</a></li><li><a href="#弱加密与协议特征" class="table-of-contents__link toc-highlight">弱加密与协议特征</a></li></ul></li><li><a href="#常见-c2-传输形态" class="table-of-contents__link toc-highlight">常见 C2 传输形态</a><ul><li><a href="#http--https" class="table-of-contents__link toc-highlight">HTTP / HTTPS</a></li><li><a href="#dns-c2" class="table-of-contents__link toc-highlight">DNS C2</a></li><li><a href="#长连接与自定义-tcp" class="table-of-contents__link toc-highlight">长连接与自定义 TCP</a></li></ul></li><li><a href="#c2-流量检测" class="table-of-contents__link toc-highlight">C2 流量检测</a><ul><li><a href="#ioc-检测" class="table-of-contents__link toc-highlight">IOC 检测</a></li><li><a href="#网络行为检测" class="table-of-contents__link toc-highlight">网络行为检测</a></li><li><a href="#终端行为检测" class="table-of-contents__link toc-highlight">终端行为检测</a></li><li><a href="#流量聚类与关联" class="table-of-contents__link toc-highlight">流量聚类与关联</a></li></ul></li><li><a href="#高价值检测链" class="table-of-contents__link toc-highlight">高价值检测链</a><ul><li><a href="#注册型-c2" class="table-of-contents__link toc-highlight">注册型 C2</a></li><li><a href="#自定义加密-c2" class="table-of-contents__link toc-highlight">自定义加密 C2</a></li><li><a href="#提权后-c2" class="table-of-contents__link toc-highlight">提权后 C2</a></li></ul></li><li><a href="#研判边界" class="table-of-contents__link toc-highlight">研判边界</a></li><li><a href="#小结" class="table-of-contents__link toc-highlight">小结</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/notes/docs/intro">Notes</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://x.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">X<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 M0dZer0's Notes, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
