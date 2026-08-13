@@ -811,6 +811,107 @@ SUID-root awk
 
 同类风险也适用于某些具备脚本执行能力的程序，例如 perl、python、ruby 和 php。它们本质上是语言解释器：一旦以 root SUID 运行且没有主动降权，用户可控脚本就可能转化为 root 上下文中的任意代码执行。
 
+### node：通过 child_process.spawn 启动特权 Shell
+
+Node.js 是 JavaScript 运行时，除了执行脚本，还可以通过 child_process 模块创建子进程。对于 SUID Node.js，攻击者关注的不是 JavaScript 语言本身，而是它能够在高权限上下文中调用外部程序。
+
+其风险链可以抽象为：
+
+~~~text
+SUID-root node
+        ↓
+执行用户可控的 JavaScript
+        ↓
+调用 child_process.spawn 等子进程接口
+        ↓
+启动 bash -p、sh -p 或其他高权限程序
+~~~
+
+你提供的检测模式是：
+
+~~~text
+node\\s+-e.*?spawn\\("(\\/bin\\/)?(ba|z|da)?sh"\\s*,\\s*\["-p"\]
+~~~
+
+它重点匹配使用 node -e 直接执行一段 JavaScript，并在代码中调用 spawn 启动带有 -p 参数的 Shell。例如，规则意图覆盖类似下面的命令行结构：
+
+~~~text
+node -e '...spawn("/bin/bash", ["-p"])...'
+node -e '...spawn("bash", ["-p"])...'
+node -e '...spawn("/bin/sh", ["-p"])...'
+~~~
+
+这里的 -e 表示直接执行命令行中的 JavaScript，不需要先写入脚本文件；spawn 表示创建子进程；["-p"] 是传递给 Shell 的参数，用于请求 Shell 保留调用者已有的有效权限。
+
+需要注意，这条正则只匹配了 spawn("...") 的一种书写形式，实际 Node.js 代码还可能使用：
+
+- require("child_process").spawn(...)；
+- execFile、exec 或 fork；
+- 单引号、模板字符串、变量拼接或 Unicode 转义；
+- spawn 的别名、对象方法或多行 JavaScript；
+- 不使用 -p，而是通过其他方式验证或保持进程身份。
+
+因此，该规则适合作为高价值命令行线索，不应被当作完整的 Node.js 提权检测。调查时还要关联 Node.js 文件本身是否为 root-owned SUID、脚本或命令行来源、父进程、子进程 EUID、实际加载模块以及后续文件和网络行为。
+
+### setarch：通过执行域包装器启动特权 Shell
+
+setarch 用于设置进程的执行域或个性标志，例如改变架构相关的运行行为；它也可以在设置这些属性后启动指定程序。因此，错误设置为 root SUID 的 setarch 可能成为启动其他程序的高权限包装器。
+
+其基本模型是：
+
+~~~text
+setarch
+   ↓
+设置执行域或个性标志
+   ↓
+exec 用户指定的程序
+   ↓
+子进程可能继承调用者的有效 EUID
+~~~
+
+你提供的检测模式是：
+
+~~~text
+setarch.*?(\\/bin\\/)?(ba|z|da)?sh\\s+-p
+~~~
+
+它试图匹配 setarch 命令行中后续出现的 bash -p、zsh -p、dash -p 或 sh -p，并允许中间存在选项、架构名称或其他参数。例如：
+
+~~~text
+setarch linux64 /bin/bash -p
+setarch x86_64 sh -p
+~~~
+
+这里的 linux64、x86_64 等参数用于指定执行域或架构相关行为，本身不是提权参数；真正的风险来自 setarch 能够执行后续 Shell，以及该 Shell 是否继承并保留了高权限 EUID。
+
+如果 setarch 只是普通的 root-owned 文件，没有 SUID 或其他高权限来源，那么：
+
+~~~text
+普通用户执行普通 setarch
+        ≠
+普通用户自动获得 root 权限
+~~~
+
+排查 setarch 相关告警时，应确认：
+
+- setarch 的真实路径、所有者、权限位、哈希和软件包来源；
+- 命令行中的架构参数、Shell 路径和 -p 参数；
+- 文件所在文件系统是否使用 nosuid；
+- setarch 是否在执行目标程序前丢弃有效 UID；
+- 最终 Shell 的 RUID、EUID、补充组和父子进程关系；
+- 后续是否出现文件修改、服务创建、凭据访问或网络连接。
+
+### Node 与 setarch 命令行检测的共同边界
+
+两条规则都属于“高权限程序或解释器启动保持特权 Shell”的行为检测：
+
+| 检测模式 | 主要关注点 | 常见误报来源 |
+| --- | --- | --- |
+| node -e ... spawn(..., ["-p"]) | JavaScript 解释器创建特权 Shell 子进程 | 开发调试、测试脚本、自动化任务 |
+| setarch ... sh -p | 执行域包装器启动保持特权 Shell | 兼容性测试、架构测试、系统启动脚本 |
+
+命中规则后，不能只依据进程名或命令行定性。应将命令行与 SUID 文件权限、EUID 变化、父子进程、文件落地、持久化和网络行为关联起来，确认是否存在真实的权限提升链。
+
 ### vim、less 与 man：交互式程序中的外部命令能力
 
 vim、less、more、man 等程序通常用于查看或编辑文件，但部分版本或运行模式支持从交互界面调用外部命令、打开 Shell，或者加载额外配置。
