@@ -18,7 +18,7 @@ Defender 的排除项（Exclusions）用于指定不参与某些扫描或检测�
 
 ## 常见的规避思路
 
-部分木马或入侵脚本会滥用 PowerShell 的 Defender 管理命令，在投放或执行载荷前后尝试新增或覆盖排除路径。其意图通常不是让所有安全防护完全失效，而是为后续文件落地、解压、运行或更新选择一个较少被扫描的目录。
+部分木马或入侵脚本会滥用 PowerShell 的 Defender 管理命令，或直接修改 Defender 排除项相关注册表键，在投放或执行载荷前后尝试新增或覆盖排除路径。其意图通常不是让所有安全防护完全失效，而是为后续文件落地、解压、运行或更新选择一个较少被扫描的目录。
 
 可以将这类链路概括为：
 
@@ -33,6 +33,52 @@ Defender 的排除项（Exclusions）用于指定不参与某些扫描或检测�
 ```
 
 特别需要关注将排除范围扩展到系统盘根目录、常见用户目录、`ProgramData`、Windows 目录或整个盘符的行为。这些位置覆盖面很大，通常难以用“仅服务于某个软件”的目的解释。
+
+### 滥用计划任务直写排除项
+
+除了直接运行 `powershell.exe Add-MpPreference`，攻击者也可能把“创建计划任务”和“LOLBin 直写注册表”组合起来，尝试降低命令行和进程链上的暴露度。这类链条通常长这样：
+
+```text
+恶意安装器或已取得高权限的进程
+↓
+创建名称伪装的计划任务，并配置为高权限或 SYSTEM 身份运行
+↓
+Task Scheduler 服务在任务触发时启动任务动作
+↓
+cmd.exe /c reg.exe add ...\Windows Defender\Exclusions\...
+↓
+直接尝试修改 Defender 排除项注册表键
+↓
+若配置被系统接受，在排除位置投放、解压或执行载荷
+```
+
+这条链路中每个环节都有明确意图：
+
+| 环节 | 攻击在做什么 | 排查要点 |
+| --- | --- | --- |
+| `schtasks.exe` | 创建长期存在或延迟触发的任务；在具备相应权限时配置为 `SYSTEM` 运行；用 `MicrosoftEdgeUpdateTask*` 等名称伪装成微软更新任务 | 关注任务创建时间、创建者、`/ru SYSTEM`、任务 XML、TaskCache、Security `4698/4702` 和 Task Scheduler Operational 日志 |
+| Task Scheduler 服务 | 任务触发时由系统服务启动动作，使运行期父链看起来像 `svchost.exe` 派生 `cmd.exe` | 不要只看运行期父进程，还要回溯任务创建证据和任务动作内容 |
+| `cmd.exe` | 作为计划任务动作的命令包装器，承接后续 `reg.exe` 调用 | 关注 `cmd.exe /c` 后跟随的完整命令，尤其是 Defender 排除项路径 |
+| `reg.exe` | 直接调用注册表接口写入 `Exclusions` 相关键，不启动 PowerShell 引擎 | 关注 `reg add`、注册表写事件、调用者权限，以及是否为批准的管理动作 |
+
+常见目标键包括：
+
+```text
+HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths
+HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Extensions
+HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Processes
+```
+
+这种做法绕开的是 PowerShell 引擎及其脚本内容的 AMSI 检查，不等于绕过所有防护。进程创建、命令行、计划任务、注册表写入、Defender 日志和 EDR 遥测仍然可以留下证据。开启防篡改、存在企业策略所有权、系统版本较新或权限不足时，直接写入注册表还可能被拒绝、忽略、还原或被 GPO/MDM 覆盖；注册表里出现值，也不必然说明排除项已经实际生效。
+
+从 ATT&CK 角度看，这类行为通常可映射为：
+
+| 行为 | Technique |
+| --- | --- |
+| 创建或滥用计划任务 | T1053.005 Scheduled Task/Job: Scheduled Task |
+| 任务名仿冒微软或软件更新任务 | T1036.004 Masquerade Task or Service |
+| 修改 Defender 排除项注册表键 | T1112 Modify Registry |
+| 削弱 Defender 对后续载荷的扫描与拦截 | T1562.001 Impair Defenses: Disable or Modify Tools |
 
 ## WDAC
 
@@ -134,6 +180,44 @@ EDR/Agent 的进程、DLL、脚本或驱动被代码完整性机制拒绝加载
 正则表达式需要按日志平台的字段、转义规则和大小写设置调整。建议先在测试数据上验证，避免因为反斜杠或引号转义差异漏报。
 :::
 
+还应补充 `reg.exe` 直写排除项及其计划任务包装形态。下面示例用于检测和排查，不应作为正常配置方式：
+
+```cmd
+schtasks.exe /create /tn "MicrosoftEdgeUpdateTaskUA ..." /ru SYSTEM /sc ... /tr "cmd.exe /c reg.exe add \"HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths\" /v \"C:\...\" /t REG_DWORD /d 0 /f"
+reg.exe add "HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths" ...
+reg.exe add "HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Extensions" ...
+reg.exe add "HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Processes" ...
+```
+
+可作为候选规则锚点的模式包括：
+
+```regex
+(?i)\breg(?:\.exe)?\s+add\b.*\\Microsoft\\Windows Defender\\Exclusions\\(?:Paths|Extensions|Processes)\b
+(?i)\bschtasks(?:\.exe)?\b.*\s/create\b.*\breg(?:\.exe)?\s+add\b.*\\Windows Defender\\Exclusions\\
+(?i)\bMicrosoftEdgeUpdateTask[^"\s]*\b
+```
+
+第二条规则的价值在于把任务创建和排除项修改关联起来。上线时不要只硬编码 `svchost -k Schedule`，不同 Windows 版本和配置中 Task Scheduler 服务的宿主命令行可能存在差异，例如 `svchost.exe -k netsvcs -p -s Schedule`。更稳的做法是同时关联任务动作、任务名、父子进程、注册表目标键和创建者账户。
+
+### 与 PowerShell 管理接口的对比
+
+两条路线的目标相似，都是尝试扩大 Defender 排除范围；差异在于它们使用的接口、可观测面和策略约束不同。
+
+| 维度 | PowerShell 管理接口 | `reg.exe` 直接写入 |
+| --- | --- | --- |
+| 常见形式 | `Add-MpPreference -ExclusionPath ...`、`Set-MpPreference -ExclusionPath ...` | `reg.exe add ...\Exclusions\Paths` |
+| 接口路径 | 通过 Defender 支持的管理提供程序或服务语义提交配置变更 | 由调用进程直接访问注册表接口 |
+| PowerShell/AMSI | PowerShell 内容可能进入命令行、Script Block 和 AMSI 相关遥测 | 不启动 PowerShell，因此没有 PowerShell 脚本内容的 AMSI 检查 |
+| 进程信号 | `powershell.exe` 或 `pwsh.exe` 携带 `MpPreference` 关键字 | `reg.exe` 命令行、父进程、计划任务链和注册表事件 |
+| 注册表事件归属 | PowerShell 提交配置请求后，常见遥测中可能显示由 Defender 服务进程 `MsMpEng.exe` 或相关管理通道完成写入，而不是 `powershell.exe` 直接写键 | 支持进程归属的注册表遥测中通常可见 `reg.exe` 或其父链 |
+| 策略约束 | 仍受权限、防篡改、企业策略、GPO/MDM 和版本差异影响 | 更容易被防篡改、策略所有权或权限限制拒绝、忽略、还原或覆盖 |
+| 检测重点 | `MpPreference` 命令、脚本内容、发起账户、配置变更事件 | 非批准进程写入 `Windows Defender\Exclusions`、可疑任务动作、`cmd.exe /c reg add` |
+| 结果判断 | 尝试更改有效排除配置 | 尝试更改底层值，不保证实际成为有效排除项 |
+
+这个差异会带来一个很实用的检测提示：`Add-MpPreference` 通常不是由 `powershell.exe` 直接 `RegSetValue` 写入排除项键，而是通过 Defender 的管理接口提交配置变更，再由 Defender 服务或相关组件落地。因此，`MsMpEng.exe` 或批准管理通道之外的进程，尤其是 `reg.exe`、`cmd.exe` 派生的 `reg.exe`、脚本宿主或用户目录程序，直接写入 `Windows Defender\Exclusions\` 本身就是强异常。
+
+也因此，检测上不能只盯 `powershell.exe`。`reg.exe` 或其他未批准进程写入 `Windows Defender\Exclusions\` 是高信号行为，但仍需排除少量经过批准的部署、迁移或管理工具行为，并结合不同 EDR 对注册表 actor 的归因方式验证规则。
+
 ## 正常行为与异常行为的区别
 
 正常软件通常仅为自身实际使用的、边界清晰的目录添加排除项，例如其专用缓存目录、数据库数据目录或受管理的安装目录。即使如此，也应存在可核验的软件来源、变更单、安装时间或管理策略。
@@ -143,7 +227,7 @@ EDR/Agent 的进程、DLL、脚本或驱动被代码完整性机制拒绝加载
 | 观察项 | 相对正常的画像 | 需要优先调查的画像 |
 | --- | --- | --- |
 | 排除范围 | 单一软件的专用目录 | 系统盘、多个盘符、`Users`、`Windows` 等大范围目录 |
-| 发起进程 | 可信安装程序、受管运维工具 | 非预期的 `powershell.exe`、脚本宿主或用户目录程序 |
+| 发起进程 | 可信安装程序、受管运维工具 | 非预期的 `powershell.exe`、脚本宿主、`reg.exe`、用户目录程序或计划任务动作 |
 | 执行身份 | 管理员按变更流程执行 | 异常高权限账户、被入侵用户或远程会话账号 |
 | 时间关系 | 与软件安装、升级或明确维护窗口一致 | 紧跟钓鱼、漏洞利用、可疑下载或横向移动之后 |
 | 后续活动 | 对应软件在目录中写入预期文件 | 被排除目录出现脚本、可执行文件、服务、计划任务或外联 |
@@ -155,6 +239,9 @@ EDR/Agent 的进程、DLL、脚本或驱动被代码完整性机制拒绝加载
 建议优先保留并关联以下数据：
 
 - PowerShell 命令行和 Script Block 日志，尤其是 `Add-MpPreference`、`Set-MpPreference`、`Remove-MpPreference`。
+- `reg.exe`、`schtasks.exe`、`cmd.exe /c` 相关进程创建记录，尤其是命令行中包含 `Windows Defender\Exclusions` 的行为。
+- 计划任务创建与修改记录，包括任务 XML、TaskCache、Security `4698/4702`、Task Scheduler Operational 日志，以及任务动作中是否包含 `reg add`。
+- 注册表写事件，重点关注 `MsMpEng.exe`、Defender 相关组件或批准管理工具之外的进程，直接写入 `HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\`。
 - Defender 运营日志、Windows 安全中心事件及 EDR 的防护配置变更记录。
 - 对应时间窗内的进程树、脚本来源、网络连接、下载文件和被排除目录内的文件创建事件。
 - 管理员登录、远程会话、软件安装和企业配置管理（如 Intune、组策略）变更记录。
@@ -163,9 +250,10 @@ EDR/Agent 的进程、DLL、脚本或驱动被代码完整性机制拒绝加载
 
 1. 确认变更的是新增、删除还是覆盖排除路径，以及变更前后的完整配置。
 2. 确认发起进程、父进程、命令行、用户、权限和执行来源。
-3. 检查被排除目录在前后时间窗内新增的文件、启动项、计划任务、服务和网络连接。
-4. 对照资产负责人、软件清单、维护窗口和变更工单，验证是否存在合理业务背景。
-5. 若缺乏业务解释或同时存在可疑落地、执行、外联行为，按高优先级事件隔离和处置。
+3. 若涉及计划任务，核对任务创建者、任务名、任务动作、触发条件、运行账户，以及任务名是否伪装成浏览器、微软更新或系统维护组件。
+4. 检查被排除目录在前后时间窗内新增的文件、启动项、计划任务、服务和网络连接。
+5. 对照资产负责人、软件清单、维护窗口和变更工单，验证是否存在合理业务背景。
+6. 若缺乏业务解释或同时存在可疑落地、执行、外联行为，按高优先级事件隔离和处置。
 
 ## 响应建议
 
