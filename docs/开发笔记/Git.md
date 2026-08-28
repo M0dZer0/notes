@@ -35,6 +35,193 @@ git push -u origin mybranch
 - 如果主分支有改动，但改动位置与新分支改动位置不一样，则只需要在新分支执行`git merge main`即可，这样就会把主分支改动内容增加到新分支且保留新分支改动内容，再到主分支中执行`git merge newbranch`即可。
 - 如果主分支和新分支改动了相同位置，则需要在新分支执行`git merge main`并手动解决冲突，IDE有解决冲突的视图，终端操作需要手动处理冲突，再使用git add该文件并提交，解决冲突之后再到主分支中执行`git merge newbranch`即可。
 
+### Git Rebase
+
+`git rebase` 最核心的用途可以理解成：
+
+> 把当前分支上的提交“重新接到”另一个提交后面，让 Git 历史变得更线性、更干净。
+
+它最常见的场景是：开发功能的过程中，`main` 已经继续向前提交，希望把自己的 feature 分支更新到最新的 `main`。
+
+#### 1. Rebase 的基本过程
+
+假设从 `B` 创建了 `feature` 分支，并产生了两个提交：
+
+```text
+A---B---C        main
+     \\
+      D---E      feature
+```
+
+此时在 `main` 上执行了 `C`，希望将 `feature` 更新到最新的 `main`。可以使用 merge：
+
+```shell
+git switch feature
+git merge main
+```
+
+结果会产生一个额外的合并提交：
+
+```text
+A---B---C---------M    feature
+     \\             /
+      D-----------E
+```
+
+也可以使用 rebase：
+
+```shell
+git switch feature
+git rebase main
+```
+
+Git 会暂时取下 `D`、`E` 中的修改，将 `feature` 移到 `main` 的末端，然后按顺序重新应用这些修改：
+
+```text
+A---B---C---D'---E'    feature
+```
+
+这里的 `D'`、`E'` 不是原来的 `D`、`E`，而是重新生成的 commit。因为 commit 内容、父提交或提交信息发生了变化，它们通常会拥有新的 commit ID。因此，rebase 不是简单地移动分支指针，而是重新创建提交。
+
+#### 2. 同步最新的主分支
+
+准备提交 PR/MR 前，常见的操作流程是：
+
+```shell
+git switch feature-login
+git fetch origin
+git rebase origin/main
+```
+
+执行后，历史大致会从：
+
+```text
+main:    A---B---C---D---E
+              \\
+feature:       F---G
+```
+
+变成：
+
+```text
+A---B---C---D---E---F'---G'
+```
+
+这样 feature 分支就基于最新的 `origin/main`，提交历史看起来像是在最新主分支上直接开发的。`git fetch` 只更新远程跟踪分支，不会修改当前工作区；之后的 `git rebase origin/main` 才会重放 feature 分支的提交。
+
+由于 rebase 改变了 `F`、`G` 的 commit ID，之前已经推送过的 feature 分支通常需要使用：
+
+```shell
+git push --force-with-lease origin feature-login
+```
+
+`--force-with-lease` 会先检查远程分支是否出现了自己不知道的新提交，比直接使用 `git push --force` 更安全，可以减少误覆盖他人提交的风险。
+
+#### 3. 交互式 Rebase
+
+`git rebase -i`（interactive rebase，交互式变基）常用于整理自己的 commit 历史。比如开发过程中产生了许多临时提交：
+
+```text
+B 实现登录
+C 修一下
+D 这里又错了
+E 最终修复
+```
+
+希望将最近 4 个提交整理后，可以执行：
+
+```shell
+git rebase -i HEAD~4
+```
+
+编辑器中可能看到：
+
+```text
+pick B 实现登录
+pick C 修一下
+pick D 这里又错了
+pick E 最终修复
+```
+
+可以改成：
+
+```text
+pick B 实现登录
+squash C 修一下
+squash D 这里又错了
+squash E 最终修复
+```
+
+保存并退出后，`C`、`D`、`E` 会被合并到前一个提交中，最终得到一个更完整的提交，例如：
+
+```text
+A---B'
+```
+
+常见的交互式 rebase 指令：
+
+| 指令 | 行为 |
+| --- | --- |
+| `pick`（`p`） | 保留该提交 |
+| `reword`（`r`） | 保留代码，但修改提交信息 |
+| `edit`（`e`） | 暂停在该提交，继续修改代码或提交 |
+| `squash`（`s`） | 合并到前一个提交，并重新编辑提交信息 |
+| `fixup`（`f`） | 合并到前一个提交，但丢弃当前提交信息 |
+| `drop`（`d`）或删除该行 | 删除该提交 |
+
+因此，rebase 常见的两个用途是：
+
+1. 将 feature 分支同步到最新的主分支：`git fetch origin && git rebase origin/main`。
+2. 整理自己的提交：`git rebase -i HEAD~n`，合并、删除、修改或调整提交。
+
+#### 4. Rebase 冲突处理
+
+如果主分支和 feature 分支修改了同一部分内容，rebase 过程中也可能发生冲突。处理流程如下：
+
+```shell
+# 1. 手动编辑冲突文件，保留正确内容
+git add <resolved-file>
+
+# 2. 继续重放后续提交
+git rebase --continue
+```
+
+如果发现当前 rebase 不符合预期，可以取消本次操作，恢复到 rebase 开始前的状态：
+
+```shell
+git rebase --abort
+```
+
+如果某个提交的修改已经不需要，确认后也可以跳过它：
+
+```shell
+git rebase --skip
+```
+
+#### 5. Rebase 和 Merge 怎么选？
+
+| 场景 | 更常见的选择 |
+| --- | --- |
+| 自己的 feature 分支同步最新 `main` | `rebase` |
+| 整理自己尚未公开的提交 | `rebase -i` |
+| 合并已经公开、多人共同使用的分支 | `merge` |
+| `main` / `master` 等公共主分支 | 通常不要自行 rebase |
+| PR/MR 提交前整理历史 | 经常使用 `rebase` |
+
+最重要的原则是：
+
+> 不要随便 rebase 别人已经基于它开发的公共历史。
+
+因为 rebase 会改变 commit ID。对已经推送且正在被别人使用的分支执行 rebase，可能导致其他人无法正常同步，甚至需要重新处理整个分支历史。通常只 rebase 自己负责、且没有被他人依赖的 feature 分支。
+
+可以把 rebase 理解为“搬家”：原来 feature 是从 `B` 开始开发的；当 `main` 继续变成 `A---B---C---F` 后，执行 `git rebase main` 就是把原来 `D`、`E` 的修改拿出来，在 `F` 后面重新做一遍，得到 `D'`、`E'`。在 GitHub、Codex、Claude、Cursor 等多人或多 Agent 协作场景中，常见的流程就是：
+
+```shell
+git fetch origin
+git rebase origin/main
+git push --force-with-lease origin <feature-branch>
+```
+
 ### 修改上次提交
 
 如果提交后oci没有通过，或者发现了一些代码中的小错误，可以修改代码后
