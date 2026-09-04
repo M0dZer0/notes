@@ -80,6 +80,72 @@ HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Processes
 | 修改 Defender 排除项注册表键 | T1112 Modify Registry |
 | 削弱 Defender 对后续载荷的扫描与拦截 | T1562.001 Impair Defenses: Disable or Modify Tools |
 
+### 通过 WMI/CIM 修改排除路径
+
+WMI（Windows Management Instrumentation）是 Windows 的管理基础设施，通过命名空间、类、属性和方法提供统一的系统管理入口。CIM（Common Information Model）是通用信息模型；PowerShell 的 CIM cmdlet 可以访问 Windows 的 WMI Provider。分析这类行为时，应同时记录目标命名空间、类、方法和参数，而不能只看命令名称。
+
+Defender 暴露了 `root\Microsoft\Windows\Defender` 命名空间下的 `MSFT_MpPreference` 管理类，`Add` 方法接受 `ExclusionPath` 等参数，可用于追加排除项。攻击者可能滥用这一入口，尝试扩大排除范围。接口及参数定义见 [Microsoft：MSFT_MpPreference.Add](https://learn.microsoft.com/en-us/previous-versions/windows/desktop/defender/add-msft-mppreference)。
+
+```text
+powershell.exe 执行脚本
+↓
+Invoke-CimMethod / icim
+↓
+本机 WMI → root\Microsoft\Windows\Defender
+↓
+MSFT_MpPreference.Add(ExclusionPath, Force)
+↓
+Defender 管理提供程序处理配置请求
+↓
+若请求被接受且配置生效，指定路径进入排除范围
+```
+
+#### 示例命令与逐段解释
+
+以下为待分析样本按“外层转义表示普通引号和路径分隔符”的假设整理后的可读形式，用于解释行为：
+
+```powershell
+powershell -Command "try {$null = icim MSFT_MpPreference @{ExclusionPath = @('C:\'); Force = $True} Add -Namespace root/Microsoft/Windows/Defender -EA 1} catch {$host.SetShouldExit($_.Exception.HResult)}"
+```
+
+原文中的 `\"`、重复反斜杠和 `MSFT\_MpPreference` 可能来自 JSON、日志或 Markdown 转义。取证时应保留原始字符串，按其实际封装层解码；不能机械地删除全部反斜杠。PowerShell 单引号字符串里的反斜杠是普通字符，因此 `'C:\\'` 与 `'C:\'` 的字面值不同。上例展示的是预期目标为 `C:\` 的命令语义，并不能证明原始文本可直接执行。外层若由另一个 PowerShell 解释，双引号中的 `$` 变量还可能先被外层展开。
+
+| 片段 | 含义 |
+| --- | --- |
+| `powershell -Command "..."` | 启动 Windows PowerShell，解释后续命令文本。 |
+| `try { ... } catch { ... }` | 执行修改请求；发生可捕获的终止错误时进入异常处理。 |
+| `$null = ...` | 丢弃成功输出流中的结果对象，不代表命令未执行，也不负责关闭日志。 |
+| `icim` | `Invoke-CimMethod` 的内置别名，用于调用 CIM 类或实例的方法。 |
+| `MSFT_MpPreference` | 位置参数 `-ClassName`，指定 Defender 配置类。 |
+| `@{ ... }` | 位置参数 `-Arguments`，以哈希表提供方法参数。 |
+| `ExclusionPath = @('C:\')` | 创建包含一个路径的数组，要求将 C 盘根目录加入排除路径，覆盖范围很大。 |
+| `Force = $True` | 传给 `Add` 方法的布尔参数；文档语义为不请求默认用户确认，不提供提权或绕过防篡改的能力。 |
+| `Add` | 位置参数 `-MethodName`，调用追加方法。 |
+| `-Namespace root/Microsoft/Windows/Defender` | 选择 Defender 管理命名空间。 |
+| `-EA 1` | `-ErrorAction Stop`：`EA` 是别名，枚举值 `1` 表示 `Stop`，使该调用的非终止错误升级为可捕获的终止错误。 |
+| `$_.Exception.HResult` | 在 `catch` 中取当前错误记录的异常 HRESULT。 |
+| `$host.SetShouldExit(...)` | 请求 PowerShell 宿主退出，并传入该错误码作为退出码；它本身不撤销已经发生的配置变化。 |
+
+位置参数顺序、别名及本机访问方式见 [Invoke-CimMethod 文档](https://learn.microsoft.com/en-us/powershell/module/cimcmdlets/invoke-cimmethod?view=powershell-5.1)；错误处理与退出请求分别见 [PowerShell 通用参数](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_commonparameters?view=powershell-7.5) 和 [PSHost.SetShouldExit](https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.host.pshost.setshouldexit?view=powershellsdk-7.4.0)。
+
+这条命令没有指定 `-ComputerName` 或 `-CimSession`，按默认行为通过 COM 会话访问本机 WMI。因此可定性为 **“PowerShell 通过 CIM/WMI 调用 Defender 管理类，尝试新增 C 盘根目录排除项”**；不能由此推断远程 WMI 执行或 WMI 持久化。
+
+`$null =` 也会丢弃方法返回对象中的 `ReturnValue`。如果失败仅体现在返回码中而没有产生 PowerShell 错误，`catch` 不一定触发。因此，无输出、未进入 `catch` 或进程退出码为零，都不足以单独证明排除项生效；仍需核对实际配置及变更记录。此操作通常需要相应管理权限，并受防篡改、企业策略及版本配置影响。
+
+#### 与 AMSI 的关系
+
+AMSI（Antimalware Scan Interface，反恶意软件扫描接口）允许 PowerShell 等宿主将内容提交给安全产品检查。它是扫描接口，不是某一条关键字规则；PowerShell Script Block 日志与 AMSI 扫描也属于不同的观测机制。参见 [Microsoft：AMSI 概述](https://learn.microsoft.com/en-us/windows/win32/amsi/antimalware-scan-interface-portal)。
+
+这条样本仍然启动 PowerShell，其脚本内容仍可能经 AMSI 扫描。它没有出现 `Add-MpPreference`，所以**仅依赖该字符串的规则可能漏报**；这是根据命令内容作出的检测覆盖分析，不能表述为已关闭、破坏或完全绕过 AMSI，也不能证明实际安全产品一定漏检。
+
+#### 检测与结果核实
+
+- 结合 `Invoke-CimMethod` / `icim`、`MSFT_MpPreference`、Defender 命名空间、`Add` 和 `ExclusionPath` 识别修改意图，兼容参数重排、别名、换行及命名空间分隔符差异。
+- 区分读取配置与调用修改方法；单独出现类名或 `ExclusionPath` 可能只是正常查询。
+- 关联发起账户、父进程、脚本来源及排除范围。`Force`、`try/catch` 和丢弃输出也常见于管理脚本，不能单独作为恶意依据。
+- 核对 Defender 有效配置、配置变更记录和被排除目录内后续文件落地、执行行为。把“尝试调用”“配置发生变化”和“变化实际生效”分别记录。
+- WMI/CIM 是接口分类，不能要求进程链一定出现 `wmic.exe`，也不应仅凭命令认定注册表写入者必然是 `powershell.exe` 或某个固定服务进程。
+
 ## WDAC
 
 WDAC（Windows Defender Application Control，现称 **App Control for Business**）是 Windows 的应用控制能力。它由代码完整性组件在程序、脚本、DLL 或驱动加载时应用策略，决定哪些代码允许运行。虽然名称中带有 Defender，但 WDAC 并不是 Defender Antivirus 的病毒扫描功能；它是独立的应用白名单和代码完整性控制边界。
@@ -238,7 +304,7 @@ reg.exe add "HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Processes" ...
 
 建议优先保留并关联以下数据：
 
-- PowerShell 命令行和 Script Block 日志，尤其是 `Add-MpPreference`、`Set-MpPreference`、`Remove-MpPreference`。
+- PowerShell 命令行和 Script Block 日志，尤其是 `Add-MpPreference`、`Set-MpPreference`、`Remove-MpPreference`，以及 `Invoke-CimMethod` / `icim` 调用 `MSFT_MpPreference` 修改方法的行为。
 - `reg.exe`、`schtasks.exe`、`cmd.exe /c` 相关进程创建记录，尤其是命令行中包含 `Windows Defender\Exclusions` 的行为。
 - 计划任务创建与修改记录，包括任务 XML、TaskCache、Security `4698/4702`、Task Scheduler Operational 日志，以及任务动作中是否包含 `reg add`。
 - 注册表写事件，重点关注 `MsMpEng.exe`、Defender 相关组件或批准管理工具之外的进程，直接写入 `HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\`。

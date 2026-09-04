@@ -22,15 +22,51 @@ MSI 本质上是一个带有关系表的安装数据库。和 CustomAction 分�
 
 CustomAction 可以承载 DLL 导出函数、可执行文件、脚本、命令或其他安装扩展。具体能力、位数、上下文和回滚语义由动作类型与调度属性共同决定。
 
-## 执行阶段
+## msiexec 的客户端、服务端与 CustomAction 宿主
+
+这里的“客户端 / 服务端”指**同一台机器上 Windows Installer 的分工**，不是下载 MSI 的网络客户端和远程服务器。一个安装过程可能同时存在多个 `msiexec.exe`，它们使用同一个程序文件，但承担不同职责。
+
+### `/i`、`/V` 与 `-Embedding` 分别是什么
+
+| 常见命令行形态 | 角色 | 主要工作 | 与 CustomAction 的关系 |
+|---|---|---|---|
+| `msiexec.exe /i example.msi` | 安装客户端 / 前端 | 接收安装请求、参数和属性，处理安装界面与用户选择，向安装服务提交请求并接收结果 | 可在 UI 或前期序列中调度立即动作；不只是一个完全不执行安装逻辑的启动器 |
+| `msiexec.exe /V` | Windows Installer 服务端，服务名 `msiserver` | 接收客户端请求，处理执行序列、生成并执行安装操作记录，协调系统修改、回滚和提交 | 决定何时调用执行侧的动作，必要时交给独立 CustomAction 宿主 |
+| `msiexec.exe -Embedding <内部标识> ...` | Custom Action Server，自定义操作宿主 | 接收安装引擎的动作调用，承载 DLL / 脚本等需要独立宿主的自定义代码，返回结果 | 是定位自定义代码实际执行进程的重要线索，但不是所有 CustomAction 都会产生这种进程 |
+
+这三类命令行与进程角色的对应关系见微软 Windows Installer 团队的[后台机制说明](https://learn.microsoft.com/en-us/archive/blogs/astebner/more-info-about-how-msi-custom-actions-work-behind-the-scenes)。`/V` 和 `-Embedding` 属于这里讨论的内部启动形态，不是建议用户手工调用的安装步骤。
+
+注意几个容易混淆的点：
+
+- **不是一条 `msiexec /v /i` 命令依次进入三个阶段。** 应分别识别 `/i` 客户端、`/V` 服务进程和 `-Embedding` 动作宿主；它们可以并存，服务也可能在本次安装之前就已经启动。
+- 独立的 `/V` 不等于 `/L*v install.log` 中的 `v`；后者是详细日志选项，也不要与 `/fv` 的修复选项混淆。公开命令行选项不区分大小写，不能靠大小写判断语义，要看完整参数结构。参见[命令行选项](https://learn.microsoft.com/en-us/windows/win32/msi/command-line-options)。
+- `-Embedding` 是一个完整参数，不是 `- embedding` 两个参数；后面的内部标识不能直接当成 MSI 的 ProductCode 或某个动作名称。
+- `msiserver` 通常由服务控制管理器启动，常见父进程为 `services.exe`，**不必是 `/i` 客户端的直接子进程**。客户端通过进程间通信把工作交给服务端，进程树不是完整调用链。
+- `/V` 服务通常以 LocalSystem 运行，但具体动作可能模拟用户；`-Embedding` 本身也不能证明动作拥有 SYSTEM 权限。要检查动作属性、实际令牌，以及线程是否正在模拟用户。
+
+### 安装过程：每一步做什么
+
+下面描述常见的服务端参与安装路径，是逻辑流程，不是固定的父子进程树，也不表示每次都会启动三个新进程。
+
+1. **发起与交互**：`/i` 客户端接收包路径、安装属性和 UI 选项。完整 UI 模式下，安装器可以运行 `InstallUISequence` 中的检查、属性计算和立即 CustomAction；静默安装不会因此失去客户端角色，但不会运行这套完整 UI 序列。
+2. **进入执行序列、制定计划**：安装引擎处理 `InstallExecuteSequence`，进行校验、计算组件状态等。使用安装服务时，执行侧工作交给服务端；某些前期动作可能在客户端和服务端各处理一次，因此“执行序列”不能简单等同于“只在一个 `/V` PID 中运行”。参见[自定义操作排序规则](https://learn.microsoft.com/en-us/windows/win32/msi/sequencing-custom-actions)。
+3. **生成安装脚本**：`InstallInitialize` 开始事务相关处理。引擎把需要稍后实施的操作记入安装脚本；遇到 Immediate 动作就执行，遇到 Deferred 动作则先记入计划。这里的“脚本”是 Installer 的内部操作记录，不等于生成一个 PowerShell 或 VBS 文件。
+4. **执行系统修改**：`InstallExecute` / `InstallExecuteAgain`（如果包中有安排）或 `InstallFinalize` 推进安装脚本执行，实施文件、注册表、服务等修改，并运行到相应位置的 Deferred CustomAction。需要独立动作宿主时，引擎启动或使用 `-Embedding` 进程，调用动作并取得结果。参见[延迟动作](https://learn.microsoft.com/en-us/windows/win32/msi/deferred-execution-custom-actions)与 [InstallFinalize](https://learn.microsoft.com/en-us/windows/win32/msi/installfinalize-action)。
+5. **成功提交或失败回滚**：成功路径执行已安排的 Commit 动作；失败并触发回滚时执行已安排的 Rollback 动作，最后向客户端报告结果。并非每个 MSI 都定义了这两种 CustomAction，也不能假设所有自定义修改都能自动撤销。
+
+因此，`-Embedding` 不是“整个安装完成后才进入的第三阶段”，而是安装过程中按需参与工作的宿主；它可能服务于不同调度时机的动作。
+
+## 执行阶段：CustomAction 何时运行
+
+**进程角色回答“谁执行”，调度类型回答“何时执行”，两者是不同维度。** 不能把 `/i = Immediate`、`/V = Deferred`、`-Embedding = 安装后执行` 当成固定对应关系。
 
 ### Immediate
 
-立即动作通常在安装器生成执行计划时运行，可以读取和修改部分 MSI 属性。它更接近“决定后面要做什么”，不应默认理解为具备完整系统权限。
+立即动作在序列处理遇到它或被显式调用时执行，可以读取和修改部分 MSI 属性；它既可能在 UI 序列，也可能在执行序列中出现。它通常用于检查和准备后续操作，但“立即”不等于“一定在 `/i` 进程内”，也不意味着代码不能产生副作用。
 
 ### Deferred
 
-延迟动作在执行脚本阶段运行，用于真正改变系统。它能访问的安装会话信息更受限制，通常通过专门属性接收必要数据。
+延迟动作在生成计划时只被排入安装脚本，到脚本执行阶段才真正运行。它必须安排在执行序列的 `InstallInitialize` 之后、`InstallFinalize` 之前，不能放在 UI 序列。它能访问的安装会话信息更受限制，通常通过 `CustomActionData` 接收预先准备的数据。参见[延迟执行规则](https://learn.microsoft.com/en-us/windows/win32/msi/deferred-execution-custom-actions)与[延迟动作上下文](https://learn.microsoft.com/en-us/windows/win32/msi/obtaining-context-information-for-deferred-execution-custom-actions)。
 
 ### Rollback 与 Commit
 
@@ -40,9 +76,24 @@ CustomAction 可以承载 DLL 导出函数、可执行文件、脚本、命令�
 
 动作是否模拟发起安装的用户，决定了它以用户上下文还是安装服务的高权限上下文运行。高权限并不是 CustomAction 自动拥有的：它取决于安装方式、包策略、系统配置和动作调度。
 
+`NoImpersonate` 必须与 in-script 类型组合使用，适用于 Deferred 及其 Rollback / Commit 变体；不能给 Immediate 随便加上这个标志，就认为它能绕过用户上下文。即使动作从服务端被调度，也不代表它没有模拟用户。参见[脚本内执行选项](https://learn.microsoft.com/en-us/windows/win32/msi/custom-action-in-script-execution-options)。
+
 :::warning
 不要看到 `msiexec.exe` 就直接写“以 SYSTEM 执行”。Windows Installer 存在前端、服务端和自定义操作宿主等不同角色，必须用进程树、令牌、命令行和事件日志确认实际上下文。
 :::
+
+## CustomAction 的代码究竟在哪里执行
+
+先分清三个“位置”：**定义在 MSI 的 `CustomAction` 表中，调度由序列表或显式调用决定，实际代码则在选定的宿主或子进程中运行。** 仅在表中发现一行定义，不代表它实际被调用过。
+
+| 动作形式 | 实际执行位置 | 调查时看什么 |
+|---|---|---|
+| DLL 型 | 在加载该 DLL 的动作宿主地址空间内；常见宿主是 `msiexec.exe -Embedding ...` | 宿主 PID、DLL 模块加载、导出入口与动作日志 |
+| 脚本型 | 在安装器选用的脚本执行环境 / 动作宿主中 | 脚本内容、引擎与宿主；不能预设一定出现 `wscript.exe` / `cscript.exe` |
+| EXE 型 | 在被启动的可执行文件进程中 | 子进程路径、命令行、令牌与后续行为，而不是只盯着 `msiexec.exe` |
+| 设置属性等非载荷型 | 由安装引擎直接处理 | 属性变化和序列；不必出现独立宿主或额外 DLL |
+
+动作可以由服务端调度，却在独立 `-Embedding` 进程内执行。日志中的 “remote custom action” 在这里通常表示跨进程调用，**不是把代码发到远程机器运行**。关于动作形式，参见[CustomAction 概述](https://learn.microsoft.com/en-us/windows/win32/msi/about-custom-actions)。
 
 ## in-process 寄生
 
@@ -59,6 +110,8 @@ DLL 代码以宿主进程身份执行
 ```
 
 不同版本、位数、动作类型和隔离策略可能让代码出现在某个 `msiexec.exe` 实例或专门的自定义操作宿主中。分析时不应先假设固定 PID 或固定父子关系，而要根据模块加载和安装日志定位。
+
+这里的 in-process 是相对于**真正加载 DLL 的宿主**而言：DLL 可以与 `-Embedding` 宿主同进程，同时与 `/V` 安装服务进程分离。“相对安装服务是进程外调用”和“相对动作宿主是进程内执行”并不矛盾。
 
 ### 为什么不是注入
 
@@ -122,6 +175,13 @@ DLL 代码以宿主进程身份执行
 - 模块加载，尤其是用户可写或临时路径。
 - 安装宿主的文件、注册表、服务、计划任务、网络和敏感 API 行为。
 - 安装结束后的残留进程与持久化。
+
+可以按“动作名 → 实际调用 → 宿主 PID → 模块 / 子进程 → 行为”串联证据：
+
+- 详细日志中的 `MSI (c)` / `MSI (s)` 用于区分客户端与服务端日志上下文，不是 Immediate / Deferred 分类，也不足以直接确定载荷 PID。
+- `Doing action` / `Action start` 帮助定位动作；对 Deferred 动作还要区分计划生成与实际执行，不能把排入计划当成代码已经运行。
+- `Created Custom Action Server with PID`、`Invoking remote custom action` 等记录可提供宿主、DLL 路径或入口线索，再与进程创建和模块加载交叉确认。这些内部日志的具体格式可能随版本变化。
+- 命令行只见 `-Embedding` 时，只能先标为“疑似 CustomAction 宿主”；只有结合动作类型、安装日志和实际行为，才能说明执行了哪个动作、处于哪个阶段，以及是否恶意。
 
 如果安全执行环境允许，可对 MSI 做受控动态分析；不要在生产主机上为了验证而直接安装未知包。
 
