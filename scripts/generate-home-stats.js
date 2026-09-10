@@ -129,6 +129,7 @@ const stats = markdownFiles.reduce(
 const createdAt = Number.isFinite(stats.createdAtMs) ? new Date(stats.createdAtMs) : new Date();
 const ageInYears = (Date.now() - createdAt.getTime()) / (365.25 * 24 * 60 * 60 * 1000);
 const recentNotes = markdownFiles
+  .filter((filePath) => path.basename(filePath, path.extname(filePath)).toLowerCase() !== 'index')
   .map(createRecentNote)
   .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
   .slice(0, 3);
