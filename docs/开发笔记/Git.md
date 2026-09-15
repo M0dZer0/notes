@@ -27,13 +27,100 @@ git commit
 git push -u origin mybranch
 ```
 
-新分支合并到主分支，通常来说如果commit比较少，小于2可以直接rebase，多了就直接merge便于回滚。
+:::note
+**Tips：** 新分支合并到主分支时，通常来说如果 commit 比较少（小于 2 个）可以直接 rebase，提交较多时可以使用 merge，便于回滚。
+:::
+
+不过，是否使用 rebase 更重要的是看分支是否已经被其他人使用：通常只在自己负责的 feature 分支上 rebase，在公共的 `main` 分支上使用 merge。需要注意，rebase 一般是为了先把 feature 同步到最新的 main，并不等于把 feature 合并进 main。
 
 ### 分支合并
 
 - 如果主分支没有改动，仅新分支改动，则只需要在主分支执行`git merge newbranch`即可。
 - 如果主分支有改动，但改动位置与新分支改动位置不一样，则只需要在新分支执行`git merge main`即可，这样就会把主分支改动内容增加到新分支且保留新分支改动内容，再到主分支中执行`git merge newbranch`即可。
 - 如果主分支和新分支改动了相同位置，则需要在新分支执行`git merge main`并手动解决冲突，IDE有解决冲突的视图，终端操作需要手动处理冲突，再使用git add该文件并提交，解决冲突之后再到主分支中执行`git merge newbranch`即可。
+
+这里要牢记 `git merge X` 的规则：**把 `X` 合并到当前所在的分支**。因此，想把 `feature` 合并到 `main`，必须先切换到 `main`，再执行 `git merge feature`；不能站在 `feature` 上执行同一条命令。
+
+### feature 和 main 上通常怎么操作
+
+#### 1. 在 feature 分支上开发和同步 main
+
+feature 分支通常是个人开发分支。开发过程中，先把远程最新的 `main` 获取下来，再将自己的修改同步到它的末尾：
+
+```shell
+git switch feature-login
+git status
+git fetch origin
+git rebase origin/main
+```
+
+执行后，feature 的提交会被重新创建在最新的 `origin/main` 后面。这样做会让历史保持线性，但已经推送过的 feature 分支需要安全地强制推送：
+
+```shell
+git push --force-with-lease origin feature-login
+```
+
+如果 feature 分支已经被多人共同使用，或者团队不允许重写该分支历史，则在 feature 上使用 merge：
+
+```shell
+git switch feature-login
+git fetch origin
+git merge origin/main
+```
+
+这种方式会保留原来的提交，不需要强制推送。无论使用 rebase 还是 merge，都应该在解决冲突并完成测试后，再发起 PR/MR。
+
+#### 2. 把 feature 合并到 main
+
+功能开发完成后，通常先确保本地 `main` 是最新的，再把 feature 合并进去：
+
+```shell
+git switch main
+git pull --ff-only origin main
+git merge feature-login
+git push origin main
+```
+
+多数团队不会直接向远程 `main` 推送，而是将 feature 推送到远程后，通过 GitHub/GitLab 发起 PR/MR，由 CI 和 Code Review 通过后合入 `main`：
+
+```shell
+git switch feature-login
+git push -u origin feature-login
+# 然后在代码托管平台创建 feature-login -> main 的 PR/MR
+```
+
+如果 `main` 在 feature 开发期间没有新的提交，`git merge feature-login` 通常会 Fast-forward，只是把 `main` 指针移动到 feature 的末尾，不会产生额外的合并提交。如果希望无论如何都保留一个明确的合并节点，可以使用：
+
+```shell
+git merge --no-ff feature-login
+```
+
+#### 3. main 和 feature 都有新提交时
+
+推荐先回到 feature 分支同步最新的 main，再合回 main：
+
+```shell
+git switch feature-login
+git fetch origin
+git rebase origin/main
+# 或者：git merge origin/main
+
+git switch main
+git merge feature-login
+```
+
+其中，`rebase` 适合自己独立使用的 feature 分支；已经被多人依赖的 feature 分支应优先使用 `merge`，避免改变已有提交的 ID。
+
+#### 4. main 上通常不做什么
+
+公共的 `main` 分支通常不执行下面这种操作：
+
+```shell
+git switch main
+git rebase feature-login
+```
+
+这表示把 `main` 自己的提交重新接到 feature 后面，会重写 `main` 的历史，并不是通常意义上的“把 feature 合并到 main”。把 feature 合入 main 时，应使用 `git switch main` 后执行 `git merge feature-login`，或通过 PR/MR 完成合并。
 
 ### Git Rebase
 
