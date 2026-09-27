@@ -22,6 +22,8 @@ EDR Agent 会持续采集终端遥测，将独立事件关联为可调查的上�
 
 例如 `NtWriteVirtualMemory`、`NtQueueApcThread`、`CreateRemoteThread`、`CreateService`、`RegSetValue` 等底层动作，可能会以不同形式出现在 EDR 遥测中。它们本身不是恶意结论，而是用于还原行为的证据。
 
+对于内存操作，一种可能的事件来源是 [ETW-TI](./ETW-TI.md)；它提供部分本进程与跨进程的行为线索，具体可见性取决于产品是否具备消费条件及其采集配置。
+
 ## EDR 如何发现攻击
 
 ### 规则与 IOC
