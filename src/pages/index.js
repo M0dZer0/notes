@@ -48,6 +48,12 @@ const timeline = [
     subtitle: 'Rebuilt my homepage with Codex',
     accent: 'Codex',
   },
+  {
+    year: '2026.10',
+    title: '字节跳动国际电商安全实习生',
+    subtitle: 'ByteDance Global E-commerce Security Intern',
+    accent: 'Intern',
+  },
 ];
 
 const cards = [

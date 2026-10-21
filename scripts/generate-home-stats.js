@@ -85,6 +85,21 @@ function getGitLastCommitDate(filePath) {
   }
 }
 
+function getGitFirstNotesCommitDate() {
+  try {
+    const output = execFileSync('git', ['log', '--reverse', '--format=%cI', '--', ...TARGET_DIRS], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+
+    const firstDate = output.split(/\r?\n/, 1)[0];
+    return firstDate ? new Date(firstDate) : null;
+  } catch {
+    return null;
+  }
+}
+
 function createRecentNote(filePath) {
   const fileStats = fs.statSync(filePath);
   const relativePath = path.relative(path.join(ROOT, 'docs'), filePath);
@@ -126,7 +141,8 @@ const stats = markdownFiles.reduce(
   }
 );
 
-const createdAt = Number.isFinite(stats.createdAtMs) ? new Date(stats.createdAtMs) : new Date();
+const createdAt = getGitFirstNotesCommitDate() ??
+  (Number.isFinite(stats.createdAtMs) ? new Date(stats.createdAtMs) : new Date());
 const ageInYears = (Date.now() - createdAt.getTime()) / (365.25 * 24 * 60 * 60 * 1000);
 const recentNotes = markdownFiles
   .filter((filePath) => path.basename(filePath, path.extname(filePath)).toLowerCase() !== 'index')
