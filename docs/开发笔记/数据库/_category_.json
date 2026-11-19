@@ -1,0 +1,8 @@
+{
+  "label": "数据库",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "数据库相关的开发笔记"
+  }
+}
