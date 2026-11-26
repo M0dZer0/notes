@@ -14,7 +14,7 @@ title: NTDLL Unhooking（NTDLL 脱钩）
 
 ### 系统调用入口
 
-`ntdll.dll` 提供了许多 [Windows Native API（NT API）](../Windows安全/Windows%20Native%20API（NT%20API）.md) 的用户态入口，例如：
+`ntdll.dll` 提供了许多 [Windows Native API（NT API）](../../Windows安全/Windows%20Native%20API（NT%20API）.md) 的用户态入口，例如：
 
 | 用户态入口（`ntdll.dll`） | 对应的内核系统服务（`ntoskrnl.exe`，符号前缀 `nt!`） | 内核态 Zw 入口名称 | 相关能力 |
 |---|---|---|---|
@@ -177,7 +177,7 @@ PE 文件的 `.text` 节通常存放可执行机器指令。脱钩可以针对�
 |---|---|
 | 被成功移除的 NTDLL Inline Hook | 经该入口的调用不再触发原 Hook |
 | 其他位置的用户态 Hook | 不一定受影响 |
-| [ETW-TI](../安全产品/ETW-TI.md) | 不因 NTDLL Hook 消失而必然失效；符合事件条件时仍可能产生遥测 |
+| [ETW-TI](../../安全产品/ETW-TI.md) | 不因 NTDLL Hook 消失而必然失效；符合事件条件时仍可能产生遥测 |
 | 内核进程、线程和映像加载通知 | 不因 NTDLL 脱钩而必然失效 |
 | 内核对象访问回调 | 仍可能观察相应的句柄操作 |
 | 文件系统 Minifilter | 不因 NTDLL 脱钩而必然失效 |

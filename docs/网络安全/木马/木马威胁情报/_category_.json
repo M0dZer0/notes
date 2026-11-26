@@ -1,0 +1,8 @@
+{
+  "label": "木马威胁情报",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "整理木马家族、攻击活动、基础设施和指标，并区分情报线索与已验证的事实"
+  }
+}

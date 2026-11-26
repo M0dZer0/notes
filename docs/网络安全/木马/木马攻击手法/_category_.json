@@ -1,0 +1,8 @@
+{
+  "label": "木马攻击手法",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "记录进程注入、内存执行、持久化、防御削弱和通信等技术，以及检测与分析思路"
+  }
+}
